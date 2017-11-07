@@ -17,7 +17,7 @@ return [
     // 应用命名空间
     'app_namespace'          => 'app',
     // 应用调试模式
-    'app_debug'              => false,
+    'app_debug'              => true,
     // 应用Trace
     'app_trace'              => false,
     // 应用模式状态
@@ -138,6 +138,14 @@ return [
         'taglib_begin' => '{',
         // 标签库标签结束标记
         'taglib_end'   => '}',
+        // 模版替换的配置 ROOT_PATH
+        'tpl_replace_string' => [
+            '__PUBLIC__' =>  '/',
+            '__STATIC__' =>  '/static',
+            '__CSS__'    =>  '/static/css',
+            '__IMG__'    =>  '/static/images',
+            '__JS__'     =>  '/static/js',
+        ],
     ],
 
     // 视图输出字符串内容替换
@@ -193,7 +201,7 @@ return [
         // 缓存前缀
         'prefix' => '',
         // 缓存有效期 0表示永久缓存
-        'expire' => 0,
+        'expire' => 1,
     ],
 
     // +----------------------------------------------------------------------

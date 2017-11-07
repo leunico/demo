@@ -10,3 +10,9 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+
+# 返回包装好的json数据
+function jsonOutPut($status, $msg='', $data='', $page=1, $count=0)
+{
+    return json(['status' => $status, 'msg' => $msg, 'data' => $data, 'page' => $page, 'count' => $count]);
+}

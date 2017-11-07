@@ -1,0 +1,151 @@
+{extend name="Public/base" /}
+{block name="main"}
+<div class="layui-body" id="main">
+    <!-- 内容主体区域 -->
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <ul class="layui-tab-title">
+            <li class="layui-this"><i class="fa fa-address-book">&nbsp;&nbsp;</i>网站设置</li>
+            <li><i class="fa fa-sliders">&nbsp;&nbsp;</i>菜单设置</li>
+            <li><i class="fa fa-address-card-o">&nbsp;&nbsp;</i>权限分配</li>
+            <li><i class="fa fa-bookmark">&nbsp;&nbsp;</i>商品管理</li>
+            <li><i class="fa fa-bookmark-o">&nbsp;&nbsp;</i>订单管理</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">内容不一样是要有，因为你可以监听tab事件（阅读下文档就是了）</div>
+            <div class="layui-tab-item">
+                <div class="layui-anim layui-anim-upbit">
+                    <div class="layui-elem-quote" style="margin-top: 5px;border-left:5px solid #ffffff;background-color: #eeeeee">
+                        <div>
+                            <button class="layui-btn layui-btn-small" @click="addMenu()">添加菜单</button>
+                        </div>
+                        <table class="layui-table" lay-even lay-skin="nob">
+                            <thead>
+                                <tr>
+                                    <!--<th>ID</th>-->
+                                    <th>名称</th>
+                                    <th>描述</th>
+                                    <th>模型链接</th>
+                                    <th>排序</th>
+                                    <th>图标</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody v-cloak>
+                                <tr v-for="item in menu_items">
+                                    <!--<td>{{ item.cate_Id }}</td>-->
+                                    <td style="white-space:pre;">{{ item.level|capitalize }}{{ item.cate_Name }}</td>
+                                    <td>{{ item.cate_Intro }}</td>
+                                    <td>{{ item.cate_Model }}</td>
+                                    <td>{{ item.cate_Order }}</td>
+                                    <td>{{ item.cate_Icon }}</td>
+                                    <td>
+                                        <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="detail">查看</a>
+                                        <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
+                                        <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div style="text-align: center">
+                            <!--<pagination :cur="1" :all="pageAll" :page-num="perPage" @page-to="loadMenuList"></pagination>-->
+                            <button @click="nextList($event)" id="next" class="layui-btn layui-btn-small" style="background-color: #ffffff;color: black">加载更多</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">内容3</div>
+            <div class="layui-tab-item">内容4</div>
+            <div class="layui-tab-item">内容5</div>
+        </div>
+    </div>
+</div>
+<div id="menuEdit"></div>
+{/block}
+
+{block name="js"}
+<script>
+    var lists = new Vue({
+        el: "#main",
+        data: {
+            menu_items: [],
+            menu_page: 0
+//            pageAll: 0,
+//            perPage: 10
+        },
+
+        filters: {
+            capitalize: function(value){
+                return value.replace(/-/g, "       ");
+            }
+        },
+
+        methods: {
+            loadMenuList: function(){
+                layer.load();
+                $.ajax({
+                    url : "{:Url('Settings/menu')}" + "?page=" + (this.menu_page+1),
+                    type: "GET",
+                    dataType: "json",
+                    error:function(){layer.msg('请求菜单列表失败!', {anim: 6})},
+                    success:function(res){
+                        layer.closeAll('loading');
+                        if (res.status > 0) {
+//                            lists.menu_items = res.data.data;
+//                            lists.perPage = res.data.per_page;
+//                            lists.pageAll = res.data.last_page;
+                            for ( var i in res.data.data )
+                                lists.menu_items.push(res.data.data[i]);
+
+                            lists.menu_page = res.data.current_page;
+                            if(lists.menu_page < res.data.last_page)
+                                $("#next").html('加载更多');
+                            else
+                                $("#next").remove();
+                        }else{
+                            layer.msg(res.msg, {anim: 6});
+                        }
+                    }
+                });
+            },
+
+            nextList: function(e){
+                e.target.innerHTML = '<i class="layui-anim layui-anim-rotate layui-anim-loop layui-icon ">&#xe63e;</i>';
+                this.loadMenuList();
+            },
+
+            addMenu: function(){
+                console.log($("#menuEdit").load("{:Url('Menu/edit')}"));
+                layer.open({
+                    type: 1
+                    ,id: 'menu'
+                    ,content: $("#menuEdit")
+                    ,btn: ['确认提交', '取消']
+                    ,btnAlign: 'c' //按钮居中
+                    ,shade: 0      //不显示遮罩
+                    ,yes: function(){
+                        layer.closeAll();
+                    },btn2: function(index, layero){
+                        //return false 开启该代码可禁止点击该按钮关闭
+                    },cancel: function(){
+                        //return false 开启该代码可禁止点击该按钮关闭
+                    }
+                });
+            }
+        }
+
+//        mounted: function(){
+//            this.loadMenuList();
+//        }
+    });
+
+    layui.use(['element', 'layer'], function(){
+        var element = layui.element
+        element.on('tab(docDemoTabBrief)', function(data){
+            if(lists.menu_items.length == 0)
+                lists.loadMenuList();
+
+//            layer.msg('切到到了'+ data.index + '：' + this.innerHTML);
+        });
+    });
+</script>
+{/block}
