@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:71:"D:\albert\www\demo\public/../application/admin\view\settings\index.html";i:1510016577;s:68:"D:\albert\www\demo\public/../application/admin\view\Public\base.html";i:1509708674;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:71:"D:\albert\www\demo\public/../application/admin\view\settings\index.html";i:1510053442;s:68:"D:\albert\www\demo\public/../application/admin\view\Public\base.html";i:1509708674;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -104,36 +104,6 @@
         </div>
     </div>
 </div>
-<div id="menuEdit">
-    <form class="layui-form" action="">
-        <div class="layui-form-item">
-            <label class="layui-form-label">单行输入框</label>
-            <div class="layui-input-block">
-                <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">验证必填项</label>
-            <div class="layui-input-block">
-                <input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">验证手机</label>
-                <div class="layui-input-inline">
-                    <input type="tel" name="phone" lay-verify="phone" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">验证邮箱</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="email" lay-verify="email" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
 
 
     <!-- 底部固定区域 -->
@@ -211,12 +181,13 @@
 
             addMenu: function(){
                 layer.open({
-                    type: 1
+                    type: 2
                     ,id: 'menu'
-                    ,content: $("#menuEdit")
+                    ,content: "<?php echo Url('Menu/edit'); ?>"
                     ,btn: ['确认提交', '取消']
                     ,btnAlign: 'c' //按钮居中
                     ,shade: 0      //不显示遮罩
+                    ,area: ['1200px', '800px']
                     ,yes: function(){
                         layer.closeAll();
                     },btn2: function(index, layero){

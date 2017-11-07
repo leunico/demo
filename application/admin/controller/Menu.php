@@ -7,7 +7,6 @@ class Menu extends BaseController
 {
     public function edit()
     {
-        dump($this->fetch('edit'));die;
         return $this->fetch('edit');
     }
 }
