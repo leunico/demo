@@ -9,4 +9,9 @@ class Menu extends BaseController
     {
         return $this->fetch('edit');
     }
+
+    public function add()
+    {
+        return $this->fetch('edit');
+    }
 }

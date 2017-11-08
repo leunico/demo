@@ -1,0 +1,3 @@
+{foreach $icon as $vo}
+    <option value="{$vo}" {if condition="$vo eq $value"}selected{/if}><i class="fa fa-{$vo}"></i>{$vo}</option>
+{/foreach}

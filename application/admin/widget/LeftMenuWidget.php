@@ -7,7 +7,7 @@ class LeftMenuWidget extends Controller
 {
     public function index()
     {
-        $items= db('cate')->order('cate_ParentId, cate_Order')->select();// 按pid从小到大排序，以保证父节点在前，子节点在后。sort是同一层次节点的显示顺序。
+        $items = db('cate')->order('cate_ParentId, cate_Order')->select();// 按pid从小到大排序，以保证父节点在前，子节点在后。sort是同一层次节点的显示顺序。
         $menu = [];
         foreach ($items as $v) {
             $menu[$v['cate_Id']] = $v;

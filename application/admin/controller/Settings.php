@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 
 use app\admin\common\BaseController;
+use think\Loader;
 
 class Settings extends BaseController
 {
@@ -13,7 +14,7 @@ class Settings extends BaseController
     public function menu()
     {
         if (request()->isAjax()){
-            $items = db('cate')->order('cate_ParentId, cate_Order')->paginate(100)->toArray(); // 菜单不应该有太长！
+            $items = Loader::model('Cate')->getListMenu();
             $menu = [];
             foreach ($items['data'] as $k=>$v) {
                 $menu[$v['cate_Id']] = $v;

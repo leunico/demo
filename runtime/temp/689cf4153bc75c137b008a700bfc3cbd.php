@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:71:"D:\albert\www\demo\public/../application/admin\view\settings\index.html";i:1510053442;s:68:"D:\albert\www\demo\public/../application/admin\view\Public\base.html";i:1509708674;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:71:"D:\albert\www\demo\public/../application/admin\view\settings\index.html";i:1510130181;s:68:"D:\albert\www\demo\public/../application/admin\view\Public\base.html";i:1510106285;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,7 +49,7 @@
     <!-- 内容主体区域 -->
     <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
         <ul class="layui-tab-title">
-            <li class="layui-this"><i class="fa fa-address-book">&nbsp;&nbsp;</i>网站设置</li>
+            <li class="layui-this"><i class="fa fa-exclamation-circle">&nbsp;&nbsp;</i>网站设置</li>
             <li><i class="fa fa-sliders">&nbsp;&nbsp;</i>菜单设置</li>
             <li><i class="fa fa-address-card-o">&nbsp;&nbsp;</i>权限分配</li>
             <li><i class="fa fa-bookmark">&nbsp;&nbsp;</i>商品管理</li>
@@ -112,7 +112,7 @@
     
 </div>
 <script src="/static/layui.all.js"></script>
-<script src="https://unpkg.com/vue"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="/static/admin.js"></script>
 <!--<script src="/static/jquery.min.js"></script>-->
 <script>
@@ -182,12 +182,13 @@
             addMenu: function(){
                 layer.open({
                     type: 2
+                    ,title: '菜单'
                     ,id: 'menu'
-                    ,content: "<?php echo Url('Menu/edit'); ?>"
-                    ,btn: ['确认提交', '取消']
+                    ,content: ["<?php echo Url('Menu/add'); ?>", 'no']
+                    ,btn: []
                     ,btnAlign: 'c' //按钮居中
                     ,shade: 0      //不显示遮罩
-                    ,area: ['1200px', '800px']
+                    ,area: ['380px', '405px']
                     ,yes: function(){
                         layer.closeAll();
                     },btn2: function(index, layero){
