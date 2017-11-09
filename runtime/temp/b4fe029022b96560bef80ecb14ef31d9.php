@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:66:"D:\albert\www\demo\public/../application/admin\view\menu\edit.html";i:1510136599;s:68:"D:\albert\www\demo\public/../application/admin\view\Public\open.html";i:1510130522;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:66:"D:\albert\www\demo\public/../application/admin\view\menu\edit.html";i:1510225155;s:68:"D:\albert\www\demo\public/../application/admin\view\Public\open.html";i:1510130522;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,7 +26,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">选择图标</label>
             <div class="layui-input-block">
-                <select name="interest" lay-filter="aihao">
+                <select name="cate_Icon" lay-filter="aihao" lay-verify="required">
                     <option value="">请选择</option>
                     <?php echo widget('BaseConfigWidget/icon'); ?>
                 </select>
@@ -47,14 +47,14 @@
         <div class="layui-form-item">
             <label class="layui-form-label">菜单Model</label>
             <div class="layui-input-block">
-                <input type="text" name="cate_Intro" lay-verify="required" autocomplete="off" placeholder="请输入菜单链接" class="layui-input">
+                <input type="text" name="cate_Model" lay-verify="required" autocomplete="off" placeholder="请输入菜单链接" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="layui-btn layui-btn-small" lay-submit="" lay-filter="demo1">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-small layui-btn-primary">重置</button>
+                <button class="layui-btn layui-btn-small" lay-submit="menu" lay-filter="menu" >立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-small layui-btn-primary">取消</button>
             </div>
         </div>
     </form>
@@ -67,11 +67,19 @@
 <!-- 自定义js区域 -->
 
 <script>
-    var $ = layui.jquery;
+    var $ = layui.jquery,
+    form = layui.form;
     $(function(){
         $(".layui-anim-upbit>dd").each(function(e){
-            if(e > 0)
-                $(this).html('<i class="fa fa-'+ $(this).attr('lay-value') +'"></i>  ' + $(this).attr('lay-value'));
+            if(e > 0) $(this).html('<i class="fa fa-'+ $(this).attr('lay-value') +'"></i>  ' + $(this).attr('lay-value'));
+        });
+
+        form.on('submit(menu)', function(data){
+            $.post("<?php echo Url('menu/save'); ?>", data.field, function(){
+                parent.layer.closeAll();
+                parent.layer.closeAll();
+            });
+//            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
     });
 </script>

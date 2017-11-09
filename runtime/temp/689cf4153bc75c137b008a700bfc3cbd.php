@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:71:"D:\albert\www\demo\public/../application/admin\view\settings\index.html";i:1510130181;s:68:"D:\albert\www\demo\public/../application/admin\view\Public\base.html";i:1510106285;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:71:"D:\albert\www\demo\public/../application/admin\view\settings\index.html";i:1510225462;s:68:"D:\albert\www\demo\public/../application/admin\view\Public\base.html";i:1510218627;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,9 +14,9 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo"><a href="<?php echo Url('Index/index'); ?>">之心后台</a></div>
+        <div class="layui-logo"><a href="<?php echo Url('index/index'); ?>">之心后台</a></div>
         <ul id="navtop" class="layui-nav layui-layout-right layui-bg-green" lay-filter="">
-            <li class="layui-nav-item" data-nav="Settings"><a href="<?php echo Url('Settings/index'); ?>">系统设置</a></li>
+            <li class="layui-nav-item" data-nav="Settings"><a href="<?php echo Url('settings/index'); ?>">系统设置</a></li>
             <!--<li class="layui-nav-item  layui-this"><a href="">商品管理</a></li>-->
             <!--<li class="layui-nav-item"><a href="">用户</a></li>-->
             <!--<li class="layui-nav-item">-->
@@ -114,17 +114,15 @@
 <script src="/static/layui.all.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="/static/admin.js"></script>
+<!--<script src="https://unpkg.com/axios@0.17.0/dist/axios.min.js"></script>-->
 <!--<script src="/static/jquery.min.js"></script>-->
 <script>
-    layui.use('element', function(){
-//        var element = layui.element;
-        var action = "<?php echo request()->controller(); ?>";
-        $("#navtop>li").each(function(){
-            if(action == $(this).attr('data-nav'))
-                $(this).addClass('layui-this');
-            else
-                $(this).removeClass('layui-this');
-        });
+    var action = "<?php echo request()->controller(); ?>";
+    $("#navtop>li").each(function(){
+        if(action == $(this).attr('data-nav'))
+            $(this).addClass('layui-this');
+        else
+            $(this).removeClass('layui-this');
     });
 </script>
 <!-- 自定义js区域 -->
@@ -148,8 +146,26 @@
         methods: {
             loadMenuList: function(){
                 layer.load();
+//                axios.get("<?php echo Url('Settings/menu'); ?>" + "?page=" + (this.menu_page+1))
+//                    .then(function (response) {
+//                        layer.closeAll('loading');
+//                        if (res.status > 0) {
+//                            for (var i in res.data.data)
+//                                this.menu_items.push(res.data.data[i]);
+//
+//                            this.menu_page = res.data.current_page;
+//                            if(this.menu_page < res.data.last_page)
+//                                $("#next").html('加载更多');
+//                            else
+//                                $("#next").remove();
+//                        }else{
+//                            layer.msg(res.msg, {anim: 6});
+//                        }
+//                    }).catch(function (error) {
+//                        layer.msg('请求菜单列表失败!', {anim: 6});
+//                    });
                 $.ajax({
-                    url : "<?php echo Url('Settings/menu'); ?>" + "?page=" + (this.menu_page+1),
+                    url : "<?php echo Url('menu/index'); ?>" + "?page=" + (this.menu_page + 1),
                     type: "GET",
                     dataType: "json",
                     error:function(){layer.msg('请求菜单列表失败!', {anim: 6})},
@@ -184,17 +200,12 @@
                     type: 2
                     ,title: '菜单'
                     ,id: 'menu'
-                    ,content: ["<?php echo Url('Menu/add'); ?>", 'no']
-                    ,btn: []
-                    ,btnAlign: 'c' //按钮居中
-                    ,shade: 0      //不显示遮罩
-                    ,area: ['380px', '405px']
-                    ,yes: function(){
-                        layer.closeAll();
-                    },btn2: function(index, layero){
-                        //return false 开启该代码可禁止点击该按钮关闭
-                    },cancel: function(){
-                        //return false 开启该代码可禁止点击该按钮关闭
+                    ,content: ["<?php echo Url('menu/create'); ?>", 'no']
+                    ,shade: 0
+                    ,area: ['500px', '405px']
+                    ,end: function(){
+                        lists.menu_page = 0;
+                        lists.loadMenuList();
                     }
                 });
             }

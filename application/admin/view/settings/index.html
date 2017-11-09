@@ -81,8 +81,26 @@
         methods: {
             loadMenuList: function(){
                 layer.load();
+//                axios.get("{:Url('Settings/menu')}" + "?page=" + (this.menu_page+1))
+//                    .then(function (response) {
+//                        layer.closeAll('loading');
+//                        if (res.status > 0) {
+//                            for (var i in res.data.data)
+//                                this.menu_items.push(res.data.data[i]);
+//
+//                            this.menu_page = res.data.current_page;
+//                            if(this.menu_page < res.data.last_page)
+//                                $("#next").html('加载更多');
+//                            else
+//                                $("#next").remove();
+//                        }else{
+//                            layer.msg(res.msg, {anim: 6});
+//                        }
+//                    }).catch(function (error) {
+//                        layer.msg('请求菜单列表失败!', {anim: 6});
+//                    });
                 $.ajax({
-                    url : "{:Url('Settings/menu')}" + "?page=" + (this.menu_page+1),
+                    url : "{:Url('menu/index')}" + "?page=" + (this.menu_page + 1),
                     type: "GET",
                     dataType: "json",
                     error:function(){layer.msg('请求菜单列表失败!', {anim: 6})},
@@ -117,17 +135,12 @@
                     type: 2
                     ,title: '菜单'
                     ,id: 'menu'
-                    ,content: ["{:Url('Menu/add')}", 'no']
-                    ,btn: []
-                    ,btnAlign: 'c' //按钮居中
-                    ,shade: 0      //不显示遮罩
-                    ,area: ['380px', '405px']
-                    ,yes: function(){
-                        layer.closeAll();
-                    },btn2: function(index, layero){
-                        //return false 开启该代码可禁止点击该按钮关闭
-                    },cancel: function(){
-                        //return false 开启该代码可禁止点击该按钮关闭
+                    ,content: ["{:Url('menu/create')}", 'no']
+                    ,shade: 0
+                    ,area: ['500px', '405px']
+                    ,end: function(){
+                        lists.menu_page = 0;
+                        lists.loadMenuList();
                     }
                 });
             }
