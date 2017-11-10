@@ -42,6 +42,10 @@ class Menu extends BaseController
         $cate->cate_Intro = $this->request->post('cate_Intro');
         $cate->cate_Name  = $this->request->post('cate_Name');
         $cate->cate_Model = $this->request->post('cate_Model');
-        $cate->save();
+        return jsonOutPut(1, '', $cate->save());
+    }
+
+    public function delete($id){
+        return jsonOutPut(1, '', Loader::model('Cate')->delMenu($id));
     }
 }

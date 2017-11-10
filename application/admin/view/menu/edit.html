@@ -58,11 +58,10 @@
         });
 
         form.on('submit(menu)', function(data){
-            $.post("{:Url('menu/save')}", data.field, function(){
+            $.post("/admin/menu", data.field, function(){
                 parent.layer.closeAll();
-                parent.layer.closeAll();
+                parent.layer.msg("添加成功！", {time: 1000, icon: 1});
             });
-//            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
     });
 </script>

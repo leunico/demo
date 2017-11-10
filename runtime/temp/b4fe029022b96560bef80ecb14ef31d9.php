@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:66:"D:\albert\www\demo\public/../application/admin\view\menu\edit.html";i:1510225155;s:68:"D:\albert\www\demo\public/../application/admin\view\Public\open.html";i:1510130522;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:66:"D:\albert\www\demo\public/../application/admin\view\menu\edit.html";i:1510311491;s:68:"D:\albert\www\demo\public/../application/admin\view\Public\open.html";i:1510130522;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -75,11 +75,10 @@
         });
 
         form.on('submit(menu)', function(data){
-            $.post("<?php echo Url('menu/save'); ?>", data.field, function(){
+            $.post("/admin/menu", data.field, function(){
                 parent.layer.closeAll();
-                parent.layer.closeAll();
+                parent.layer.msg("添加成功！", {time: 1000, icon: 1});
             });
-//            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
     });
 </script>

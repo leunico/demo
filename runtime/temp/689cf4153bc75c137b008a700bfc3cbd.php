@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:71:"D:\albert\www\demo\public/../application/admin\view\settings\index.html";i:1510225462;s:68:"D:\albert\www\demo\public/../application/admin\view\Public\base.html";i:1510218627;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:71:"D:\albert\www\demo\public/../application/admin\view\settings\index.html";i:1510311491;s:68:"D:\albert\www\demo\public/../application/admin\view\Public\base.html";i:1510282526;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,7 +63,7 @@
                         <div>
                             <button class="layui-btn layui-btn-small" @click="addMenu()">添加菜单</button>
                         </div>
-                        <table class="layui-table" lay-even lay-skin="nob">
+                        <table class="layui-table" lay-skin="nob">
                             <thead>
                                 <tr>
                                     <!--<th>ID</th>-->
@@ -84,16 +84,16 @@
                                     <td>{{ item.cate_Order }}</td>
                                     <td>{{ item.cate_Icon }}</td>
                                     <td>
-                                        <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="detail">查看</a>
-                                        <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
-                                        <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+                                        <a class="layui-btn layui-btn-primary layui-btn-mini" @click="menuClick(1, item.cate_Id)">添加一个子菜单</a>
+                                        <a class="layui-btn layui-btn-mini" @click="menuClick(2, item.cate_Id)">编辑</a>
+                                        <a class="layui-btn layui-btn-danger layui-btn-mini" @click="menuClick(3, item.cate_Id)">删除</a>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <div style="text-align: center">
+                        <div id="page" style="text-align: center">
                             <!--<pagination :cur="1" :all="pageAll" :page-num="perPage" @page-to="loadMenuList"></pagination>-->
-                            <button @click="nextList($event)" id="next" class="layui-btn layui-btn-small" style="background-color: #ffffff;color: black">加载更多</button>
+                            <!--<button @click="nextList($event)" id="next" class="layui-btn layui-btn-small" style="background-color: #ffffff;color: black">加载更多</button>-->
                         </div>
                     </div>
                 </div>
@@ -114,7 +114,6 @@
 <script src="/static/layui.all.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="/static/admin.js"></script>
-<!--<script src="https://unpkg.com/axios@0.17.0/dist/axios.min.js"></script>-->
 <!--<script src="/static/jquery.min.js"></script>-->
 <script>
     var action = "<?php echo request()->controller(); ?>";
@@ -134,7 +133,7 @@
             menu_items: [],
             menu_page: 0
 //            pageAll: 0,
-//            perPage: 10
+//            perPage: 10  // 数字分页
         },
 
         filters: {
@@ -144,45 +143,27 @@
         },
 
         methods: {
-            loadMenuList: function(){
+            loadMenuList: function(page){
                 layer.load();
-//                axios.get("<?php echo Url('Settings/menu'); ?>" + "?page=" + (this.menu_page+1))
-//                    .then(function (response) {
-//                        layer.closeAll('loading');
-//                        if (res.status > 0) {
-//                            for (var i in res.data.data)
-//                                this.menu_items.push(res.data.data[i]);
-//
-//                            this.menu_page = res.data.current_page;
-//                            if(this.menu_page < res.data.last_page)
-//                                $("#next").html('加载更多');
-//                            else
-//                                $("#next").remove();
-//                        }else{
-//                            layer.msg(res.msg, {anim: 6});
-//                        }
-//                    }).catch(function (error) {
-//                        layer.msg('请求菜单列表失败!', {anim: 6});
-//                    });
                 $.ajax({
-                    url : "<?php echo Url('menu/index'); ?>" + "?page=" + (this.menu_page + 1),
+                    url : "/admin/menu" + "?page=" + page,
                     type: "GET",
                     dataType: "json",
                     error:function(){layer.msg('请求菜单列表失败!', {anim: 6})},
                     success:function(res){
                         layer.closeAll('loading');
                         if (res.status > 0) {
-//                            lists.menu_items = res.data.data;
+//                            for (var i in res.data.data)
+//                                lists.menu_items.push(res.data.data[i]);
+//
+//                            lists.menu_page = res.data.current_page;
+//                            if(lists.menu_page < res.data.last_page)
+//                                $("#next").html('加载更多');
+//                            else
+//                                $("#next").remove(); # 流加载分页
+                            lists.menu_items = res.data.data;
 //                            lists.perPage = res.data.per_page;
-//                            lists.pageAll = res.data.last_page;
-                            for ( var i in res.data.data )
-                                lists.menu_items.push(res.data.data[i]);
-
-                            lists.menu_page = res.data.current_page;
-                            if(lists.menu_page < res.data.last_page)
-                                $("#next").html('加载更多');
-                            else
-                                $("#next").remove();
+//                            lists.pageAll = res.data.last_page; // 数字分页
                         }else{
                             layer.msg(res.msg, {anim: 6});
                         }
@@ -190,10 +171,10 @@
                 });
             },
 
-            nextList: function(e){
-                e.target.innerHTML = '<i class="layui-anim layui-anim-rotate layui-anim-loop layui-icon ">&#xe63e;</i>';
-                this.loadMenuList();
-            },
+//            nextList: function(e){
+//                e.target.innerHTML = '<i class="layui-anim layui-anim-rotate layui-anim-loop layui-icon ">&#xe63e;</i>';
+//                this.loadMenuList(this.menu_page + 1); # 流加载分页
+//            },
 
             addMenu: function(){
                 layer.open({
@@ -204,25 +185,47 @@
                     ,shade: 0
                     ,area: ['500px', '405px']
                     ,end: function(){
-                        lists.menu_page = 0;
-                        lists.loadMenuList();
+                        lists.loadMenuList(1);
+                        location.href="#page";
                     }
                 });
+            },
+
+            menuClick: function(type, id){
+                if(type == 1){
+                    layer.msg("参数错误");
+                }else if(type == 2){
+                    layer.msg("参数错误");
+                }else if(type == 3){
+                    layer.confirm('你确定？如果有子菜单会一起删除的！', {
+                        btn: ['继续','取消']
+                    }, function(){
+                        $.ajax({
+                            url : "/admin/menu/" + id,
+                            type: "DELETE",
+                            error:function(){layer.msg('删除失败！', {anim: 6})},
+                            success:function(res){
+                                layer.msg("删除成功！", {time: 1000, icon: 1});
+                                lists.loadMenuList(1);
+                            }
+                        });
+                    });
+                }else{
+                    layer.msg("参数错误");
+                }
             }
         }
 
 //        mounted: function(){
-//            this.loadMenuList();
+//            this.loadMenuList(1); # 数字分页
 //        }
     });
 
     layui.use(['element', 'layer'], function(){
-        var element = layui.element
+        var element = layui.element;
         element.on('tab(docDemoTabBrief)', function(data){
-            if(lists.menu_items.length == 0)
-                lists.loadMenuList();
-
-//            layer.msg('切到到了'+ data.index + '：' + this.innerHTML);
+            if(data.index == 1)
+                lists.loadMenuList(1);
         });
     });
 </script>
