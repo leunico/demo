@@ -5,7 +5,7 @@
     <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
         <ul class="layui-tab-title">
             <li class="layui-this"><i class="fa fa-exclamation-circle">&nbsp;&nbsp;</i>网站设置</li>
-            <li><i class="fa fa-sliders">&nbsp;&nbsp;</i>菜单设置</li>
+            <li lay-id="menu"><i class="fa fa-sliders">&nbsp;&nbsp;</i>菜单设置</li>
             <li><i class="fa fa-address-card-o">&nbsp;&nbsp;</i>权限分配</li>
             <li><i class="fa fa-bookmark">&nbsp;&nbsp;</i>商品管理</li>
             <li><i class="fa fa-bookmark-o">&nbsp;&nbsp;</i>订单管理</li>
@@ -63,6 +63,15 @@
 
 {block name="js"}
 <script>
+layui.use(['element', 'layer', "jquery"], function(){
+    var element = layui.element,
+    $ = layui.$,
+    layer = layui.layer;
+    element.on('tab(docDemoTabBrief)', function(data){
+        if(data.index == 1)
+            lists.loadMenuList(1);
+    });
+
     var lists = new Vue({
         el: "#main",
         data: {
@@ -121,10 +130,8 @@
                     ,shade: 0
                     ,area: ['500px', '405px']
                     ,end: function(){
-                        // lists.loadMenuList(1);
-                        // location.href="#page";
-                        window.location.reload();
-                        $(".fa-sliders").trigger('click');
+                        lists.loadMenuList(1);
+                        // window.location.reload();
                     }
                 });
             },
@@ -158,13 +165,6 @@
 //            this.loadMenuList(1); # 数字分页
 //        }
     });
-
-    layui.use(['element', 'layer'], function(){
-        var element = layui.element;
-        element.on('tab(docDemoTabBrief)', function(data){
-            if(data.index == 1)
-                lists.loadMenuList(1);
-        });
-    });
+});
 </script>
 {/block}

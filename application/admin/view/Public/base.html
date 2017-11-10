@@ -14,8 +14,8 @@
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
         <div class="layui-logo"><a href="{:Url('index/index')}">之心后台</a></div>
-        <ul id="navtop" class="layui-nav layui-layout-right layui-bg-green" lay-filter="">
-            <li class="layui-nav-item" data-nav="Settings"><a href="{:Url('settings/index')}">系统设置</a></li>
+        <ul class="layui-nav layui-layout-right layui-bg-green" lay-filter="">
+            <li class="layui-nav-item {if condition="($controller eq 'Settings')"}layui-this{/if}"><a href="{:Url('settings/index')}">系统设置</a></li>
             <!--<li class="layui-nav-item  layui-this"><a href="">商品管理</a></li>-->
             <!--<li class="layui-nav-item"><a href="">用户</a></li>-->
             <!--<li class="layui-nav-item">-->
@@ -54,15 +54,6 @@
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="__STATIC__/admin.js"></script>
 <!--<script src="__STATIC__/jquery.min.js"></script>-->
-<script>
-    var action = "{:request()->controller()}";
-    $("#navtop>li").each(function(){
-        if(action == $(this).attr('data-nav'))
-            $(this).addClass('layui-this');
-        else
-            $(this).removeClass('layui-this');
-    });
-</script>
 <!-- 自定义js区域 -->
 {block name="js"}{/block}
 </body>

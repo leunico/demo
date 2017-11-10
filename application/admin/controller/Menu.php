@@ -47,7 +47,8 @@ class Menu extends BaseController
         return jsonOutPut(1, '', $cate->save());
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         return jsonOutPut(1, '', Loader::model('Cate')->delMenu($id));
     }
 }

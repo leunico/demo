@@ -1,4 +1,3 @@
-var $ = layui.jquery;
 Vue.component('pagination', {
     template: '<nav v-if="all > 1">' +
     '<div class="layui-box layui-laypage layui-laypage-default" id="layui-laypage-1">' +
