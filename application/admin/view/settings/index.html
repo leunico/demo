@@ -112,24 +112,26 @@
 //                this.loadMenuList(this.menu_page + 1); # 流加载分页
 //            },
 
-            addMenu: function(){
+            addMenu: function(id=0){
                 layer.open({
                     type: 2
                     ,title: '菜单'
                     ,id: 'menu'
-                    ,content: ["{:Url('menu/create')}", 'no']
+                    ,content: ["{:Url('menu/create')}" + "?id=" + id, 'no']
                     ,shade: 0
                     ,area: ['500px', '405px']
                     ,end: function(){
-                        lists.loadMenuList(1);
-                        location.href="#page";
+                        // lists.loadMenuList(1);
+                        // location.href="#page";
+                        window.location.reload();
+                        $(".fa-sliders").trigger('click');
                     }
                 });
             },
 
             menuClick: function(type, id){
                 if(type == 1){
-                    layer.msg("参数错误");
+                    this.addMenu(id);
                 }else if(type == 2){
                     layer.msg("参数错误");
                 }else if(type == 3){

@@ -32,16 +32,18 @@ class Menu extends BaseController
 
     public function create()
     {
+        $this->assign('cate_ParentId', $this->request->get('id'));
         return $this->fetch('edit');
     }
 
     public function save()
     {
         $cate = Loader::model('Cate');
-        $cate->cate_Icon  = $this->request->post('cate_Icon');
-        $cate->cate_Intro = $this->request->post('cate_Intro');
-        $cate->cate_Name  = $this->request->post('cate_Name');
-        $cate->cate_Model = $this->request->post('cate_Model');
+        $cate->cate_Icon     = $this->request->post('cate_Icon');
+        $cate->cate_Intro    = $this->request->post('cate_Intro');
+        $cate->cate_Name     = $this->request->post('cate_Name');
+        $cate->cate_Model    = $this->request->post('cate_Model');
+        $cate->cate_ParentId = $this->request->post('cate_ParentId');
         return jsonOutPut(1, '', $cate->save());
     }
 
