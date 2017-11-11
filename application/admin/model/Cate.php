@@ -10,7 +10,7 @@ class Cate extends Model
     protected $deleteTime = 'delete_time';
     
     /**
-     * 获取菜单列表
+     * 获取栏目列表
      * @author albert
      */
     public function getListMenu()
@@ -19,7 +19,7 @@ class Cate extends Model
     }
 
     /**
-     * 删除菜单列表
+     * 删除栏目列表
      * @author albert
      */
     public function delMenu($id)

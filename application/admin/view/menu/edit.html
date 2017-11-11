@@ -1,11 +1,11 @@
 {extend name="Public/open" /}
 {block name="main"}
 <blockquote class="layui-elem-quote layui-text" style="margin-top:12px;">
-    添加或编辑一个菜单
+    添加或编辑一个栏目
 </blockquote>
 
 <!--<fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">-->
-    <!--<legend>菜单（{:request()->action()}）</legend>-->
+    <!--<legend>栏目（{:request()->action()}）</legend>-->
 <!--</fieldset>-->
 
 <div class="layui-tab-content" style="min-height:500px;">
@@ -22,21 +22,21 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">菜单名称</label>
+            <label class="layui-form-label">栏目名称</label>
             <div class="layui-input-block">
-                <input type="text" name="cate_Name" lay-verify="required" placeholder="请输入菜单名称" autocomplete="off" class="layui-input" value="{$cate_Name}">
+                <input type="text" name="cate_Name" lay-verify="required" placeholder="请输入栏目名称" autocomplete="off" class="layui-input" value="{$cate_Name}">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">菜单备注</label>
+            <label class="layui-form-label">栏目备注</label>
             <div class="layui-input-block">
-                <input type="text" name="cate_Intro" lay-verify="title" autocomplete="off" placeholder="请输入菜单备注" class="layui-input" value="{$cate_Intro}">
+                <input type="text" name="cate_Intro" lay-verify="title" autocomplete="off" placeholder="请输入栏目备注" class="layui-input" value="{$cate_Intro}">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">菜单Model</label>
+            <label class="layui-form-label">栏目Model</label>
             <div class="layui-input-block">
-                <input type="text" name="cate_Model" lay-verify="required" autocomplete="off" placeholder="请输入菜单链接" class="layui-input" value="{$cate_Model}">
+                <input type="text" name="cate_Model" lay-verify="required" autocomplete="off" placeholder="请输入栏目链接" class="layui-input" value="{$cate_Model}">
             </div>
         </div>
 
@@ -65,7 +65,7 @@
                     if(res.status == 1)
                         parent.layer.closeAll();
                     else
-                        parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                        parent.layer.msg(res.data, {time: 2000, icon: 2});
                 });
             }else{
                 $.ajax({
@@ -76,7 +76,7 @@
                         if(res.status == 1)
                             parent.layer.closeAll();
                         else
-                            parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                            parent.layer.msg(res.data, {time: 2000, icon: 2});
                     }
                 });
             }

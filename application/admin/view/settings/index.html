@@ -5,7 +5,7 @@
     <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
         <ul class="layui-tab-title">
             <li class="layui-this"><i class="fa fa-exclamation-circle">&nbsp;&nbsp;</i>网站设置</li>
-            <li lay-id="menu"><i class="fa fa-sliders">&nbsp;&nbsp;</i>菜单设置</li>
+            <li lay-id="menu"><i class="fa fa-sliders">&nbsp;&nbsp;</i>栏目设置</li>
             <li><i class="fa fa-address-card-o">&nbsp;&nbsp;</i>权限分配</li>
             <li><i class="fa fa-bookmark">&nbsp;&nbsp;</i>商品管理</li>
             <li><i class="fa fa-bookmark-o">&nbsp;&nbsp;</i>订单管理</li>
@@ -16,7 +16,7 @@
                 <div class="layui-anim layui-anim-upbit">
                     <div class="layui-elem-quote" style="margin-top: 5px;border-left:5px solid #ffffff;background-color: #eeeeee">
                         <div>
-                            <button class="layui-btn layui-btn-small" @click="addMenu(0)">添加菜单</button>
+                            <button class="layui-btn layui-btn-small" @click="addMenu(0)">添加栏目</button>
                         </div>
                         <table class="layui-table" lay-skin="nob">
                             <thead>
@@ -39,7 +39,7 @@
                                     <td><span class="layui-badge-rim" @click="orderClick(item.cate_Id, item.cate_Order + 1)"><i class="fa fa-sort-up"></i></li></span><span class="layui-badge layui-bg-cyan" style="border-radius:1px;">{{ item.cate_Order }}</span><span @click="orderClick(item.cate_Id, item.cate_Order - 1)" class="layui-badge-rim" v-if="item.cate_Order"><i class="fa fa-sort-desc"></i></span></td>
                                     <td><i :class="'fa fa-' + item.cate_Icon">&nbsp;&nbsp;</i>{{ item.cate_Icon }}</td>
                                     <td>
-                                        <a class="layui-btn layui-btn-normal layui-btn-mini" @click="menuClick(1, item.cate_Id)">添加一个子菜单</a>
+                                        <a class="layui-btn layui-btn-normal layui-btn-mini" @click="menuClick(1, item.cate_Id)">添加一个子栏目</a>
                                         <a class="layui-btn layui-btn-mini" @click="menuClick(2, item.cate_Id)">编辑</a>
                                         <a class="layui-btn layui-btn-danger layui-btn-mini" @click="menuClick(3, item.cate_Id)">删除</a>
                                     </td>
@@ -94,7 +94,7 @@ layui.use(['element', 'layer', "jquery"], function(){
                     url : "/admin/menu" + "?page=" + page,
                     type: "GET",
                     dataType: "json",
-                    error:function(){layer.msg('请求菜单列表失败!', {anim: 6})},
+                    error:function(){layer.msg('请求栏目列表失败!', {anim: 6})},
                     success:function(res){
                         layer.closeAll('loading');
                         if (res.status > 0) {
@@ -106,9 +106,10 @@ layui.use(['element', 'layer', "jquery"], function(){
 //                                $("#next").html('加载更多');
 //                            else
 //                                $("#next").remove(); # 流加载分页
-                            lists.menu_items = res.data.data;
+
 //                            lists.perPage = res.data.per_page;
 //                            lists.pageAll = res.data.last_page; // 数字分页
+                            lists.menu_items = res.data.data;
                         }else{
                             layer.msg(res.msg, {anim: 6});
                         }
@@ -124,7 +125,7 @@ layui.use(['element', 'layer', "jquery"], function(){
             addMenu: function(id){
                 layer.open({
                     type: 2
-                    ,title: '菜单添加'
+                    ,title: '栏目添加'
                     ,id: 'menu'
                     ,content: ["{:Url('menu/create')}" + "?id=" + id, 'no']
                     ,shade: 0
@@ -142,7 +143,7 @@ layui.use(['element', 'layer', "jquery"], function(){
                 }else if(type == 2){
                     layer.open({
                         type: 2
-                        ,title: '菜单修改'
+                        ,title: '栏目修改'
                         ,content: ["/admin/menu/" + id + "/edit", 'no']
                         ,shade: 0
                         ,area: ['500px', '405px']
@@ -151,7 +152,7 @@ layui.use(['element', 'layer', "jquery"], function(){
                         }
                     });
                 }else if(type == 3){
-                    layer.confirm('你确定？如果有子菜单会一起删除的！', {
+                    layer.confirm('你确定？如果有子栏目会一起删除的！', {
                         btn: ['继续','取消']
                     }, function(){
                         $.ajax({

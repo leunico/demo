@@ -7,7 +7,7 @@
                     <li class="layui-nav-item"><a href="{$vo['cate_Model']|url}" title="{$vo.cate_Intro}"><i class="fa fa-{$vo.cate_Icon}">&nbsp;&nbsp;</i>{$vo.cate_Name}</a></li>
                 {else /}
                     <li class="layui-nav-item">
-                        <a href="javascript:;" title="{$vo.cate_Intro}">{$vo.cate_Name}</a>
+                        <a href="javascript:;" title="{$vo.cate_Intro}"><i class="fa fa-{$vo.cate_Icon}">&nbsp;&nbsp;</i>{$vo.cate_Name}</a>
                         {:procMenuHtml($vo.items)}
                     </li>
                 {/if}
