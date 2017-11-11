@@ -16,26 +16,26 @@
             <div class="layui-input-block">
                 <select name="cate_Icon" lay-filter="aihao" lay-verify="required">
                     <option value="">请选择</option>
-                    {:widget('BaseConfigWidget/icon')}
+                    {:widget('BaseConfigWidget/icon', ['value' => $cate_Icon])}
                 </select>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">菜单名称</label>
             <div class="layui-input-block">
-                <input type="text" name="cate_Name" lay-verify="required" placeholder="请输入菜单名称" autocomplete="off" class="layui-input">
+                <input type="text" name="cate_Name" lay-verify="required" placeholder="请输入菜单名称" autocomplete="off" class="layui-input" value="{$cate_Name}">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">菜单备注</label>
             <div class="layui-input-block">
-                <input type="text" name="cate_Intro" lay-verify="title" autocomplete="off" placeholder="请输入菜单备注" class="layui-input">
+                <input type="text" name="cate_Intro" lay-verify="title" autocomplete="off" placeholder="请输入菜单备注" class="layui-input" value="{$cate_Intro}">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">菜单Model</label>
             <div class="layui-input-block">
-                <input type="text" name="cate_Model" lay-verify="required" autocomplete="off" placeholder="请输入菜单链接" class="layui-input">
+                <input type="text" name="cate_Model" lay-verify="required" autocomplete="off" placeholder="请输入菜单链接" class="layui-input" value="{$cate_Model}">
             </div>
         </div>
 
@@ -61,7 +61,7 @@
         form.on('submit(menu)', function(data){
             $.post("/admin/menu", data.field, function(){
                 parent.layer.closeAll();
-                parent.layer.msg("添加成功！", {time: 1000, icon: 1});
+                parent.layer.msg("操作成功！", {time: 1000, icon: 1});
             });
         });
     });

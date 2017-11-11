@@ -25,14 +25,16 @@ class Menu extends BaseController
 //        abort(404, '请求错误！');
     }
 
-    public function edit()
+    public function edit($id)
     {
+        $this->assign(Loader::model('Cate')->find($id)->toArray());
         return $this->fetch('edit');
     }
 
     public function create()
     {
-        $this->assign('cate_ParentId', $this->request->get('id'));
+        $fields = ['cate_ParentId' => $this->request->get('id'), 'cate_Icon' => '', 'cate_Intro' => '', 'cate_Name' => '', 'cate_Model' => '', ];
+        $this->assign($fields);
         return $this->fetch('edit');
     }
 

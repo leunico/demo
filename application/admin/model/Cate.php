@@ -8,6 +8,7 @@ class Cate extends Model
 {
     use SoftDelete;
     protected $deleteTime = 'delete_time';
+    
     /**
      * 获取菜单列表
      * @author baiyouwen
