@@ -17,9 +17,9 @@ function procMenuHtml($tree)
     $html = '';
     foreach($tree as $t) {
         if(empty($t['items'])) {
-            $html .= "<dd><a href=\"{$t['cate_Model']}\">{$t['cate_Name']}</a></dd>";
+            $html .= "<dd><a href='".Url($t['cate_Model'])."' title='".$t['cate_Intro']."'><i class='fa fa-".$t['cate_Icon']."'>&nbsp;&nbsp;</i>".$t['cate_Name']."</a></dd>";
         } else {
-            $html .= "<dd><a href=\"{$t['cate_Model']}\">{$t['cate_Name']}</a>";
+            $html .= "<dd><a href='".Url($t['cate_Model'])."' title='".$t['cate_Intro']."'><i class='fa fa-".$t['cate_Icon']."'>&nbsp;&nbsp;</i>".$t['cate_Name']."</a>";
             $html .= procMenuHtml($t['items']);
             $html  = $html."</dd>";
         }

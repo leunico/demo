@@ -11,23 +11,24 @@ class Cate extends Model
     
     /**
      * 获取菜单列表
-     * @author baiyouwen
+     * @author albert
      */
     public function getListMenu()
     {
-        return $this->order('cate_ParentId, cate_Order')->paginate(100)->toArray(); // 菜单不应该有太长！
+        return $this->order('cate_ParentId, cate_Order, cate_Id')->paginate(100)->toArray(); // 菜单不应该有太长！
     }
 
     /**
      * 删除菜单列表
-     * @author baiyouwen
+     * @author albert
      */
     public function delMenu($id)
     {
         $items = $this->where('cate_ParentId', $id)->column('cate_Id');
-        if(!empty($items))
-            $this->where(['cate_Id' => ['in', implode(',', $items)]])->delete();
-
-        return $this->destroy($id);
+        $this->destroy($id);
+        if(!empty($items)){
+            foreach ($items as $v)
+                $this->delMenu($v);
+        }
     }
 }

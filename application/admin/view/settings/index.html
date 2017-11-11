@@ -16,7 +16,7 @@
                 <div class="layui-anim layui-anim-upbit">
                     <div class="layui-elem-quote" style="margin-top: 5px;border-left:5px solid #ffffff;background-color: #eeeeee">
                         <div>
-                            <button class="layui-btn layui-btn-small" @click="addMenu()">添加菜单</button>
+                            <button class="layui-btn layui-btn-small" @click="addMenu(0)">添加菜单</button>
                         </div>
                         <table class="layui-table" lay-skin="nob">
                             <thead>
@@ -35,11 +35,11 @@
                                     <!--<td>{{ item.cate_Id }}</td>-->
                                     <td style="white-space:pre;">{{ item.level|capitalize }}{{ item.cate_Name }}</td>
                                     <td>{{ item.cate_Intro }}</td>
-                                    <td>{{ item.cate_Model }}</td>
-                                    <td>{{ item.cate_Order }}</td>
-                                    <td>{{ item.cate_Icon }}</td>
+                                    <td><button class="layui-btn layui-btn-primary layui-btn-mini">{{ item.cate_Model }}</button></td>
+                                    <td><span class="layui-badge-rim" @click="orderClick(item.cate_Id, item.cate_Order + 1)"><i class="fa fa-sort-up"></i></li></span><span class="layui-badge layui-bg-cyan" style="border-radius:1px;">{{ item.cate_Order }}</span><span @click="orderClick(item.cate_Id, item.cate_Order - 1)" class="layui-badge-rim" v-if="item.cate_Order"><i class="fa fa-sort-desc"></i></span></td>
+                                    <td><i :class="'fa fa-' + item.cate_Icon">&nbsp;&nbsp;</i>{{ item.cate_Icon }}</td>
                                     <td>
-                                        <a class="layui-btn layui-btn-primary layui-btn-mini" @click="menuClick(1, item.cate_Id)">添加一个子菜单</a>
+                                        <a class="layui-btn layui-btn-normal layui-btn-mini" @click="menuClick(1, item.cate_Id)">添加一个子菜单</a>
                                         <a class="layui-btn layui-btn-mini" @click="menuClick(2, item.cate_Id)">编辑</a>
                                         <a class="layui-btn layui-btn-danger layui-btn-mini" @click="menuClick(3, item.cate_Id)">删除</a>
                                     </td>
@@ -121,7 +121,7 @@ layui.use(['element', 'layer', "jquery"], function(){
 //                this.loadMenuList(this.menu_page + 1); # 流加载分页
 //            },
 
-            addMenu: function(id=0){
+            addMenu: function(id){
                 layer.open({
                     type: 2
                     ,title: '菜单添加'
@@ -167,6 +167,20 @@ layui.use(['element', 'layer', "jquery"], function(){
                 }else{
                     layer.msg("参数错误");
                 }
+            },
+
+            orderClick: function(id, order){
+                $.ajax({
+                    url: "/admin/menu/" + id,
+                    type: "PUT",
+                    data: {cate_Order: order},
+                    success: function(res){
+                        if(res.status == 1)
+                            lists.loadMenuList(1);
+                        else
+                            layer.msg(res.msg, {time: 2000, icon: 2});
+                    }
+                });
             }
         }
 

@@ -11,6 +11,7 @@
 <div class="layui-tab-content" style="min-height:500px;">
     <form class="layui-form" action="">
         <input type="hidden" name="cate_ParentId" value="{$cate_ParentId}" />
+        <input type="hidden" name="cate_Id" value="{$cate_Id}" />
         <div class="layui-form-item">
             <label class="layui-form-label">选择图标</label>
             <div class="layui-input-block">
@@ -59,10 +60,26 @@
         });
 
         form.on('submit(menu)', function(data){
-            $.post("/admin/menu", data.field, function(){
-                parent.layer.closeAll();
-                parent.layer.msg("操作成功！", {time: 1000, icon: 1});
-            });
+            if(data.field.cate_Id == 0){
+                $.post("/admin/menu", data.field, function(res){
+                    if(res.status == 1)
+                        parent.layer.closeAll();
+                    else
+                        parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                });
+            }else{
+                $.ajax({
+                    url: "/admin/menu/" + data.field.cate_Id,
+                    type: "PUT",
+                    data: data.field,
+                    success: function(res){
+                        if(res.status == 1)
+                            parent.layer.closeAll();
+                        else
+                            parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                    }
+                });
+            }
         });
     });
 </script>

@@ -4,10 +4,10 @@
         <ul class="layui-nav layui-nav-tree">
             {foreach $menu as $vo}
                 {if condition="($vo.cate_ParentId eq 0) and (empty($vo.items) eq true)"}
-                    <li class="layui-nav-item"><a href="{$vo['cate_Model']|url}">{$vo.cate_Name}</a></li>
+                    <li class="layui-nav-item"><a href="{$vo['cate_Model']|url}" title="{$vo.cate_Intro}"><i class="fa fa-{$vo.cate_Icon}">&nbsp;&nbsp;</i>{$vo.cate_Name}</a></li>
                 {else /}
                     <li class="layui-nav-item">
-                        <a href="javascript:;">{$vo.cate_Name}</a>
+                        <a href="javascript:;" title="{$vo.cate_Intro}">{$vo.cate_Name}</a>
                         {:procMenuHtml($vo.items)}
                     </li>
                 {/if}

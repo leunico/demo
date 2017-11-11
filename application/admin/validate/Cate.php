@@ -1,12 +1,15 @@
 <?php
-namespace app\index\validate;
+namespace app\admin\validate;
 
 use think\Validate;
 
 class Cate extends Validate
 {
     protected $rule = [
-        'name'  =>  'require|max:25',
-        'email' =>  'email',
+        'cate_Icon'     => 'require|max:125',
+        'cate_Intro'    => 'max:125',
+        'cate_Name'     => 'require|max:25',
+        'cate_Model'    => 'require|max:25',
+        'cate_ParentId' => 'number',
     ];
 }

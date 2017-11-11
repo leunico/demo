@@ -33,20 +33,26 @@ class Menu extends BaseController
 
     public function create()
     {
-        $fields = ['cate_ParentId' => $this->request->get('id'), 'cate_Icon' => '', 'cate_Intro' => '', 'cate_Name' => '', 'cate_Model' => '', ];
+        $fields = ['cate_ParentId' => $this->request->get('id'), 'cate_Icon' => '', 'cate_Intro' => '', 'cate_Name' => '', 'cate_Model' => '',  'cate_Id' => 0];
         $this->assign($fields);
         return $this->fetch('edit');
     }
 
+    public function update()
+    {
+        return $this->save();
+    }
+
     public function save()
     {
-        $cate = Loader::model('Cate');
-        $cate->cate_Icon     = $this->request->post('cate_Icon');
-        $cate->cate_Intro    = $this->request->post('cate_Intro');
-        $cate->cate_Name     = $this->request->post('cate_Name');
-        $cate->cate_Model    = $this->request->post('cate_Model');
-        $cate->cate_ParentId = $this->request->post('cate_ParentId');
-        return jsonOutPut(1, '', $cate->save());
+        $data = $this->request->param();
+        $validate = Loader::validate('Cate');
+        if(!$validate->check($data) && !isset($data['cate_Order']))
+            return jsonOutPut(0, $validate->getError(), '');
+
+        $cate = isset($data['id']) ? Loader::model('Cate')->get($data['id']) : Loader::model('Cate');
+        $cate->data($data);
+        return jsonOutPut(1, '操作成功', $cate->allowField(true)->save());
     }
 
     public function delete($id)
