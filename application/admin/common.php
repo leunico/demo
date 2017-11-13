@@ -46,3 +46,9 @@ function toTreeMenu($menu, $level = '', $data = [])
 
     return $data;
 }
+
+# 验证图片的正确性
+function validateImg($url, $type)
+{
+    return "/static/images/default/defaultp.jpg";
+}

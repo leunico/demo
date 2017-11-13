@@ -39,7 +39,7 @@ class Project extends BaseController
             'project_Remark' => '',
             'project_Name' => '',
             'project_Id' => 0,
-            'project_Cover' => ''
+            'project_Cover' => validateImg('', 'project')
         ]);
         return $this->fetch('edit');
     }

@@ -38,17 +38,17 @@
         <div class="layui-form-item">
             <label class="layui-form-label">项目封面</label>
             <div class="layui-upload">
-                <button type="button" class="layui-btn layui-btn-small" style="margin-top:3px;background-color:#5fb878;" id="project_Cover"><i class="fa fa-exclamation-circle">&nbsp;&nbsp;</i>上传图片</button>
-                <div class="layui-upload-list">
-                    <img class="layui-upload-img" id="demo1" src="{$project_Cover}">
-                    <p id="demoText"></p>
+                <button type="button" class="layui-btn layui-btn-small" style="width:100px;margin-top:3px;background-color:#5fb878;" id="project_Cover"><i class="fa fa-exclamation-circle">&nbsp;&nbsp;</i>上传图片</button>
+                <div class="layui-upload-list" style="height:100px;padding-left:110px;">
+                    <img class="layui-upload-img" style="height:inherit;" id="demo1" src="{$project_Cover}">
+                    <!-- <p id="demoText">222223333</p> -->
                 </div>
             </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="layui-btn layui-btn-small" lay-submit="project" lay-filter="project" >立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-small layui-btn-primary">取消</button>
+                <button class="layui-btn layui-btn-small" lay-submit="project" lay-filter="project">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-small layui-btn-primary">取消输入</button>
             </div>
         </div>
     </form>
@@ -78,10 +78,10 @@
             }
             ,error: function(){
                 var demoText = $('#demoText');
-                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
-                demoText.find('.demo-reload').on('click', function(){
-                    uploadInst.upload();
-                });
+                // demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                // demoText.find('.demo-reload').on('click', function(){
+                //     uploadInst.upload();
+                // });
             }
         });
 
