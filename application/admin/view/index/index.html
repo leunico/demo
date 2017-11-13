@@ -1,7 +1,170 @@
 {extend name="Public/base" /}
 {block name="main"}
-<div class="layui-body">
+<div class="layui-body" id="main">
     <!-- 内容主体区域 -->
-    <div style="padding: 15px;">内容主体区域</div>
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <ul class="layui-tab-title">
+            <li class="layui-this"><i class="fa fa-exclamation-circle">&nbsp;&nbsp;</i>项目列表</li>
+            <li><i class="fa fa-sliders">&nbsp;&nbsp;</i>项目设置</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div class="layui-anim layui-anim-upbit">
+                    <div class="layui-elem-quote" style="margin-top: 5px;border-left:5px solid #ffffff;background-color: #eeeeee">
+                        <div>
+                            <button class="layui-btn layui-btn-small" @click="addMenu(0)">添加项目</button>
+                        </div>
+                        <table class="layui-table" lay-skin="nob">
+                            <thead>
+                            <tr>
+                                <!--<th>ID</th>-->
+                                <th>名称</th>
+                                <th>描述</th>
+                                <th>模型链接</th>
+                                <th>排序</th>
+                                <th>图标</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody v-cloak>
+                            <tr v-for="item in menu_items">
+                                <!--<td>{{ item.cate_Id }}</td>-->
+                                <td style="white-space:pre;">{{ item.level|capitalize }}{{ item.cate_Name }}</td>
+                                <td>{{ item.cate_Intro }}</td>
+                                <td><button class="layui-btn layui-btn-primary layui-btn-mini">{{ item.cate_Model }}</button></td>
+                                <td><span class="layui-badge-rim" @click="orderClick(item.cate_Id, item.cate_Order + 1)"><i class="fa fa-sort-up"></i></li></span><span class="layui-badge layui-bg-cyan" style="border-radius:1px;">{{ item.cate_Order }}</span><span @click="orderClick(item.cate_Id, item.cate_Order - 1)" class="layui-badge-rim" v-if="item.cate_Order"><i class="fa fa-sort-desc"></i></span></td>
+                                <td><i :class="'fa fa-' + item.cate_Icon">&nbsp;&nbsp;</i>{{ item.cate_Icon }}</td>
+                                <td>
+                                    <a class="layui-btn layui-btn-normal layui-btn-mini" @click="menuClick(1, item.cate_Id)">添加一个子栏目</a>
+                                    <a class="layui-btn layui-btn-mini" @click="menuClick(2, item.cate_Id)">编辑</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-mini" @click="menuClick(3, item.cate_Id)">删除</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div id="page" style="text-align: center">
+                            <!--<pagination :cur="1" :all="pageAll" :page-num="perPage" @page-to="loadMenuList"></pagination>-->
+                            <!--<button @click="nextList($event)" id="next" class="layui-btn layui-btn-small" style="background-color: #ffffff;color: black">加载更多</button>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                内容不一样是要有，因为你可以监听tab事件（阅读下文档就是了）
+            </div>
+        </div>
+    </div>
 </div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(['element', 'layer', "jquery"], function(){
+        var element = layui.element,
+            $ = layui.$,
+            layer = layui.layer;
+        element.on('tab(docDemoTabBrief)', function(data){
+//            if(data.index == 1)
+//                lists.loadMenuList(1);
+        });
+
+        var lists = new Vue({
+            el: "#main",
+            data: {
+                menu_items: [],
+                menu_page: 0
+//            pageAll: 0,
+//            perPage: 10  // 数字分页
+            },
+
+            methods: {
+                loadMenuList: function(page){
+                    layer.load();
+                    $.ajax({
+                        url : "/admin/menu" + "?page=" + page,
+                        type: "GET",
+                        dataType: "json",
+                        error:function(){layer.msg('请求栏目列表失败!', {anim: 6})},
+                        success:function(res){
+                            layer.closeAll('loading');
+                            if (res.status > 0) {
+//                            for (var i in res.data.data)
+//                                lists.menu_items.push(res.data.data[i]);
+//
+//                            lists.menu_page = res.data.current_page;
+//                            if(lists.menu_page < res.data.last_page)
+//                                $("#next").html('加载更多');
+//                            else
+//                                $("#next").remove(); # 流加载分页
+
+//                            lists.perPage = res.data.per_page;
+//                            lists.pageAll = res.data.last_page; // 数字分页
+                                lists.menu_items = res.data.data;
+                            }else{
+                                layer.msg(res.msg, {anim: 6});
+                            }
+                        }
+                    });
+                },
+
+//            nextList: function(e){
+//                e.target.innerHTML = '<i class="layui-anim layui-anim-rotate layui-anim-loop layui-icon ">&#xe63e;</i>';
+//                this.loadMenuList(this.menu_page + 1); # 流加载分页
+//            },
+
+                addMenu: function(id){
+                    layer.open({
+                        type: 2
+                        ,title: '项目添加'
+                        ,id: 'menu'
+                        ,content: ["{:Url('project/create')}" + "?id=" + id, 'no']
+                        ,shade: 0
+                        ,area: ['600px', '605px']
+                        ,end: function(){
+                            lists.loadMenuList(1);
+                            // window.location.reload();
+                        }
+                    });
+                },
+
+                menuClick: function(type, id){
+                    if(type == 1){
+                        this.addMenu(id);
+                    }else if(type == 2){
+                        layer.open({
+                            type: 2
+                            ,title: '栏目修改'
+                            ,content: ["/admin/menu/" + id + "/edit", 'no']
+                            ,shade: 0
+                            ,area: ['500px', '405px']
+                            ,end: function(){
+                                lists.loadMenuList(1);
+                            }
+                        });
+                    }else if(type == 3){
+                        layer.confirm('你确定？如果有子栏目会一起删除的！', {
+                            btn: ['继续','取消']
+                        }, function(){
+                            $.ajax({
+                                url : "/admin/menu/" + id,
+                                type: "DELETE",
+                                error:function(){layer.msg('删除失败！', {anim: 6})},
+                                success:function(res){
+                                    layer.msg("删除成功！", {time: 1000, icon: 1});
+                                    lists.loadMenuList(1);
+                                }
+                            });
+                        });
+                    }else{
+                        layer.msg("参数错误");
+                    }
+                }
+            }
+
+//        mounted: function(){
+//            this.loadMenuList(1); # 数字分页
+//        }
+        });
+    });
+</script>
 {/block}

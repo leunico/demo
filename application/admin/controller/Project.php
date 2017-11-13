@@ -4,7 +4,7 @@ namespace app\admin\controller;
 use app\common\controller\BaseController;
 use think\Loader;
 
-class Menu extends BaseController
+class Project extends BaseController
 {
     public function index()
     {
@@ -33,7 +33,14 @@ class Menu extends BaseController
 
     public function create()
     {
-        $this->assign(['cate_ParentId' => $this->request->get('id'), 'cate_Icon' => '', 'cate_Intro' => '', 'cate_Name' => '', 'cate_Model' => '', 'cate_Id' => 0]);
+        $this->assign([
+            'project_Version' => '',
+            'project_Type' => 1,
+            'project_Remark' => '',
+            'project_Name' => '',
+            'project_Id' => 0,
+            'project_Cover' => ''
+        ]);
         return $this->fetch('edit');
     }
 

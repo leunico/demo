@@ -52,9 +52,10 @@
 
 {block name="js"}
 <script>
-    var $ = layui.jquery,
-    form = layui.form;
-    $(function(){
+    layui.use(['form'], function(){
+        var $ = layui.$,
+            form = layui.form;
+
         $(".layui-anim-upbit>dd").each(function(e){
             if(e > 0) $(this).html('<i class="fa fa-'+ $(this).attr('lay-value') +'"></i>  ' + $(this).attr('lay-value'));
         });

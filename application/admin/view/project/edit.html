@@ -1,0 +1,112 @@
+{extend name="Public/open" /}
+{block name="main"}
+<blockquote class="layui-elem-quote layui-text" style="margin-top:12px;">
+    添加或编辑一个项目
+</blockquote>
+
+<!--<fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">-->
+<!--<legend>栏目（{:request()->action()}）</legend>-->
+<!--</fieldset>-->
+
+<div class="layui-tab-content">
+    <form class="layui-form" action="">
+        <input type="hidden" name="project_Id" value="{$project_Id}" />
+        <div class="layui-form-item">
+            <label class="layui-form-label">项目名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="project_Name" lay-verify="required" placeholder="请输入项目名称" autocomplete="off" class="layui-input" value="{$project_Name}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">项目简介</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入项目简介" name="project_Remark" class="layui-textarea">{$project_Remark}</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">项目版本</label>
+            <div class="layui-input-block">
+                <input type="text" name="project_Version" lay-verify="required" placeholder="请输入版本号（例如：1.0）" autocomplete="off" class="layui-input" value="{$project_Version}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">项目权限</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="project_Type" lay-skin="switch" lay-filter="switchTest" lay-text="公开|私有" {if condition="$project_Type eq 1"}checked{/if}>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">项目封面</label>
+            <div class="layui-upload">
+                <button type="button" class="layui-btn layui-btn-small" style="margin-top:3px;background-color:#5fb878;" id="project_Cover"><i class="fa fa-exclamation-circle">&nbsp;&nbsp;</i>上传图片</button>
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="demo1" src="{$project_Cover}">
+                    <p id="demoText"></p>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-small" lay-submit="project" lay-filter="project" >立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-small layui-btn-primary">取消</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(['form', 'layer', 'upload'], function(){
+        var $ = layui.$,
+            form = layui.form,
+            upload = layui.upload,
+            layer = layui.layer;
+
+        // 图片上传
+        var uploadInst = upload.render({
+            elem: '#project_Cover'
+            ,url: '/upload/'
+            ,before: function(obj){
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                if(res.code > 0)
+                    layer.msg('上传失败');
+            }
+            ,error: function(){
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+
+        form.on('submit(project)', function(data){
+            if(data.field.project_Id == 0){
+                $.post("/admin/project", data.field, function(res){
+                    if(res.status == 1)
+                        parent.layer.closeAll();
+                    else
+                        parent.layer.msg(res.data, {time: 2000, icon: 2});
+                });
+            }else{
+                $.ajax({
+                    url: "/admin/project/" + data.field.project_Id,
+                    type: "PUT",
+                    data: data.field,
+                    success: function(res){
+                        if(res.status == 1)
+                            parent.layer.closeAll();
+                        else
+                            parent.layer.msg(res.data, {time: 2000, icon: 2});
+                    }
+                });
+            }
+        });
+    });
+</script>
+{/block}
