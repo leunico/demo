@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 
 use app\common\controller\BaseController;
+use think\Image;
 use think\Loader;
 
 class Project extends BaseController
@@ -68,6 +69,20 @@ class Project extends BaseController
 
     public function upload()
     {
-        return jsonOutPut(1, '', '23333333');
+        // dump($this->request->file('file'));
+        $image = Image::open($this->request->file('file'));
+        // 返回图片的宽度
+        $width = $image->width(); 
+        // 返回图片的高度
+        $height = $image->height(); 
+        // 返回图片的类型
+        $type = $image->type(); 
+        // 返回图片的mime类型
+        $mime = $image->mime(); 
+        // 返回图片的尺寸数组 0 图片宽度 1 图片高度
+        $size = $image->size();
+dump($width);die;
+        die;
+        // return jsonOutPut(1, '', '23333333');
     }
 }
