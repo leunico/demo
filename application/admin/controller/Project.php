@@ -65,4 +65,9 @@ class Project extends BaseController
     {
         return jsonOutPut(1, '', Loader::model('Cate')->delMenu($id));
     }
+
+    public function upload()
+    {
+        return jsonOutPut(1, '', '23333333');
+    }
 }
