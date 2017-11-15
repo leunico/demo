@@ -17,23 +17,27 @@
                         <table class="layui-table" lay-skin="nob">
                             <thead>
                             <tr>
-                                <!--<th>ID</th>-->
-                                <th>名称</th>
-                                <th>描述</th>
-                                <th>模型链接</th>
-                                <th>排序</th>
-                                <th>图标</th>
+                                <th>项目名称</th>
+                                <th>版本号</th>
+                                <th>项目进度</th>
+                                <th>项目成员</th>
+                                <th>最后修改时间</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
                             <tbody v-cloak>
                             <tr v-for="item in menu_items">
-                                <!--<td>{{ item.cate_Id }}</td>-->
-                                <td style="white-space:pre;">{{ item.level|capitalize }}{{ item.cate_Name }}</td>
-                                <td>{{ item.cate_Intro }}</td>
-                                <td><button class="layui-btn layui-btn-primary layui-btn-mini">{{ item.cate_Model }}</button></td>
-                                <td><span class="layui-badge-rim" @click="orderClick(item.cate_Id, item.cate_Order + 1)"><i class="fa fa-sort-up"></i></li></span><span class="layui-badge layui-bg-cyan" style="border-radius:1px;">{{ item.cate_Order }}</span><span @click="orderClick(item.cate_Id, item.cate_Order - 1)" class="layui-badge-rim" v-if="item.cate_Order"><i class="fa fa-sort-desc"></i></span></td>
-                                <td><i :class="'fa fa-' + item.cate_Icon">&nbsp;&nbsp;</i>{{ item.cate_Icon }}</td>
+                                <td style="white-space:pre;">{{ item.project_Name }}</td>
+                                <td>V {{ item.project_Version }}</td>
+                                <td>
+                                    <div style="margin-top: 15px; width:300px">
+                                        <div class="layui-progress">
+                                            <div class="layui-progress-bar" lay-percent="70%"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><a href="projects.html"><img alt="image" class="img-circle" src="__IMG__/default/top.jpg"></a></td>
+                                <td>{{ item.update_time }}</td>
                                 <td>
                                     <a class="layui-btn layui-btn-normal layui-btn-mini" @click="menuClick(1, item.cate_Id)">添加一个子栏目</a>
                                     <a class="layui-btn layui-btn-mini" @click="menuClick(2, item.cate_Id)">编辑</a>
@@ -63,42 +67,33 @@
         var element = layui.element,
             $ = layui.$,
             layer = layui.layer;
+
         element.on('tab(docDemoTabBrief)', function(data){
-//            if(data.index == 1)
-//                lists.loadMenuList(1);
+            if(data.index == 1)
+                lists.loadMenuList(1);
         });
 
         var lists = new Vue({
             el: "#main",
             data: {
                 menu_items: [],
-                menu_page: 0
-//            pageAll: 0,
-//            perPage: 10  // 数字分页
+                pageAll: 0,
+                perPage: 10  // 数字分页
             },
 
             methods: {
                 loadMenuList: function(page){
                     layer.load();
                     $.ajax({
-                        url : "/admin/menu" + "?page=" + page,
+                        url : "/admin/project" + "?page=" + page,
                         type: "GET",
                         dataType: "json",
                         error:function(){layer.msg('请求栏目列表失败!', {anim: 6})},
                         success:function(res){
                             layer.closeAll('loading');
                             if (res.status > 0) {
-//                            for (var i in res.data.data)
-//                                lists.menu_items.push(res.data.data[i]);
-//
-//                            lists.menu_page = res.data.current_page;
-//                            if(lists.menu_page < res.data.last_page)
-//                                $("#next").html('加载更多');
-//                            else
-//                                $("#next").remove(); # 流加载分页
-
-//                            lists.perPage = res.data.per_page;
-//                            lists.pageAll = res.data.last_page; // 数字分页
+                                lists.perPage = res.data.per_page;
+                                lists.pageAll = res.data.last_page; // 数字分页
                                 lists.menu_items = res.data.data;
                             }else{
                                 layer.msg(res.msg, {anim: 6});
@@ -159,11 +154,11 @@
                         layer.msg("参数错误");
                     }
                 }
-            }
+            },
 
-//        mounted: function(){
-//            this.loadMenuList(1); # 数字分页
-//        }
+            mounted: function(){
+                this.loadMenuList(1);
+            }
         });
     });
 </script>

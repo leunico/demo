@@ -58,7 +58,7 @@ INSERT INTO `albert_cate` (`cate_Id`, `cate_ParentId`, `cate_Name`, `cate_Intro`
 (32,	0,	'qqqq',	'qqqqq',	'qqqqqq',	0,	'address-book',	0,	'2017-11-11 05:18:45',	'2017-11-09 11:02:54',	'2017-11-11 05:18:45'),
 (33,	0,	'wewe',	'wewe',	'wewe',	0,	'adjust',	0,	'2017-11-11 05:18:43',	'2017-11-09 11:03:11',	'2017-11-11 05:18:43'),
 (34,	0,	'sddddaa',	'aaaaa',	'wwwwwwwwww',	0,	'address-card-o',	0,	'2017-11-11 05:18:42',	'2017-11-09 11:04:36',	'2017-11-11 05:18:42'),
-(35,	4,	'项目列表',	'打开所有的接口列表例如：http://api.crap.cn',	'/admin/index/index',	0,	'reorder',	2,	'2017-11-13 11:40:51',	'2017-11-11 05:33:15',	NULL);
+(35,	4,	'项目列表',	'打开所有的接口列表例如：http://api.crap.cn',	'/admin/index/index',	2,	'reorder',	2,	'2017-11-15 10:00:32',	'2017-11-11 05:33:15',	NULL);
 
 DROP TABLE IF EXISTS `albert_config`;
 CREATE TABLE `albert_config` (
@@ -103,16 +103,18 @@ CREATE TABLE `albert_project` (
   `project_Name` varchar(128) NOT NULL,
   `project_Remark` varchar(256) NOT NULL DEFAULT '',
   `project_UserId` int(11) unsigned NOT NULL,
-  `project_Type` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `project_Type` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `project_Cover` varchar(128) NOT NULL DEFAULT '',
-  `project_Order` int(11) unsigned NOT NULL DEFAULT '0',
-  `project_Status` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `project_Version` int(11) DEFAULT NULL,
+  `project_Status` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `project_Version` varchar(64) NOT NULL DEFAULT '1.0',
+  `project_Progress` tinyint(10) unsigned NOT NULL DEFAULT '0',
   `update_time` timestamp NULL DEFAULT NULL,
   `create_time` timestamp NULL DEFAULT NULL,
   `delete_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`project_Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+INSERT INTO `albert_project` (`project_Id`, `project_Name`, `project_Remark`, `project_UserId`, `project_Type`, `project_Cover`, `project_Status`, `project_Version`, `project_Progress`, `update_time`, `create_time`, `delete_time`) VALUES
+(1,	'测试村上春树',	'23333',	0,	0,	'/uploads/project/20171115\\22452b42db9dc0928c06af6ada4654be.jpg',	1,	'1.0',	0,	'2017-11-15 09:00:56',	'2017-11-15 09:00:56',	NULL);
 
--- 2017-11-13 11:40:58
+-- 2017-11-15 10:55:28
