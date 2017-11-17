@@ -14,3 +14,11 @@
     transform: translateX(10px);
     opacity: 0;
 }
+
+.layui-input-submit {
+    margin-left: 0px;
+    text-align: center;
+    /*background-color: #f2f2f2;*/
+    height: 48px;
+    line-height: 48px;
+}

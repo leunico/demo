@@ -1,5 +1,5 @@
 <?php
-namespace app\admin\widget;
+namespace app\common\widget;
 
 use think\Controller;
 use think\Loader;
@@ -17,12 +17,14 @@ class LeftMenuWidget extends Controller
             if ($v['cate_ParentId'] != 0)
                 $menu[$v['cate_ParentId']]['items'][$v['cate_Id']] = &$menu[$v['cate_Id']];
         }
+
         foreach ($menu as $k=>$v) {
             if ($v['cate_ParentId'] != 0)
                 unset($menu[$k]);
         }
 
         $this->assign('menu', $menu);
-        return $this->fetch('Widget:leftMenu');
+        $this->assign('route', $this->request->routeInfo()['route']);
+        return $this->fetch('common@widget/leftMenu');
     }
 }

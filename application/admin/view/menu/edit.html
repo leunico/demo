@@ -1,4 +1,4 @@
-{extend name="Public/open" /}
+{extend name="common@public/open" /}
 {block name="main"}
 <blockquote class="layui-elem-quote layui-text" style="margin-top:12px;">
     添加或编辑一个栏目
@@ -17,7 +17,7 @@
             <div class="layui-input-block">
                 <select name="cate_Icon" lay-filter="aihao" lay-verify="required">
                     <option value="">请选择</option>
-                    {:widget('BaseConfigWidget/icon', ['value' => $cate_Icon])}
+                    {:widget('common/BaseConfigWidget/icon', ['value' => $cate_Icon])}
                 </select>
             </div>
         </div>
@@ -41,7 +41,7 @@
         </div>
 
         <div class="layui-form-item">
-            <div class="layui-input-block">
+            <div class="layui-input-block layui-input-submit">
                 <button class="layui-btn layui-btn-small" lay-submit="menu" lay-filter="menu" >立即提交</button>
                 <button type="reset" class="layui-btn layui-btn-small layui-btn-primary">取消</button>
             </div>
@@ -66,7 +66,7 @@
                     if(res.status == 1)
                         parent.layer.closeAll();
                     else
-                        parent.layer.msg(res.data, {time: 2000, icon: 2});
+                        parent.layer.msg(res.msg, {time: 2000, icon: 2});
                 });
             }else{
                 $.ajax({
@@ -77,7 +77,7 @@
                         if(res.status == 1)
                             parent.layer.closeAll();
                         else
-                            parent.layer.msg(res.data, {time: 2000, icon: 2});
+                            parent.layer.msg(res.msg, {time: 2000, icon: 2});
                     }
                 });
             }

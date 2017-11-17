@@ -1,4 +1,4 @@
-{extend name="Public/base" /}
+{extend name="common@public/base" /}
 {block name="main"}
 <div class="layui-body" id="main">
     <!-- 内容主体区域 -->
@@ -18,7 +18,7 @@
                         <div>
                             <button class="layui-btn layui-btn-small" @click="addMenu(0)">添加栏目</button>
                         </div>
-                        <table class="layui-table" lay-skin="nob">
+                        <table class="layui-table" lay-skin="nob" lay-even="">
                             <thead>
                                 <tr>
                                     <!--<th>ID</th>-->
@@ -129,7 +129,7 @@ layui.use(['element', 'layer', "jquery"], function(){
                     ,id: 'menu'
                     ,content: ["{:Url('menu/create')}" + "?id=" + id, 'no']
                     ,shade: 0
-                    ,area: ['500px', '405px']
+                    ,area: ['429px', '401px']
                     ,end: function(){
                         lists.loadMenuList(1);
                         // window.location.reload();
@@ -146,7 +146,7 @@ layui.use(['element', 'layer', "jquery"], function(){
                         ,title: '栏目修改'
                         ,content: ["/admin/menu/" + id + "/edit", 'no']
                         ,shade: 0
-                        ,area: ['500px', '405px']
+                        ,area: ['429px', '401px']
                         ,end: function(){
                             lists.loadMenuList(1);
                         }

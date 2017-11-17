@@ -1,4 +1,4 @@
-{extend name="Public/open" /}
+{extend name="common@public/open" /}
 {block name="main"}
 <blockquote class="layui-elem-quote layui-text" style="margin-top:12px;">
     添加或编辑一个项目
@@ -47,7 +47,7 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <div class="layui-input-block">
+            <div class="layui-input-block layui-input-submit">
                 <button class="layui-btn layui-btn-small" lay-submit="project" lay-filter="project">立即提交</button>
                 <button type="reset" class="layui-btn layui-btn-small layui-btn-primary">取消输入</button>
             </div>
@@ -90,7 +90,7 @@
                     if(res.status > 0)
                         parent.layer.closeAll();
                     else
-                        parent.layer.msg(res.data, {time: 2000, icon: 2});
+                        parent.layer.msg(res.msg, {time: 2000, icon: 2});
                 });
             }else{
                 $.ajax({
@@ -101,7 +101,7 @@
                         if(res.status > 0)
                             parent.layer.closeAll();
                         else
-                            parent.layer.msg(res.data, {time: 2000, icon: 2});
+                            parent.layer.msg(res.msg, {time: 2000, icon: 2});
                     }
                 });
             }

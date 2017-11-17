@@ -1,4 +1,4 @@
-{extend name="Public/base" /}
+{extend name="common@public/base" /}
 {block name="main"}
 <div class="layui-body" id="main">
     <!-- 内容主体区域 -->
@@ -14,40 +14,48 @@
                         <div>
                             <button class="layui-btn layui-btn-small" @click="addMenu(0)">添加项目</button>
                         </div>
-                        <table class="layui-table" lay-skin="nob">
+                        <table class="layui-table" lay-even="" lay-skin="nob">
                             <thead>
                             <tr>
+                                <th>当前状态</th>
                                 <th>项目名称</th>
                                 <th>版本号</th>
-                                <th>项目进度</th>
-                                <th>项目成员</th>
-                                <th>最后修改时间</th>
+                                <th style="text-align:center;">项目进度</th>
+                                <th>&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                <th style="min-width:150px;">项目成员</th>
+                                <th>创建时间</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
                             <tbody v-cloak>
                             <tr v-for="item in menu_items">
+                                <td><button class="layui-btn layui-btn-mini" :class="item.project_Status.style">{{ item.project_Status.str }}</button></td>
                                 <td style="white-space:pre;">{{ item.project_Name }}</td>
                                 <td>V {{ item.project_Version }}</td>
                                 <td>
-                                    <div style="margin-top: 15px; width:300px">
-                                        <div class="layui-progress">
-                                            <div class="layui-progress-bar" lay-percent="70%"></div>
+                                    <div class="layui-progress" style="margin-top:3px;">
+                                        <div class="layui-progress-bar" :style="{width: item.project_Progress + '%'}">
+                                            <!--<span class="layui-progress-text">当前进度{{ item.project_Progress }}%</span>-->
                                         </div>
                                     </div>
                                 </td>
-                                <td><a href="projects.html"><img alt="image" class="img-circle" src="__IMG__/default/top.jpg"></a></td>
-                                <td>{{ item.update_time }}</td>
+                                <td></td>
                                 <td>
-                                    <a class="layui-btn layui-btn-normal layui-btn-mini" @click="menuClick(1, item.cate_Id)">添加一个子栏目</a>
-                                    <a class="layui-btn layui-btn-mini" @click="menuClick(2, item.cate_Id)">编辑</a>
-                                    <a class="layui-btn layui-btn-danger layui-btn-mini" @click="menuClick(3, item.cate_Id)">删除</a>
+                                    <div class="layui-inline">
+                                        <img alt="image233333" class="layui-circle" src="__IMG__/default/top.jpg" style="max-width:30px;">
+                                    </div>
+                                </td>
+                                <td>{{ item.create_time }}</td>
+                                <td>
+                                    <a class="layui-btn layui-btn-normal layui-btn-mini" @click="menuClick(1, item.project_Id)">查看项目</a>
+                                    <a class="layui-btn layui-btn-mini" @click="menuClick(2, item.project_Id)">编辑</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-mini" @click="menuClick(3, item.project_Id)">删除</a>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
                         <div id="page" style="text-align: center">
-                            <!--<pagination :cur="1" :all="pageAll" :page-num="perPage" @page-to="loadMenuList"></pagination>-->
+                            <pagination :cur="1" :all="pageAll" :page-num="perPage" @page-to="loadProjectList"></pagination>
                             <!--<button @click="nextList($event)" id="next" class="layui-btn layui-btn-small" style="background-color: #ffffff;color: black">加载更多</button>-->
                         </div>
                     </div>
@@ -70,7 +78,7 @@
 
         element.on('tab(docDemoTabBrief)', function(data){
             if(data.index == 1)
-                lists.loadMenuList(1);
+                lists.loadProjectList(1);
         });
 
         var lists = new Vue({
@@ -82,7 +90,7 @@
             },
 
             methods: {
-                loadMenuList: function(page){
+                loadProjectList: function(page){
                     layer.load();
                     $.ajax({
                         url : "/admin/project" + "?page=" + page,
@@ -102,11 +110,6 @@
                     });
                 },
 
-//            nextList: function(e){
-//                e.target.innerHTML = '<i class="layui-anim layui-anim-rotate layui-anim-loop layui-icon ">&#xe63e;</i>';
-//                this.loadMenuList(this.menu_page + 1); # 流加载分页
-//            },
-
                 addMenu: function(id){
                     layer.open({
                         type: 2
@@ -114,9 +117,9 @@
                         ,id: 'menu'
                         ,content: ["{:Url('project/create')}" + "?id=" + id, 'no']
                         ,shade: 0
-                        ,area: ['600px', '605px']
+                        ,area: ['532px', '623px']
                         ,end: function(){
-                            lists.loadMenuList(1);
+                            lists.loadProjectList(1);
                             // window.location.reload();
                         }
                     });
@@ -128,25 +131,25 @@
                     }else if(type == 2){
                         layer.open({
                             type: 2
-                            ,title: '栏目修改'
-                            ,content: ["/admin/menu/" + id + "/edit", 'no']
+                            ,title: '项目修改'
+                            ,content: ["/admin/project/" + id + "/edit", 'no']
                             ,shade: 0
-                            ,area: ['500px', '405px']
+                            ,area: ['532px', '623px']
                             ,end: function(){
-                                lists.loadMenuList(1);
+                                lists.loadProjectList(1);
                             }
                         });
                     }else if(type == 3){
-                        layer.confirm('你确定？如果有子栏目会一起删除的！', {
+                        layer.confirm('你确定要删除吗？', {
                             btn: ['继续','取消']
                         }, function(){
                             $.ajax({
-                                url : "/admin/menu/" + id,
+                                url : "/admin/project/" + id,
                                 type: "DELETE",
                                 error:function(){layer.msg('删除失败！', {anim: 6})},
                                 success:function(res){
                                     layer.msg("删除成功！", {time: 1000, icon: 1});
-                                    lists.loadMenuList(1);
+                                    lists.loadProjectList(1);
                                 }
                             });
                         });
@@ -157,7 +160,7 @@
             },
 
             mounted: function(){
-                this.loadMenuList(1);
+                this.loadProjectList(1);
             }
         });
     });

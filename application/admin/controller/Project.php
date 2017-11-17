@@ -32,6 +32,7 @@ class Project extends BaseController
             'project_Id' => 0,
             'project_Cover' => validateImg('', 'project')
         ]);
+
         return $this->fetch('edit');
     }
 
@@ -54,7 +55,8 @@ class Project extends BaseController
 
     public function delete($id)
     {
-        return jsonOutPut(1, '', Loader::model('Project')->delMenu($id));
+        $delete = Loader::model('Project')->destroy($id);
+        return $delete ? jsonOutPut(1, '删除成功', $delete) : jsonOutPut(0, '删除失败', $delete);
     }
 
     public function upload()

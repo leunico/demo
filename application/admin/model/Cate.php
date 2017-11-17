@@ -13,9 +13,9 @@ class Cate extends Model
      * 获取栏目列表
      * @author albert
      */
-    public function getListMenu()
+    public function getListMenu($type = 3)
     {
-        return $this->order('cate_ParentId, cate_Order, cate_Id')->paginate(100)->toArray(); // 菜单不应该有太长！
+        return $this->where('cate_Status', $type)->order('cate_ParentId, cate_Order, cate_Id')->paginate(100)->toArray(); // 菜单不应该有太长！
     }
 
     /**

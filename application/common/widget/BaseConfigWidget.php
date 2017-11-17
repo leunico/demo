@@ -1,9 +1,8 @@
 <?php
-namespace app\admin\widget;
+namespace app\common\widget;
 
 use think\Controller;
 use think\Loader;
-//use app\admin\model\Config;
 
 class BaseConfigWidget extends Controller
 {
@@ -15,12 +14,6 @@ class BaseConfigWidget extends Controller
 
         $this->assign('value', $value);
         $this->assign('icon', $icon);
-        return $this->fetch('Widget:fontAwesome');
+        return $this->fetch('common@widget/fontAwesome');
     }
 }
-
-
-
-
-
-

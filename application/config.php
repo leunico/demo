@@ -93,7 +93,7 @@ return [
     // 路由使用完整匹配
     'route_complete_match'   => false,
     // 路由配置文件（支持配置多个）
-    'route_config_file'      => ['route', 'admin/route'],
+    'route_config_file'      => ['route', 'admin/route', 'admin/project'],
     // 是否强制使用路由
     'url_route_must'         => true,
     // 域名部署
@@ -246,4 +246,10 @@ return [
         'var_page'  => 'page',
         'list_rows' => 15,
     ],
+
+    //模块菜单设置
+    'model_menu'             => [
+        'admin'     =>  3,
+        'project'   =>  2
+    ]
 ];
