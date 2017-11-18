@@ -25,40 +25,9 @@ CREATE TABLE `albert_cate` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `albert_cate` (`cate_Id`, `cate_ParentId`, `cate_Name`, `cate_Intro`, `cate_Model`, `cate_Order`, `cate_Icon`, `cate_Status`, `update_time`, `create_time`, `delete_time`) VALUES
-(13,	10,	'php安全',	'讲述php安全',	'',	0,	'icons/1.gif',	0,	'2017-11-11 05:18:12',	NULL,	'2017-11-11 05:18:12'),
-(12,	10,	'oop',	'oop',	'',	0,	'icons/1.gif',	0,	'2017-11-11 05:18:12',	NULL,	'2017-11-11 05:18:12'),
-(11,	10,	'php基础知识',	'php基础知识',	'',	0,	'icons/1.gif',	0,	'2017-11-11 05:18:12',	NULL,	'2017-11-11 05:18:12'),
-(10,	2,	'php',	'php学习',	'',	0,	'icons/18.gif',	0,	'2017-11-11 05:18:12',	NULL,	'2017-11-11 05:18:12'),
-(9,	2,	'css',	'css学习',	'',	0,	'icons/1.gif',	0,	'2017-11-11 05:18:12',	NULL,	'2017-11-11 05:18:12'),
-(8,	2,	'html',	'html学习',	'',	0,	'icons/1.gif',	0,	'2017-11-11 05:18:12',	NULL,	'2017-11-11 05:18:12'),
-(7,	0,	'假日休闲',	'悠闲、自在',	'/admin/api/index',	1,	'bath',	0,	'2017-11-13 06:57:50',	NULL,	'2017-11-13 06:57:50'),
-(6,	0,	'栀子花开',	'青春无限',	'/admin/api/index',	2,	'bank',	0,	'2017-11-13 06:57:53',	NULL,	'2017-11-13 06:57:53'),
-(3,	0,	'生活点滴',	'记录生活点滴',	'',	0,	'icons/2.gif',	0,	'2017-11-11 05:18:18',	NULL,	'2017-11-11 05:18:18'),
-(2,	0,	'技术学习',	'平时学习的一些笔记，欢迎批评指正。',	'',	0,	'icons/18.gif',	0,	'2017-11-11 05:18:12',	NULL,	'2017-11-11 05:18:12'),
-(5,	0,	'水煮三国',	'品位三国智慧',	'/admin/api/index',	0,	'assistive-listening-systems',	0,	'2017-11-13 06:57:47',	NULL,	'2017-11-13 06:57:47'),
-(4,	0,	'接口管理',	'存放你的接口文档和项目例如： www.eolinker.com',	'/admin/project/index',	0,	'plug',	2,	'2017-11-13 11:25:31',	NULL,	NULL),
-(14,	10,	'seagull framework',	'seagull framework',	'',	0,	'icons/1.gif',	0,	'2017-11-11 05:18:12',	NULL,	'2017-11-11 05:18:12'),
-(15,	2,	'javascript',	'javascript学习',	'',	0,	'icons/1.gif',	0,	'2017-11-11 05:18:12',	NULL,	'2017-11-11 05:18:12'),
-(16,	2,	'设计模式',	NULL,	'',	0,	'icons/1.gif',	0,	'2017-11-11 05:18:12',	NULL,	'2017-11-11 05:18:12'),
-(17,	2,	'软件工程',	'软件工程学习',	'',	0,	'icons/1.gif',	0,	'2017-11-11 05:18:12',	NULL,	'2017-11-11 05:18:12'),
-(18,	3,	'厦门生活',	'厦门生活',	'',	0,	'icons/8.gif',	0,	'2017-11-11 05:18:18',	NULL,	'2017-11-11 05:18:18'),
-(19,	3,	'大学生活',	'大学生活',	'',	0,	'icons/8.gif',	0,	'2017-11-11 05:18:18',	NULL,	'2017-11-11 05:18:18'),
-(20,	3,	'童年生活',	'童年生活',	'',	0,	'icons/15.gif',	0,	'2017-11-11 05:18:18',	NULL,	'2017-11-11 05:18:18'),
-(21,	19,	'学习',	'学习',	'',	0,	'icons/1.gif',	0,	'2017-11-11 05:18:18',	NULL,	'2017-11-11 05:18:18'),
-(22,	19,	'运动',	'运动',	'',	0,	'icons/16.gif',	0,	'2017-11-11 05:18:18',	NULL,	'2017-11-11 05:18:18'),
-(23,	19,	'旅游',	'旅游',	'',	0,	'icons/24.gif',	0,	'2017-11-11 05:18:18',	NULL,	'2017-11-11 05:18:18'),
-(24,	22,	'排球',	'排球',	'',	0,	'icons/9.gif',	0,	'2017-11-11 05:18:18',	NULL,	'2017-11-11 05:18:18'),
-(25,	22,	'篮球',	'篮球',	'',	0,	'icons/9.gif',	0,	'2017-11-11 05:18:18',	NULL,	'2017-11-11 05:18:18'),
-(26,	22,	'羽毛球',	'羽毛球',	'',	0,	'icons/9.gif',	0,	'2017-11-11 05:18:18',	NULL,	'2017-11-11 05:18:18'),
-(27,	22,	'乒乓球',	'乒乓球',	'',	0,	'icons/9.gif',	0,	'2017-11-11 05:18:18',	NULL,	'2017-11-11 05:18:18'),
-(28,	0,	'cscs',	'cscsc',	'ssss',	0,	'address-card',	0,	'2017-11-11 05:18:52',	'2017-11-09 10:47:25',	'2017-11-11 05:18:52'),
-(29,	0,	'哈哈哈',	'2333',	'pppp',	0,	'area-chart',	0,	'2017-11-11 05:18:50',	'2017-11-09 10:50:30',	'2017-11-11 05:18:50'),
-(30,	0,	'dsds',	'dsdsd',	'sdsdsd',	0,	'at',	0,	'2017-11-11 05:18:49',	'2017-11-09 11:01:45',	'2017-11-11 05:18:49'),
-(31,	0,	'dsd',	'sdsd',	'sdsdsdsd',	0,	'anchor',	0,	'2017-11-11 05:18:47',	'2017-11-09 11:02:40',	'2017-11-11 05:18:47'),
-(32,	0,	'qqqq',	'qqqqq',	'qqqqqq',	0,	'address-book',	0,	'2017-11-11 05:18:45',	'2017-11-09 11:02:54',	'2017-11-11 05:18:45'),
-(33,	0,	'wewe',	'wewe',	'wewe',	0,	'adjust',	0,	'2017-11-11 05:18:43',	'2017-11-09 11:03:11',	'2017-11-11 05:18:43'),
-(34,	0,	'sddddaa',	'aaaaa',	'wwwwwwwwww',	0,	'address-card-o',	0,	'2017-11-11 05:18:42',	'2017-11-09 11:04:36',	'2017-11-11 05:18:42'),
-(35,	4,	'项目列表',	'打开所有的接口列表例如：http://api.crap.cn',	'/admin/index/index',	2,	'reorder',	2,	'2017-11-15 10:00:32',	'2017-11-11 05:33:15',	NULL);
+(4,	0,	'接口管理',	'存放你的接口文档和项目例如： www.eolinker.com',	'admin/index/index',	0,	'plug',	3,	'2017-11-17 08:10:32',	NULL,	NULL),
+(35,	4,	'项目列表',	'打开所有的接口列表例如：http://api.crap.cn',	'/admin/index/index',	2,	'reorder',	3,	'2017-11-17 05:47:31',	'2017-11-11 05:33:15',	'2017-11-17 05:47:31'),
+(36,	0,	'数据库管理',	'管理接口数据库',	'admin/database/index',	1,	'cubes',	3,	'2017-11-17 08:10:45',	'2017-11-17 05:49:36',	NULL);
 
 DROP TABLE IF EXISTS `albert_config`;
 CREATE TABLE `albert_config` (
@@ -107,7 +76,7 @@ CREATE TABLE `albert_project` (
   `project_Cover` varchar(128) NOT NULL DEFAULT '',
   `project_Status` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `project_Version` varchar(64) NOT NULL DEFAULT '1.0',
-  `project_Progress` tinyint(10) unsigned NOT NULL DEFAULT '0',
+  `project_Progress` tinyint(3) unsigned NOT NULL DEFAULT '10',
   `update_time` timestamp NULL DEFAULT NULL,
   `create_time` timestamp NULL DEFAULT NULL,
   `delete_time` timestamp NULL DEFAULT NULL,
@@ -115,6 +84,9 @@ CREATE TABLE `albert_project` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `albert_project` (`project_Id`, `project_Name`, `project_Remark`, `project_UserId`, `project_Type`, `project_Cover`, `project_Status`, `project_Version`, `project_Progress`, `update_time`, `create_time`, `delete_time`) VALUES
-(1,	'测试村上春树',	'23333',	0,	0,	'/uploads/project/20171115\\22452b42db9dc0928c06af6ada4654be.jpg',	1,	'1.0',	0,	'2017-11-15 09:00:56',	'2017-11-15 09:00:56',	NULL);
+(1,	'测试村上春树',	'23333',	0,	1,	'/uploads/project/20171117\\f39e3b44a6bb1baf5437dcbeecfdcdec.jpg',	2,	'1.0',	80,	'2017-11-17 03:10:58',	'2017-11-15 09:00:56',	NULL),
+(2,	'哈哈哈哈哈',	'哈哈哈哈哈哈哈',	0,	0,	'/uploads/project/20171117\\da94106bee0007de234625135c9536ec.jpg',	1,	'2.0',	10,	'2017-11-17 02:48:50',	'2017-11-17 02:48:50',	NULL),
+(3,	'测试测试测试',	'哈哈哈哈哈哈哈',	0,	1,	'/uploads/project/20171117\\b778292376b242389f165a1db02d5b0b.jpg',	0,	'1.8',	10,	'2017-11-17 02:51:18',	'2017-11-17 02:51:18',	NULL),
+(4,	'sdfs',	'sfsdfs',	0,	0,	'/uploads/project/20171117\\1d8adbecb6760f52e933f2550d7674c0.jpg',	1,	'1.33',	10,	'2017-11-17 03:34:21',	'2017-11-17 03:33:50',	'2017-11-17 03:34:21');
 
--- 2017-11-15 10:55:28
+-- 2017-11-18 01:50:03
