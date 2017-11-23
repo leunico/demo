@@ -13,7 +13,10 @@
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">内容不一样是要有，因为你可以监听tab事件（阅读下文档就是了）</div>
             <div class="layui-tab-item">
-                <div class="layui-anim layui-anim-upbit">
+                <div class="layui-anim layui-anim-scale">
+                <fieldset class="layui-elem-field layui-field-title" style="margin-top:10px;">
+                    <legend style="margin-left:0px;">后台部分左侧栏目</legend>
+                </fieldset>
                     <div class="layui-elem-quote" style="margin-top: 5px;border-left:5px solid #ffffff;background-color: #eeeeee">
                         <div>
                             <button class="layui-btn layui-btn-small" @click="addMenu(0)">添加栏目</button>
@@ -31,7 +34,7 @@
                                 </tr>
                             </thead>
                             <tbody v-cloak>
-                                <tr v-for="item in menu_items">
+                                <tr v-for="item in menu_items_admin">
                                     <!--<td>{{ item.cate_Id }}</td>-->
                                     <td style="white-space:pre;">{{ item.level|capitalize }}{{ item.cate_Name }}</td>
                                     <td>{{ item.cate_Intro }}</td>
@@ -50,6 +53,44 @@
                             <!--<pagination :cur="1" :all="pageAll" :page-num="perPage" @page-to="loadMenuList"></pagination>-->
                             <!--<button @click="nextList($event)" id="next" class="layui-btn layui-btn-small" style="background-color: #ffffff;color: black">加载更多</button>-->
                         </div>
+                    </div>
+                </div>
+                <div class="layui-anim layui-anim-scale">
+                <fieldset class="layui-elem-field layui-field-title" style="margin-top:30px;">
+                    <legend style="margin-left:0px;">项目接口部分左侧栏目</legend>
+                </fieldset>
+                    <div class="layui-elem-quote" style="margin-top: 5px;border-left:5px solid #ffffff;background-color: #eeeeee">
+                        <div>
+                            <button class="layui-btn layui-btn-small" @click="addMenu(0)">添加栏目</button>
+                        </div>
+                        <table class="layui-table" lay-skin="nob" lay-even="">
+                            <thead>
+                            <tr>
+                                <!--<th>ID</th>-->
+                                <th>名称</th>
+                                <th>描述</th>
+                                <th>模型链接</th>
+                                <th>排序</th>
+                                <th>图标</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody v-cloak>
+                            <tr v-for="item in menu_items_project">
+                                <!--<td>{{ item.cate_Id }}</td>-->
+                                <td style="white-space:pre;">{{ item.level|capitalize }}{{ item.cate_Name }}</td>
+                                <td>{{ item.cate_Intro }}</td>
+                                <td><button class="layui-btn layui-btn-primary layui-btn-mini">{{ item.cate_Model }}</button></td>
+                                <td><span class="layui-badge-rim" @click="orderClick(item.cate_Id, item.cate_Order + 1)"><i class="fa fa-sort-up"></i></li></span><span class="layui-badge layui-bg-cyan" style="border-radius:1px;">{{ item.cate_Order }}</span><span @click="orderClick(item.cate_Id, item.cate_Order - 1)" class="layui-badge-rim" v-if="item.cate_Order"><i class="fa fa-sort-desc"></i></span></td>
+                                <td><i :class="'fa fa-' + item.cate_Icon">&nbsp;&nbsp;</i>{{ item.cate_Icon }}</td>
+                                <td>
+                                    <a class="layui-btn layui-btn-normal layui-btn-mini" @click="menuClick(1, item.cate_Id)">添加一个子栏目</a>
+                                    <a class="layui-btn layui-btn-mini" @click="menuClick(2, item.cate_Id)">编辑</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-mini" @click="menuClick(3, item.cate_Id)">删除</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -75,8 +116,9 @@ layui.use(['element', 'layer', "jquery"], function(){
     var lists = new Vue({
         el: "#main",
         data: {
-            menu_items: []
-//            menu_page: 0
+            menu_items_admin: {},
+            menu_items_project: {}
+//            menu_page: 0,
 //            pageAll: 0,
 //            perPage: 10  // 数字分页
         },
@@ -109,7 +151,8 @@ layui.use(['element', 'layer', "jquery"], function(){
 
 //                            lists.perPage = res.data.per_page;
 //                            lists.pageAll = res.data.last_page; // 数字分页
-                            lists.menu_items = res.data.data;
+                            lists.menu_items_admin = res.data.admin.data;
+                            lists.menu_items_project = res.data.admin.project;
                         }else{
                             layer.msg(res.msg, {anim: 6});
                         }
