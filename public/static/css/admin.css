@@ -14,7 +14,17 @@
     transform: translateX(10px);
     opacity: 0;
 }
-
+.header-admin {
+    border-color: #e9ecf3;
+    /*-webkit-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.05);*/
+    /*-moz-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.05);*/
+    /*box-shadow: 0 3px 3px rgba(0, 0, 0, 0.05);*/
+}
+.logo {
+    position: absolute;
+    left: 10px;
+    /*top: 12px;*/
+}
 .layui-input-submit {
     margin-left: 0px;
     text-align: center;
@@ -22,9 +32,16 @@
     height: 48px;
     line-height: 48px;
 }
-
 .layui-block-item {
     margin-top: 5px;
     border-left:0px solid #ffffff;
-    background-color: #eeeeee;
+    background-color: #ffffff;
+}
+.layui-nav-tree .layui-nav-child dd.layui-this-new, .layui-nav-tree .layui-nav-child dd.layui-this-new a, .layui-nav-tree .layui-this-new, .layui-nav-tree .layui-this-new>a, .layui-nav-tree .layui-this-new>a:hover {
+    background-color: rgba(231, 242, 241, 0.83);
+    color: #009688;
+}
+.layui-field-block {
+    margin-left: 0px!important;
+    padding: 0px!important;
 }

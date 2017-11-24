@@ -10,28 +10,33 @@
     <!-- 自定义头部区域 -->
     {block name="head"}{/block}
 </head>
-<body class="layui-layout-body">
+<body class="layui-layout-body" style="background-color: rgba(238, 238, 238, 0.68);">
 <div class="layui-layout layui-layout-admin">
-    <div class="layui-header">
-        <div class="layui-logo"><a href="{:Url('index/index')}">之心后台</a></div>
-        <ul class="layui-nav layui-layout-right layui-bg-green" lay-filter="">
-            {if condition="$module eq 'admin'"}
-                <li class="layui-nav-item {if condition="($controller eq 'Settings')"}layui-this{/if}"><a href="{:Url('admin/settings/index')}">系统设置</a></li>
-            {elseif condition="$module eq 'project'"/}
-                <li class="layui-nav-item"><a href="{:Url('admin/index/index')}">后台管理</a></li>
-            {else /}
-            {/if}
-            <li class="layui-nav-item">
-                <a href="javascript:;">
-                    <img src="__IMG__/default/top.jpg" class="layui-nav-img">之心
-                </a>
-                <dl class="layui-nav-child">
-                    <dd><a href="">基本资料</a></dd>
-                    <dd><a href="">安全设置</a></dd>
-                    <dd><a href="">退出登陆</a></dd>
-                </dl>
-            </li>
-        </ul>
+    <div class="header-admin layui-header">
+        <div class="layui-main">
+            <a class="logo" href="{:Url('index/index')}">
+                <img style="width:30%" src="http://demo.cssmoban.com/cssthemes4/amz_4_baf/assets/img/logo.png" alt="layui">
+            </a>
+            <!--<div><i class="fa fa-bars fa-2x">&nbsp;</i></div>-->
+            <ul class="layui-nav layui-layout-right">
+                {if condition="$module eq 'admin'"}
+                    <li class="layui-nav-item {if condition="($controller eq 'Settings')"}layui-this{/if}"><a href="{:Url('admin/settings/index')}"><i class="fa fa-cog">&nbsp;&nbsp;</i>系统设置</a></li>
+                {elseif condition="$module eq 'project'"/}
+                    <li class="layui-nav-item"><a href="{:Url('admin/index/index')}"><i class="fa fa-bar-chart">&nbsp;&nbsp;</i>后台管理</a></li>
+                {else /}
+                {/if}
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        <img src="__IMG__/default/top.jpg" class="layui-nav-img">之心
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">基本资料</a></dd>
+                        <dd><a href="">安全设置</a></dd>
+                        <dd><a href="">退出登陆</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
@@ -42,7 +47,7 @@
 
     <!-- 底部固定区域 -->
     {block name="footer"}
-        <div class="layui-footer">© layui.com - 底部固定区域</div>
+        <div class="layui-footer" style="background-color: #eeeeee;left: 0;">© layui.com - 底部固定区域</div>
     {/block}
 </div>
 <script src="__STATIC__/layui.all.js"></script>

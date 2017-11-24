@@ -15,9 +15,9 @@ function procMenuHtml($tree, $route)
     $html = '';
     foreach($tree as $t) {
         if(empty($t['items'])) {
-            $html .= "<dd class='" . $t['cate_Model'] ==  $route ? 'layui-this' : "" . "'><a href='".Url($t['cate_Model'])."' title='".$t['cate_Intro']."'><i class='fa fa-".$t['cate_Icon']."'>&nbsp;&nbsp;</i>".$t['cate_Name']."</a></dd>";
+            $html .= "<dd class='" . ($t['cate_Model'] ==  $route ? 'layui-this-new' : "") . "'><a href='".Url($t['cate_Model'])."' title='".$t['cate_Intro']."'><i class='fa fa-".$t['cate_Icon']."'>&nbsp;&nbsp;</i>".$t['cate_Name']."</a></dd>";
         } else {
-            $html .= "<dd class='" . $t['cate_Model'] ==  $route ? 'layui-this' : "" . "'><a href='".Url($t['cate_Model'])."' title='".$t['cate_Intro']."'><i class='fa fa-".$t['cate_Icon']."'>&nbsp;&nbsp;</i>".$t['cate_Name']."</a>";
+            $html .= "<dd class='" . ($t['cate_Model'] ==  $route ? 'layui-this-new' : "") . "'><a href='".Url($t['cate_Model'])."' title='".$t['cate_Intro']."'><i class='fa fa-".$t['cate_Icon']."'>&nbsp;&nbsp;</i>".$t['cate_Name']."</a>";
             $html .= procMenuHtml($t['items'], $route);
             $html  = $html."</dd>";
         }

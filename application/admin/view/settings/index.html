@@ -14,13 +14,11 @@
             <div class="layui-tab-item layui-show">内容不一样是要有，因为你可以监听tab事件（阅读下文档就是了）</div>
             <div class="layui-tab-item">
                 <div class="layui-anim layui-anim-scale">
-                <fieldset class="layui-elem-field layui-field-title" style="margin-top:10px;">
-                    <legend style="margin-left:0px;">后台部分左侧栏目</legend>
-                </fieldset>
                     <div class="layui-elem-quote layui-block-item">
-                        <div>
-                            <button class="layui-btn layui-btn-small" @click="addMenu(0, 3)">添加栏目</button>
-                        </div>
+                        <fieldset class="layui-elem-field layui-field-title">
+                            <legend class="layui-field-block">后台部分左侧栏目</legend>
+                        </fieldset>
+                        <button class="layui-btn layui-btn-small" @click="addMenu(0, 3)">添加栏目</button>
                         <table class="layui-table" lay-skin="nob" lay-even="">
                             <thead>
                                 <tr>
@@ -56,13 +54,11 @@
                     </div>
                 </div>
                 <div class="layui-anim layui-anim-scale">
-                <fieldset class="layui-elem-field layui-field-title" style="margin-top:30px;">
-                    <legend style="margin-left:0px;">项目部分左侧栏目</legend>
-                </fieldset>
                     <div class="layui-elem-quote layui-block-item">
-                        <div>
-                            <button class="layui-btn layui-btn-small" @click="addMenu(0, 2)">添加栏目</button>
-                        </div>
+                        <fieldset class="layui-elem-field layui-field-title">
+                            <legend class="layui-field-block">项目部分左侧栏目</legend>
+                        </fieldset>
+                        <button class="layui-btn layui-btn-small" @click="addMenu(0, 2)">添加栏目</button>
                         <table class="layui-table" lay-skin="nob" lay-even="">
                             <thead>
                             <tr>
