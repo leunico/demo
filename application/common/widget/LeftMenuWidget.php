@@ -9,7 +9,8 @@ class LeftMenuWidget extends Controller
     public function index()
     {
         // 按pid从小到大排序，以保证父节点在前，子节点在后。sort是同一层次节点的显示顺序。
-        $items = Loader::model('Cate')->getListMenu();
+        $model = isset(config('model_menu')[$this->request->module()]) ? config('model_menu')[$this->request->module()] : 1;
+        $items = Loader::model('Cate')->getListMenu($model);
         $menu = [];
         foreach ($items['data'] as $v) {
             $menu[$v['cate_Id']] = $v;

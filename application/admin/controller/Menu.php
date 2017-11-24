@@ -41,7 +41,15 @@ class Menu extends BaseController
 
     public function create()
     {
-        $this->assign(['cate_ParentId' => $this->request->get('id'), 'cate_Icon' => '', 'cate_Intro' => '', 'cate_Name' => '', 'cate_Model' => '', 'cate_Id' => 0]);
+        $this->assign([
+            'cate_ParentId' => $this->request->get('id', 0),
+            'cate_Type' => $this->request->get('type', 1),
+            'cate_Icon' => '',
+            'cate_Intro' => '',
+            'cate_Name' => '',
+            'cate_Model' => '',
+            'cate_Id' => 0
+        ]);
         return $this->fetch('edit');
     }
 

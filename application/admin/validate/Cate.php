@@ -11,5 +11,6 @@ class Cate extends Validate
         'cate_Name'     => 'require|max:25',
         'cate_Model'    => 'require|max:25',
         'cate_ParentId' => 'number',
+        'cate_Type'     => 'in:1,2,3'
     ];
 }

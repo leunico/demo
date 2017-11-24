@@ -1,5 +1,5 @@
 <?php
-namespace app\admin\model;
+namespace app\common\model;
 
 use think\Model;
 use traits\model\SoftDelete;
@@ -15,7 +15,7 @@ class Cate extends Model
      */
     public function getListMenu($type = 3)
     {
-        return $this->where('cate_Status', $type)->order('cate_ParentId, cate_Order, cate_Id')->paginate(100)->toArray(); // 菜单不应该有太长！
+        return $this->where('cate_Type', $type)->order('cate_ParentId, cate_Order, cate_Id')->paginate(100)->toArray(); // 菜单不应该有太长！
     }
 
     /**
