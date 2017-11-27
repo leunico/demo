@@ -17,17 +17,22 @@ CREATE TABLE `albert_cate` (
   `cate_Model` varchar(64) NOT NULL DEFAULT '',
   `cate_Order` int(11) unsigned DEFAULT '0',
   `cate_Icon` varchar(64) DEFAULT NULL,
-  `cate_Status` tinyint(1) unsigned DEFAULT '0',
+  `cate_Status` tinyint(1) unsigned DEFAULT '1',
+  `cate_Type` tinyint(1) unsigned DEFAULT '1',
   `update_time` timestamp NULL DEFAULT NULL,
   `create_time` timestamp NULL DEFAULT NULL,
   `delete_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`cate_Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO `albert_cate` (`cate_Id`, `cate_ParentId`, `cate_Name`, `cate_Intro`, `cate_Model`, `cate_Order`, `cate_Icon`, `cate_Status`, `update_time`, `create_time`, `delete_time`) VALUES
-(4,	0,	'接口管理',	'存放你的接口文档和项目例如： www.eolinker.com',	'admin/index/index',	0,	'plug',	3,	'2017-11-17 08:10:32',	NULL,	NULL),
-(35,	4,	'项目列表',	'打开所有的接口列表例如：http://api.crap.cn',	'/admin/index/index',	2,	'reorder',	3,	'2017-11-17 05:47:31',	'2017-11-11 05:33:15',	'2017-11-17 05:47:31'),
-(36,	0,	'数据库管理',	'管理接口数据库',	'admin/database/index',	1,	'cubes',	3,	'2017-11-17 08:10:45',	'2017-11-17 05:49:36',	NULL);
+INSERT INTO `albert_cate` (`cate_Id`, `cate_ParentId`, `cate_Name`, `cate_Intro`, `cate_Model`, `cate_Order`, `cate_Icon`, `cate_Status`, `cate_Type`, `update_time`, `create_time`, `delete_time`) VALUES
+(4,	0,	'接口管理',	'存放你的接口文档和项目',	'admin/index/index',	0,	'plug',	1,	3,	'2017-11-24 01:37:22',	NULL,	NULL),
+(35,	4,	'项目列表',	'打开所有的接口列表例如：http://api.crap.cn',	'/admin/index/index',	2,	'reorder',	1,	3,	'2017-11-17 05:47:31',	'2017-11-11 05:33:15',	'2017-11-17 05:47:31'),
+(36,	0,	'数据库管理',	'管理接口数据库',	'admin/database/index',	1,	'cubes',	1,	3,	'2017-11-17 08:10:45',	'2017-11-17 05:49:36',	NULL),
+(37,	0,	'API接口',	'存放接口信息',	'project/api/index',	1,	'code-fork',	1,	2,	'2017-11-24 01:37:02',	'2017-11-24 01:32:30',	NULL),
+(38,	0,	'项目概况',	'记录项目的基本信息',	'project/index/index',	0,	'line-chart',	1,	2,	'2017-11-24 01:45:06',	'2017-11-24 01:45:06',	NULL),
+(39,	37,	'测试',	'呃呃呃',	'22222',	0,	'address-book',	1,	2,	'2017-11-24 01:45:42',	'2017-11-24 01:45:35',	'2017-11-24 01:45:42'),
+(40,	4,	'测试',	'测试',	'/admin/index/index',	0,	'address-card-o',	1,	3,	'2017-11-24 10:08:55',	'2017-11-24 10:05:55',	'2017-11-24 10:08:55');
 
 DROP TABLE IF EXISTS `albert_config`;
 CREATE TABLE `albert_config` (
@@ -89,4 +94,4 @@ INSERT INTO `albert_project` (`project_Id`, `project_Name`, `project_Remark`, `p
 (3,	'测试测试测试',	'哈哈哈哈哈哈哈',	0,	1,	'/uploads/project/20171117\\b778292376b242389f165a1db02d5b0b.jpg',	0,	'1.8',	10,	'2017-11-17 02:51:18',	'2017-11-17 02:51:18',	NULL),
 (4,	'sdfs',	'sfsdfs',	0,	0,	'/uploads/project/20171117\\1d8adbecb6760f52e933f2550d7674c0.jpg',	1,	'1.33',	10,	'2017-11-17 03:34:21',	'2017-11-17 03:33:50',	'2017-11-17 03:34:21');
 
--- 2017-11-23 10:14:02
+-- 2017-11-27 09:19:37
