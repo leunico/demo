@@ -2,4 +2,4 @@
 
 use think\Route;
 
-Route::get('project/index', 'project/index/index');
+Route::get('project/index/:id', 'project/index/index');

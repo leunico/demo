@@ -47,7 +47,7 @@
                                 </td>
                                 <td>{{ item.create_time }}</td>
                                 <td>
-                                    <a class="layui-btn layui-btn-normal layui-btn-mini" :href="'{:Url('project/index/index')}' + '?id=' + item.project_Id">查看项目</a>
+                                    <a class="layui-btn layui-btn-normal layui-btn-mini" :href="'/project/index/' + item.project_Id">查看项目</a>
                                     <a class="layui-btn layui-btn-mini" @click="menuClick(2, item.project_Id)">编辑</a>
                                     <a class="layui-btn layui-btn-danger layui-btn-mini" @click="menuClick(3, item.project_Id)">删除</a>
                                 </td>
