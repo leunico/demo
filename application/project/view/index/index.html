@@ -20,12 +20,46 @@
                                     <div class="layui-col-md12">
                                         <div class="layui-row grid-demo">
                                             <div class="layui-col-md4">
-                                                <div class="grid-demo grid-demo-bg1">
-                                                    <img src="{$project_Cover}" style="width:400px;height:550px;background-size:100%;"/>
-                                                </div>
+                                                <div><img src="{$project_Cover}" style="width:400px;height:550px;background-size:100%;overflow:hidden;"/></div>
                                             </div>
                                             <div class="layui-col-md8">
-                                                <div class="grid-demo grid-demo-bg2">内部列</div>
+                                                <div class="layui-grid">
+                                                    <div class="title">{$project_Name}</div>
+                                                    <ul class="l-con-box">
+                                                        <li>
+                                                            <b>状态：</b>
+                                                            <button class="layui-btn layui-btn-mini {$project_Status.style}">{$project_Status.str}</button>
+                                                        </li>
+                                                        <li>
+                                                            <b>最后更新时间：</b>
+                                                            <span>{$update_time}</span>
+                                                        </li>
+                                                        <li>
+                                                            <b>客户：</b>
+                                                            <span class="kehu">百度</span>
+                                                        </li>
+                                                        <li>
+                                                            <b>创建于：</b>
+                                                            <span>{$create_time}</span>
+                                                        </li>
+                                                        <li>
+                                                            <b>版本：</b>
+                                                            <span>v{$project_Version}</span>
+                                                        </li>
+                                                        <li>
+                                                            <b>团队成员：</b>
+                                                            <ul class="menber">
+                                                                <li><img alt="image233333" class="layui-circle" src="__IMG__/default/top.jpg" style="max-width:30px;"></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="puld">
+                                                            <b>当前进度：</b>
+                                                            <div class="layui-progress layui-progress-big" lay-showpercent="true">
+                                                                <div class="layui-progress-bar" lay-percent="{$project_Progress}%"></div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                             <!--<div class="layui-col-md12">-->
                                                 <!--<div class="grid-demo grid-demo-bg3">内部列</div>-->

@@ -15,15 +15,25 @@ function procMenuHtml($tree, $route)
     $html = '';
     foreach($tree as $t) {
         if(empty($t['items'])) {
-            $html .= "<dd class='" . ($t['cate_Model'] ==  $route ? 'layui-this-new' : "") . "'><a href='".Url($t['cate_Model'])."' title='".$t['cate_Intro']."'><i class='fa fa-".$t['cate_Icon']."'>&nbsp;&nbsp;</i>".$t['cate_Name']."</a></dd>";
+            $html .= "<dd class='" . ($t['cate_Model'] ==  $route ? 'layui-this-new' : "") . "'><a href='".handleUrl($t['cate_Model'])."' title='".$t['cate_Intro']."'><i class='fa fa-".$t['cate_Icon']."'>&nbsp;&nbsp;</i>".$t['cate_Name']."</a></dd>";
         } else {
-            $html .= "<dd class='" . ($t['cate_Model'] ==  $route ? 'layui-this-new' : "") . "'><a href='".Url($t['cate_Model'])."' title='".$t['cate_Intro']."'><i class='fa fa-".$t['cate_Icon']."'>&nbsp;&nbsp;</i>".$t['cate_Name']."</a>";
+            $html .= "<dd class='" . ($t['cate_Model'] ==  $route ? 'layui-this-new' : "") . "'><a href='".handleUrl($t['cate_Model'])."' title='".$t['cate_Intro']."'><i class='fa fa-".$t['cate_Icon']."'>&nbsp;&nbsp;</i>".$t['cate_Name']."</a>";
             $html .= procMenuHtml($t['items'], $route);
             $html  = $html."</dd>";
         }
     }
 
     return $html ? "<dl class='layui-nav-child'>$html</dl>" : $html;
+}
+
+# 处理url参数
+function handleUrl($url)
+{
+    $request = request();
+    if($request->isGet())
+        return url($url, $request->param());
+    else
+        return url($url);
 }
 
 # 菜单转换树结构

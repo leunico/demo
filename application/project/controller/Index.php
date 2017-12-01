@@ -1,7 +1,7 @@
 <?php
 namespace app\project\controller;
 
-use app\common\controller\BaseController;
+use app\project\common\BaseController;
 use think\Loader;
 
 class Index extends BaseController

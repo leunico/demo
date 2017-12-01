@@ -13,7 +13,8 @@ class BaseController extends Controller
 
     protected function _before_first()
     {
-        $this->assign('module', $this->request->module());
+        $module = $this->request->module();
+        $this->assign('module', $module);
         $this->assign('controller', $this->request->controller());
     }
 }
