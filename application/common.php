@@ -9,21 +9,31 @@
 // | Author: 流年 <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-# 菜单转换html
+# 菜单循环
 function procMenuHtml($tree, $route)
 {
     $html = '';
     foreach($tree as $t) {
         if(empty($t['items'])) {
-            $html .= "<dd class='" . ($t['cate_Model'] ==  $route ? 'layui-this-new' : "") . "'><a href='".handleUrl($t['cate_Model'])."' title='".$t['cate_Intro']."'><i class='fa fa-".$t['cate_Icon']."'>&nbsp;&nbsp;</i>".$t['cate_Name']."</a></dd>";
+            $html .= "<dd class='" . ($t['cate_Model'] == $route ? 'layui-this-new' : "") . "'><a href='".handleUrl($t['cate_Model'])."' title='".$t['cate_Intro']."'><i class='fa fa-".$t['cate_Icon']."'>&nbsp;&nbsp;</i>".$t['cate_Name']."</a></dd>";
         } else {
-            $html .= "<dd class='" . ($t['cate_Model'] ==  $route ? 'layui-this-new' : "") . "'><a href='".handleUrl($t['cate_Model'])."' title='".$t['cate_Intro']."'><i class='fa fa-".$t['cate_Icon']."'>&nbsp;&nbsp;</i>".$t['cate_Name']."</a>";
+            $html .= "<dd class='" . ($t['cate_Model'] == $route ? 'layui-this-new' : "") . "'><a href='".handleUrl($t['cate_Model'])."' title='".$t['cate_Intro']."'><i class='fa fa-".$t['cate_Icon']."'>&nbsp;&nbsp;</i>".$t['cate_Name']."</a>";
             $html .= procMenuHtml($t['items'], $route);
             $html  = $html."</dd>";
         }
     }
 
     return $html ? "<dl class='layui-nav-child'>$html</dl>" : $html;
+}
+
+# 菜单选中样式
+function menuClass($menu, $route)
+{
+    $li_class = 'layui-nav-item';
+    foreach($menu['items'] as $v)
+        $li_class = $v['cate_Model'] == $route ? $li_class . ' layui-nav-itemed' : $li_class;
+
+    return $menu['cate_Model'] == $route ? $li_class . ' layui-this-new' : $li_class;
 }
 
 # 处理url参数

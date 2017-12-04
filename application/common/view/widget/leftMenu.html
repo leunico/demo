@@ -14,7 +14,8 @@
                 {if condition="($vo.cate_ParentId eq 0) and (empty($vo.items) eq true)"}
                     <li class="layui-nav-item {if condition="$vo.cate_Model eq $route"}layui-this-new{/if}"><a href="{$vo['cate_Model']|handleUrl}" title="{$vo.cate_Intro}"><i class="fa fa-{$vo.cate_Icon}">&nbsp;&nbsp;</i>{$vo.cate_Name}</a></li>
                 {else /}
-                    <li class="layui-nav-item" {if condition="$vo.cate_Model eq $route"}layui-this-new{/if}>
+                    <!--<li class="layui-nav-item layui-nav-itemed" {if condition="$vo.cate_Model eq $route"}layui-this-new{/if}>-->
+                    <li class="{:menuClass($vo, $route)}">
                         <a href="javascript:;" title="{$vo.cate_Intro}"><i class="fa fa-{$vo.cate_Icon}">&nbsp;&nbsp;</i>{$vo.cate_Name}</a>
                         {:procMenuHtml($vo.items, $route)}
                     </li>
