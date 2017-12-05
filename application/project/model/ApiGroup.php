@@ -24,7 +24,7 @@ class ApiGroup extends Model
      */
     public function delMenu($id)
     {
-        $items = $this->where('cate_ParentId', $id)->column('cate_Id');
+        $items = $this->where('group_ParentId', $id)->column('group_Id');
         $this->destroy($id);
         if(!empty($items)){
             foreach ($items as $v)
