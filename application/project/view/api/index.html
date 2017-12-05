@@ -1,23 +1,27 @@
-{extend name="common@public/base" /}
+<script src="../../../../public/static/layui.js"></script>{extend name="common@public/base" /}
 {block name="main"}
-<div class="layui-body" id="main">
+<div class="layui-body">
     <!-- 内容主体区域 -->
     <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
         <ul class="layui-tab-title">
             <li class="layui-this"><i class="fa fa-exclamation-circle">&nbsp;&nbsp;</i>接口列表</li>
-            <!--<li><i class="fa fa-sliders">&nbsp;&nbsp;</i>项目动态</li>-->
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
                 <div class="layui-anim layui-anim-upbit">
                     <div class="layui-row layui-col-space10">
                         <div class="layui-col-md2">
-                            <div class="layui-elem-quote layui-block-item" style="overflow: hidden;">
-                                <div><button class="layui-btn layui-btn-small" @click="addMenu(0)">添加分组</button></div>
-                                <!--<div class="layui-side-scroll">-->
-                                <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo" style="margin-right: 10px;">
+                            <div class="layui-elem-quote layui-block-item" style="overflow:hidden;">
+                                <div class="item-title">
+                                    <button style="margin-left:1px;" class="layui-btn layui-btn-small" @click="addMenu(0)">添加分组</button>
+                                    <button style="margin-left:1px;" class="layui-btn layui-btn-small layui-btn-warm" @click="addMenu(0)">修改分组</button>
+                                    <button style="margin-left:1px;" class="layui-btn layui-btn-small layui-btn-danger" @click="addMenu(0)">删除分组</button>
+                                </div>
+                                <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo" style="margin-top:5px;width:100%;">
+                                    <li class="layui-nav-item layui-this"><a href="javascript:;"><i class="fa fa-th-list">&nbsp;&nbsp;</i>所有接口</a></li>
+                                    <li class="layui-nav-item"><a href="javascript:;"><i class="fa fa-trash">&nbsp;&nbsp;</i>接口回收站</a></li>
                                     <li class="layui-nav-item">
-                                        <a href="javascript:;">默认展开</a>
+                                        <a href="javascript:;" class="twonav">默认展开</a>
                                         <dl class="layui-nav-child">
                                             <dd><a href="javascript:;">选项一</a></dd>
                                             <dd><a href="javascript:;">选项二</a></dd>
@@ -27,28 +31,28 @@
                                     </li>
                                     <li class="layui-nav-item">
                                         <a href="javascript:;">解决方案</a>
+                                    </li>
+                                    <li class="layui-nav-item">
+                                        <a href="javascript:;" class="twonav">解决方案</a>
                                         <dl class="layui-nav-child">
-                                            <dd><a href="">移动模块</a></dd>
-                                            <dd><a href="">后台模版</a></dd>
-                                            <dd><a href="">电商平台</a></dd>
+                                            <dd><a href="javascript:;">选项一</a></dd>
+                                            <dd><a href="javascript:;">选项二</a></dd>
+                                            <dd><a href="javascript:;">选项三</a></dd>
                                         </dl>
                                     </li>
-                                    <li class="layui-nav-item"><a href="">云市场</a></li>
-                                    <li class="layui-nav-item"><a href="">社区</a></li>
+                                    <li class="layui-nav-item">
+                                        <a href="javascript:;">解决方案</a>
+                                    </li>
                                 </ul>
-                                <!--</div>-->
                             </div>
                         </div>
-                        <div class="layui-col-md10">
+                        <div class="layui-col-md10" id="main">
                             <div class="layui-elem-quote layui-block-item">
-                                <div style="padding: 15px;">内容主体区域</div>
+                                <div style="padding:15px;">内容主体区域</div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="layui-tab-item">
-                内容不一样是要有，因为你可以监听tab事件（阅读下文档就是了）
             </div>
         </div>
     </div>
@@ -66,6 +70,26 @@
 //            if(data.index == 1)
 //                lists.loadProjectList(1);
 //        });
+
+        element.on('nav(demo)', function(data){
+            $(".twonav").each(function(){
+                $(this).removeClass('layui-this');
+            });
+
+            console.log(data);
+        });
+
+        $(".twonav").click(function(){
+            var nav = $(this).parent();
+            $(".layui-nav-item").each(function(){
+                $(this).removeClass('layui-this');
+            });
+
+            if(!nav.hasClass('layui-this'))
+                nav.addClass('layui-this');
+
+            console.log(nav);
+        });
 
         var lists = new Vue({
             el: "#main",

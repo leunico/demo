@@ -8,6 +8,23 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 CREATE DATABASE `albert` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `albert`;
 
+DROP TABLE IF EXISTS `albert_api_group`;
+CREATE TABLE `albert_api_group` (
+  `group_Id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `project_Id` int(11) unsigned NOT NULL DEFAULT '0',
+  `group_ParentId` int(11) unsigned NOT NULL DEFAULT '0',
+  `group_Name` varchar(100) NOT NULL DEFAULT '',
+  `group_Order` int(11) unsigned NOT NULL DEFAULT '0',
+  `group_Status` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `update_time` timestamp NULL DEFAULT NULL,
+  `create_time` timestamp NULL DEFAULT NULL,
+  `delete_time` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`group_Id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+INSERT INTO `albert_api_group` (`group_Id`, `project_Id`, `group_ParentId`, `group_Name`, `group_Order`, `group_Status`, `update_time`, `create_time`, `delete_time`) VALUES
+(1,	8,	0,	'默认分组',	0,	1,	'2017-12-05 11:07:17',	'2017-12-05 11:07:17',	NULL);
+
 DROP TABLE IF EXISTS `albert_cate`;
 CREATE TABLE `albert_cate` (
   `cate_Id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -30,9 +47,12 @@ INSERT INTO `albert_cate` (`cate_Id`, `cate_ParentId`, `cate_Name`, `cate_Intro`
 (35,	4,	'项目列表',	'打开所有的接口列表例如：http://api.crap.cn',	'/admin/index/index',	2,	'reorder',	1,	3,	'2017-11-17 05:47:31',	'2017-11-11 05:33:15',	'2017-11-17 05:47:31'),
 (36,	0,	'数据库管理',	'管理接口数据库',	'admin/database/index',	1,	'cubes',	1,	3,	'2017-11-17 08:10:45',	'2017-11-17 05:49:36',	NULL),
 (37,	0,	'API接口',	'存放接口信息',	'project/api/index',	1,	'random',	1,	2,	'2017-12-03 06:05:49',	'2017-11-24 01:32:30',	NULL),
+(41,	4,	'测试',	'测试',	'admin/index/index2',	0,	'address-card',	1,	3,	'2017-12-04 11:10:22',	'2017-12-04 01:29:24',	NULL),
 (38,	0,	'项目概况',	'记录项目的基本信息',	'project/index/index',	0,	'line-chart',	1,	2,	'2017-12-01 10:54:17',	'2017-11-24 01:45:06',	NULL),
 (39,	37,	'测试',	'呃呃呃',	'22222',	0,	'address-book',	1,	2,	'2017-11-24 01:45:42',	'2017-11-24 01:45:35',	'2017-11-24 01:45:42'),
-(40,	4,	'测试',	'测试',	'/admin/index/index',	0,	'address-card-o',	1,	3,	'2017-11-24 10:08:55',	'2017-11-24 10:05:55',	'2017-11-24 10:08:55');
+(40,	4,	'测试',	'测试',	'/admin/index/index',	0,	'address-card-o',	1,	3,	'2017-11-24 10:08:55',	'2017-11-24 10:05:55',	'2017-11-24 10:08:55'),
+(42,	4,	'测试测试',	'测试测试',	'admin/index/index',	0,	'address-card-o',	1,	3,	'2017-12-04 11:10:25',	'2017-12-04 05:40:37',	NULL),
+(43,	38,	'测试',	'2333',	'project/api/index2',	0,	'area-chart',	1,	2,	'2017-12-05 09:35:37',	'2017-12-04 11:17:45',	'2017-12-05 09:35:37');
 
 DROP TABLE IF EXISTS `albert_config`;
 CREATE TABLE `albert_config` (
@@ -90,8 +110,12 @@ CREATE TABLE `albert_project` (
 
 INSERT INTO `albert_project` (`project_Id`, `project_Name`, `project_Remark`, `project_UserId`, `project_Type`, `project_Cover`, `project_Status`, `project_Version`, `project_Progress`, `update_time`, `create_time`, `delete_time`) VALUES
 (1,	'测试村上春树',	'23333',	0,	1,	'/uploads/project/20171117\\f39e3b44a6bb1baf5437dcbeecfdcdec.jpg',	2,	'1.0',	80,	'2017-11-17 03:10:58',	'2017-11-15 09:00:56',	NULL),
-(2,	'哈哈哈哈哈',	'哈哈哈哈哈哈哈',	0,	0,	'/uploads/project/20171117\\da94106bee0007de234625135c9536ec.jpg',	1,	'2.0',	10,	'2017-11-17 02:48:50',	'2017-11-17 02:48:50',	NULL),
-(3,	'测试测试测试',	'哈哈哈哈哈哈哈',	0,	1,	'/uploads/project/20171117\\b778292376b242389f165a1db02d5b0b.jpg',	0,	'1.8',	10,	'2017-11-17 02:51:18',	'2017-11-17 02:51:18',	NULL),
-(4,	'sdfs',	'sfsdfs',	0,	0,	'/uploads/project/20171117\\1d8adbecb6760f52e933f2550d7674c0.jpg',	1,	'1.33',	10,	'2017-11-17 03:34:21',	'2017-11-17 03:33:50',	'2017-11-17 03:34:21');
+(2,	'哈哈哈哈哈',	'哈哈哈哈哈哈哈',	0,	0,	'/uploads/project/20171117\\da94106bee0007de234625135c9536ec.jpg',	1,	'2.0',	10,	'2017-12-05 10:53:14',	'2017-11-17 02:48:50',	'2017-12-05 10:53:14'),
+(3,	'测试测试测试233',	'哈哈哈哈哈哈哈233',	0,	1,	'/uploads/project/20171117\\b778292376b242389f165a1db02d5b0b.jpg',	0,	'1.8',	10,	'2017-12-05 10:54:58',	'2017-11-17 02:51:18',	NULL),
+(4,	'sdfs',	'sfsdfs',	0,	0,	'/uploads/project/20171117\\1d8adbecb6760f52e933f2550d7674c0.jpg',	1,	'1.33',	10,	'2017-11-17 03:34:21',	'2017-11-17 03:33:50',	'2017-11-17 03:34:21'),
+(5,	'西出阳关无故人',	'西出阳关无故人',	0,	1,	'/uploads/project/20171205\\6eca3271c6bfc9402533e6a6df931c02.jpg',	1,	'1.0',	10,	'2017-12-05 10:53:50',	'2017-12-05 10:53:50',	NULL),
+(6,	'我去妈的这种',	'我去妈的这种',	0,	1,	'/uploads/project/20171205\\663d2d5803e972ad0c765604c60a719f.jpg',	1,	'1.0',	10,	'2017-12-05 10:55:31',	'2017-12-05 10:55:31',	NULL),
+(7,	'测试测试测试',	'超市菜市场',	0,	1,	'/uploads/project/20171205\\a9171cb2b80c672512a494e9aade8a50.jpg',	1,	'2.0',	10,	'2017-12-05 11:06:41',	'2017-12-05 11:05:53',	'2017-12-05 11:06:41'),
+(8,	'解忧杂货店',	'解忧杂货店',	0,	1,	'/uploads/project/20171205\\714cc668a16d05ddabb9e777ab898b04.jpg',	1,	'1.0',	10,	'2017-12-05 11:07:17',	'2017-12-05 11:07:17',	NULL);
 
--- 2017-12-03 06:16:44
+-- 2017-12-05 11:25:59
