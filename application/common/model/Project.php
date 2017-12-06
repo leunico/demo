@@ -12,7 +12,7 @@ class Project extends Model
 
     protected static function init()
     {
-        Project::event('after_insert', function ($project) {
+        Project::event('after_insert', function (Project $project) {
             $project_id = $project->getLastInsID();
             if (!empty($project_id)){
                 ApiGroup::create(['project_Id' => $project_id, 'group_Name' => '默认分组']);

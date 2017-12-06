@@ -13,36 +13,28 @@
                         <div class="layui-col-md2">
                             <div class="layui-elem-quote layui-block-item" style="overflow:hidden;">
                                 <div class="item-title">
-                                    <button style="margin-left:1px;" class="layui-btn layui-btn-small" @click="addMenu(0)">添加分组</button>
-                                    <button style="margin-left:1px;" class="layui-btn layui-btn-small layui-btn-warm" @click="addMenu(0)">修改分组</button>
-                                    <button style="margin-left:1px;" class="layui-btn layui-btn-small layui-btn-danger" @click="addMenu(0)">删除分组</button>
+                                    <input type="hidden" name="pid" value="{$id}" id="page_pid"/>
+                                    <button style="margin-left:1px;" class="layui-btn layui-btn-small" id="addGroup">添加分组</button>
+                                    <button style="margin-left:1px;display:none" class="layui-btn layui-btn-small layui-btn-warm" id="editGroup">修改分组</button>
+                                    <button style="margin-left:1px;display:none" class="layui-btn layui-btn-small layui-btn-danger" id="delGroup">删除分组</button>
                                 </div>
                                 <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo" style="margin-top:5px;width:100%;">
-                                    <li class="layui-nav-item layui-this"><a href="javascript:;"><i class="fa fa-th-list">&nbsp;&nbsp;</i>所有接口</a></li>
-                                    <li class="layui-nav-item"><a href="javascript:;"><i class="fa fa-trash">&nbsp;&nbsp;</i>接口回收站</a></li>
-                                    <li class="layui-nav-item">
-                                        <a href="javascript:;" class="twonav">默认展开</a>
-                                        <dl class="layui-nav-child">
-                                            <dd><a href="javascript:;">选项一</a></dd>
-                                            <dd><a href="javascript:;">选项二</a></dd>
-                                            <dd><a href="javascript:;">选项三</a></dd>
-                                            <dd><a href="">跳转项</a></dd>
-                                        </dl>
-                                    </li>
-                                    <li class="layui-nav-item">
-                                        <a href="javascript:;">解决方案</a>
-                                    </li>
-                                    <li class="layui-nav-item">
-                                        <a href="javascript:;" class="twonav">解决方案</a>
-                                        <dl class="layui-nav-child">
-                                            <dd><a href="javascript:;">选项一</a></dd>
-                                            <dd><a href="javascript:;">选项二</a></dd>
-                                            <dd><a href="javascript:;">选项三</a></dd>
-                                        </dl>
-                                    </li>
-                                    <li class="layui-nav-item">
-                                        <a href="javascript:;">解决方案</a>
-                                    </li>
+                                    <li class="layui-nav-item layui-this"><a href="javascript:;" data-gid=0><i class="fa fa-th-list">&nbsp;&nbsp;</i>所有接口</a></li>
+                                    <li class="layui-nav-item"><a href="javascript:;" data-gid=0><i class="fa fa-trash">&nbsp;&nbsp;</i>接口回收站</a></li>
+                                    {foreach $group as $vo}
+                                        {if condition="($vo.group_ParentId eq 0) and (empty($vo.items) eq true)"}
+                                            <li class="layui-nav-item"><a href="javascript:;" data-gid="{$vo.group_Id}">{$vo.group_Name}</a></li>
+                                        {else /}
+                                            <li class="layui-nav-item">
+                                                <a href="javascript:;" class="twonav" data-gid="{$vo.group_Id}">{$vo.group_Name}</a>
+                                                <dl class="layui-nav-child">
+                                                    {foreach $vo.items as $v}
+                                                        <dd><a href="javascript:;" data-gid="{$v.group_Id}">{$v.group_Name}</a></dd>
+                                                    {/foreach}
+                                                </dl>
+                                            </li>
+                                        {/if}
+                                    {/foreach}
                                 </ul>
                             </div>
                         </div>
@@ -64,18 +56,48 @@
     layui.use(['element', 'layer', "jquery"], function(){
         var element = layui.element,
             $ = layui.$,
-            layer = layui.layer;
+            layer = layui.layer,
+            pagefun = {},
+            pid = $("#page_pid").val(),
+            gpid = 0;
 
 //        element.on('tab(docDemoTabBrief)', function(data){
 //            if(data.index == 1)
 //                lists.loadProjectList(1);
 //        });
 
+        pagefun = {
+            actionMenu: function(){
+                if(gpid < 1){
+                    $("#editGroup").hide();
+                    $("#delGroup").hide();
+                }else{
+                    $("#editGroup").show();
+                    $("#delGroup").show();
+                }
+            },
+            openApiGroup: function(title, url){
+                layer.open({
+                    type: 2
+                    ,title: title
+                    ,id: 'group'
+                    ,content: [url, 'no']
+                    ,shade: 0
+                    ,area: ['483px', '297px']
+                    ,end: function(){} // window.location.reload();
+                });
+            }
+        };
+
         element.on('nav(demo)', function(data){
             $(".twonav").each(function(){
                 $(this).removeClass('layui-this');
             });
 
+            gpid = data.children("a:first-child").attr('data-gid');
+            pagefun.actionMenu();
+
+            console.log(gpid);
             console.log(data);
         });
 
@@ -88,7 +110,35 @@
             if(!nav.hasClass('layui-this'))
                 nav.addClass('layui-this');
 
+            gpid = $(this).attr('data-gid');
+            pagefun.actionMenu();
+
+            console.log(gpid);
             console.log(nav);
+        });
+
+        $("#addGroup").click(function(){
+            pagefun.openApiGroup('分组添加', "{:Url('project/api_group/create')}" + "?pid=" + pid + "&gpid=" + gpid);
+        });
+
+        $("#editGroup").click(function(){
+            pagefun.openApiGroup('分组编辑', "/project/api_group/" + gpid + "/edit");
+        });
+
+        $("#delGroup").click(function(){
+            layer.confirm('你确定要删除吗？', {
+                btn: ['继续','取消']
+            }, function(){
+                $.ajax({
+                    url : "/project/api_group/" + gpid,
+                    type: "DELETE",
+                    error:function(){layer.msg('删除失败！', {anim: 6})},
+                    success:function(res){
+                        layer.msg("删除成功！", {time: 2000, icon: 1});
+                        window.location.reload();
+                    }
+                });
+            });
         });
 
         var lists = new Vue({

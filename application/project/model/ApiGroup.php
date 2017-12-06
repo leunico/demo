@@ -22,13 +22,13 @@ class ApiGroup extends Model
      * 删除分组列表
      * @author albert
      */
-    public function delMenu($id)
+    public function delGroup($id)
     {
-        $items = $this->where('group_ParentId', $id)->column('group_Id');
         $this->destroy($id);
+        $items = $this->where('group_ParentId', $id)->column('group_Id');
         if(!empty($items)){
             foreach ($items as $v)
-                $this->delMenu($v);
+                $this->delGroup($v);
         }
     }
 }

@@ -1,0 +1,66 @@
+{extend name="common@public/open" /}
+{block name="main"}
+<blockquote class="layui-elem-quote layui-text" style="margin-top:12px;">
+    添加或编辑一个分组
+</blockquote>
+<div class="layui-tab-content" style="min-height:500px;">
+    <form class="layui-form" action="">
+        <input type="hidden" name="project_Id" value="{$project_Id}" />
+        <input type="hidden" name="group_Id" value="{$group_Id}" />
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择父分组</label>
+            <div class="layui-input-block">
+                <select name="group_ParentId" lay-filter="aihao" lay-verify="required">
+                    <option value=0>不设置父分组</option>
+                    {:apiGroupSelect($project_Id, $group_ParentId)}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">分组名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="group_Name" lay-verify="required" placeholder="请输入分组名称" autocomplete="off" class="layui-input" value="{$group_Name}">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block layui-input-submit">
+                <button class="layui-btn layui-btn-small" lay-submit="group" lay-filter="group">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-small layui-btn-primary">取消</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(['form'], function(){
+        var $ = layui.$,
+            form = layui.form;
+
+        form.on('submit(group)', function(data){
+            if(data.field.group_Id == 0){
+                $.post("/project/api_group", data.field, function(res){
+                    if(res.status == 1)
+                        parent.window.location.reload();
+                    else
+                        parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                });
+            }else{
+                $.ajax({
+                    url: "/project/api_group/" + data.field.group_Id,
+                    type: "PUT",
+                    data: data.field,
+                    success: function(res){
+                        if(res.status == 1)
+                            parent.window.location.reload();
+                        else
+                            parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                    }
+                });
+            }
+        });
+    });
+</script>
+{/block}
