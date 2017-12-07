@@ -8,29 +8,7 @@ class ApiGroup extends BaseController
 {
     public function index()
     {
-        if ($this->request->isAjax()){
-            $model_menu = config('model_menu');
-            $items = [
-                'admin' => Loader::model('Cate')->getListMenu($model_menu['admin']),
-                'project' => Loader::model('Cate')->getListMenu($model_menu['project'])
-            ];
-
-            foreach ($items as $key=>$item){
-                $menu = [];
-                foreach ($item['data'] as $k=>$v) {
-                    $menu[$v['cate_Id']] = $v;
-                    $menu[$v['cate_Id']]['items'] = [];
-                    if($v['cate_ParentId'] != 0)
-                        $menu[$v['cate_ParentId']]['items'][$v['cate_Id']] = &$menu[$v['cate_Id']];
-                }
-
-                $items[$key]['data'] = toTreeMenu($menu);
-            }
-
-            return jsonOutPut(1, '', $items);
-        }
-
-//        abort(404, '请求错误！');
+        abort(404, '请求错误！');
     }
 
     public function edit($id)

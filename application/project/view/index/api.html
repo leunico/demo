@@ -14,7 +14,7 @@
                             <div class="layui-elem-quote layui-block-item" style="overflow:hidden;">
                                 <div class="item-title">
                                     <input type="hidden" name="pid" value="{$id}" id="page_pid"/>
-                                    <button style="margin-left:1px;" class="layui-btn layui-btn-small" id="addGroup">添加分组</button>
+                                    <button class="layui-btn layui-btn-small" id="addGroup">添加分组</button>
                                     <button style="margin-left:1px;display:none" class="layui-btn layui-btn-small layui-btn-warm" id="editGroup">修改分组</button>
                                     <button style="margin-left:1px;display:none" class="layui-btn layui-btn-small layui-btn-danger" id="delGroup">删除分组</button>
                                 </div>
@@ -39,8 +39,60 @@
                             </div>
                         </div>
                         <div class="layui-col-md10" id="main">
-                            <div class="layui-elem-quote layui-block-item">
-                                <div style="padding:15px;">内容主体区域</div>
+                            <div class="layui-tab-item layui-show">
+                                <div class="layui-anim layui-anim-upbit">
+                                    <div class="layui-block-item layui-elem-quote">
+                                        <button class="layui-btn layui-btn-small" @click="addInterface()">添加接口</button>
+                                        <div class="layui-input-inline">
+                                            <input type="tel" name="phone" placeholder="请输入关键字" lay-verify="required|phone" autocomplete="off" class="layui-input item-search">
+                                            <div class="item-search-fa"><i class="fa fa-search fa-search-input">&nbsp;&nbsp;</i></div>
+                                        </div>
+                                        <table class="layui-table" lay-even="" lay-skin="nob">
+                                            <thead>
+                                            <tr>
+                                                <th>当前状态</th>
+                                                <th>项目名称</th>
+                                                <th>版本号</th>
+                                                <th style="text-align:center;">项目进度</th>
+                                                <th>&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                                <th style="min-width:150px;">项目成员</th>
+                                                <th>创建时间</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody v-cloak>
+                                            <tr v-for="item in menu_items">
+                                                <td><button class="layui-btn layui-btn-mini" :class="item.project_Status.style">{{ item.project_Status.str }}</button></td>
+                                                <td style="white-space:pre;">{{ item.project_Name }}</td>
+                                                <td>V {{ item.project_Version }}</td>
+                                                <td>
+                                                    <div class="layui-progress" style="margin-top:3px;">
+                                                        <div class="layui-progress-bar" :style="{width: item.project_Progress + '%'}">
+                                                            <!--<span class="layui-progress-text">当前进度{{ item.project_Progress }}%</span>-->
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td></td>
+                                                <td>
+                                                    <div class="layui-inline">
+                                                        <img alt="image233333" class="layui-circle" src="__IMG__/default/top.jpg" style="max-width:30px;">
+                                                    </div>
+                                                </td>
+                                                <td>{{ item.create_time }}</td>
+                                                <td>
+                                                    <a class="layui-btn layui-btn-normal layui-btn-mini" :href="'/project/index/' + item.project_Id + '.html'">查看项目</a>
+                                                    <a class="layui-btn layui-btn-mini" @click="menuClick(2, item.project_Id)">编辑</a>
+                                                    <a class="layui-btn layui-btn-danger layui-btn-mini" @click="menuClick(3, item.project_Id)">删除</a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <div id="page" style="text-align: center">
+                                            <pagination :cur="1" :all="pageAll" :page-num="perPage" @page-to="loadProjectList"></pagination>
+                                            <!--<button @click="nextList($event)" id="next" class="layui-btn layui-btn-small" style="background-color: #ffffff;color: black">加载更多</button>-->
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

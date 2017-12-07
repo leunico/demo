@@ -59,5 +59,21 @@
     /*margin-bottom: 20px;*/
 }
 .item-title {
-    margin: 10px;
+    margin:0px 0px 5px 15px;
+}
+.item-search {
+    font-size: 10px;
+    height: 32px;
+    border-radius: 3px;
+    padding-left: 30px;
+    background-color: #eee;
+}
+.item-search-fa {
+    position: absolute;
+    margin-top: -27px;
+    margin-left: 10px;
+}
+.fa-search-input {
+    width: 32px;
+    color: #999;
 }
