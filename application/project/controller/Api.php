@@ -25,7 +25,7 @@ class Api extends BaseController
             'interface_Url' => '',
             'interface_Name' => '',
             'interface_Remark' => '',
-            'interface_Status' => '',
+            'interface_Status' => 1,
             'interface_Method' => ''
         ]);
         return $this->fetch('edit');

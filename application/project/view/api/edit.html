@@ -1,13 +1,13 @@
 {extend name="common@public/open" /}
 {block name="main"}
 <blockquote class="layui-elem-quote layui-text" style="margin-top:12px;">
-    添加或编辑一个分组
+    添加或编辑一个接口基本信息
 </blockquote>
-<div class="layui-tab-content" style="min-height:500px;">
+<div class="layui-tab-content">
     <form class="layui-form" action="">
         <input type="hidden" name="project_Id" value="{$project_Id}" />
         <div class="layui-form-item">
-            <label class="layui-form-label">联动选择框</label>
+            <label class="layui-form-label">选择分组</label>
             <div class="layui-input-inline">
                 <select name="group_Parent" lay-filter="group_Parent">
                     {:apiGroupSelect($project_Id, $group_Id)}
@@ -18,27 +18,46 @@
                     <option value=0>-可不设置子分组-</option>
                 </select>
             </div>
+            <label class="layui-form-label">是否启用</label>
+            <div class="layui-input-inline">
+                <div class="layui-input-block" style="margin-left:0px;">
+                <input type="checkbox" value="1" name="interface_Status" lay-skin="switch" lay-filter="switchTest" lay-text="启用|弃用" {if condition="$interface_Status eq 1"}checked{/if}>
+            </div>
+            </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">选择Method</label>
+            <label class="layui-form-label">接口名称</label>
             <div class="layui-input-block">
+                <input type="text" name="interface_Name" lay-verify="required" placeholder="请输入接口名称" autocomplete="off" class="layui-input" value="{$interface_Name}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">接口链接</label>
+            <div class="layui-input-inline" style="width:10%;">
                 <select name="interface_Method" lay-filter="aihao" lay-verify="required">
                     {volist name=":getConfigModel('interface_method')" id="vo"}
                         <option value="{$vo}" {eq name="vo" value="$interface_Method"}selected{/eq}>{$vo}</option>
                     {/volist}
                 </select>
             </div>
+            <div class="layui-input-block" style="width:76.6%;display:inline-block;margin-left:-10px;">
+                <input type="text" name="interface_Url" lay-verify="required" placeholder="请输入接口链接" autocomplete="off" class="layui-input" value="{$interface_Url}">
+            </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">接口名称</label>
-            <div class="layui-input-block">
-                <input type="text" name="interface_Name" lay-verify="required" placeholder="请输入分组名称" autocomplete="off" class="layui-input" value="{$interface_Name}">
+        <div class="layui-block-item layui-elem-quote">
+        <!-- 请求头部信息 -->
+            <label class="layui-form-label">接口链接</label>
+            <div class="layui-input-inline" style="width:20%;">
+                <input type="text" name="interface_Url" lay-verify="required" placeholder="请输入接口链接" autocomplete="off" class="layui-input" value="{$interface_Url}">
+            </div>
+            <div class="layui-input-block" style="width:66.6%;display:inline-block;">
+                <input type="text" name="interface_Url" lay-verify="required" placeholder="请输入接口链接" autocomplete="off" class="layui-input" value="{$interface_Url}">
             </div>
         </div>
 
         <div class="layui-form-item">
             <div class="layui-input-block layui-input-submit">
-                <button class="layui-btn layui-btn-small" lay-submit="group" lay-filter="group">立即提交</button>
+                <button class="layui-btn layui-btn-small" lay-submit="group" lay-filter="group">立即保存</button>
                 <button type="reset" class="layui-btn layui-btn-small layui-btn-primary">取消</button>
             </div>
         </div>
