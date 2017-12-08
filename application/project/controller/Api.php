@@ -21,9 +21,12 @@ class Api extends BaseController
     {
         $this->assign([
             'project_Id' => $this->request->get('pid', 0),
-            'group_ParentId' => $this->request->get('gpid', 0),
-            'group_Name' => '',
-            'group_Id' => 0
+            'group_Id' => $this->request->get('gid', 0),
+            'interface_Url' => '',
+            'interface_Name' => '',
+            'interface_Remark' => '',
+            'interface_Status' => '',
+            'interface_Method' => ''
         ]);
         return $this->fetch('edit');
     }

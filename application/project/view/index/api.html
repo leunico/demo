@@ -222,16 +222,16 @@
                     });
                 },
 
-                addMenu: function(id){
+                addInterface: function(){
                     layer.open({
                         type: 2
-                        ,title: '项目添加'
+                        ,title: '接口添加'
                         ,id: 'menu'
-                        ,content: ["{:Url('project/create')}" + "?id=" + id, 'no']
+                        ,content: ["{:Url('project/api/create')}" + "?gid=" + gpid + "&pid=" + pid, 'no']
                         ,shade: 0
-                        ,area: ['532px', '623px']
+                        ,area: ['850px', '800px']
                         ,end: function(){
-                            lists.loadProjectList(1);
+//                            lists.loadProjectList(1);
                             // window.location.reload();
                         }
                     });

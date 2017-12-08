@@ -71,6 +71,14 @@ function validateImg($url, $type)
     return "/static/images/default/defaultp.jpg";
 }
 
+# 获取一个配置项的值
+function getConfigModel($name)
+{
+    $config = model('config')->where('config_Name', $name)->find();
+    $data = $config->getData();
+    return (array)json_decode($data['config_Value']);
+}
+
 # 返回包装好的json数据
 function jsonOutPut($status, $msg='', $data='', $page=1, $count=0)
 {

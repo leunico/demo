@@ -8,6 +8,15 @@ class ApiGroup extends BaseController
 {
     public function index()
     {
+        if ($this->request->isAjax()){
+            $gid = $this->request->get('gid', 0);
+            if(!empty($gid)){
+                $items = Loader::model('ApiGroup')->where('group_ParentId', $gid)->column('group_Id,group_Name');
+                return jsonOutPut(1, '请求成功！', $items);
+            }else{
+                return jsonOutPut(0, '请求失败！', []);
+            }
+        }
         abort(404, '请求错误！');
     }
 
