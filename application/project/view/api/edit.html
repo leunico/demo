@@ -1,11 +1,14 @@
 {extend name="common@public/open" /}
 {block name="main"}
 <blockquote class="layui-elem-quote layui-text" style="margin-top:12px;">
-    添加或编辑一个接口基本信息
+    添加或编辑一个接口
 </blockquote>
 <div class="layui-tab-content">
     <form class="layui-form" action="">
-        <input type="hidden" name="project_Id" value="{$project_Id}" />
+        <input type="hidden" name="project_Id" value="{$project_Id}"/>
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top:0px;">
+            <legend style="margin-left:27px;">接口基本信息</legend>
+        </fieldset>
         <div class="layui-form-item">
             <label class="layui-form-label">选择分组</label>
             <div class="layui-input-inline">
@@ -34,24 +37,104 @@
         <div class="layui-form-item">
             <label class="layui-form-label">接口链接</label>
             <div class="layui-input-inline" style="width:10%;">
-                <select name="interface_Method" lay-filter="aihao" lay-verify="required">
+                <select name="interface_Method" lay-filter="methon" lay-verify="required">
                     {volist name=":getConfigModel('interface_method')" id="vo"}
                         <option value="{$vo}" {eq name="vo" value="$interface_Method"}selected{/eq}>{$vo}</option>
                     {/volist}
                 </select>
             </div>
-            <div class="layui-input-block" style="width:76.6%;display:inline-block;margin-left:-10px;">
+            <div class="layui-input-block" style="width:79.2%;display:inline-block;margin-left:-10px;">
                 <input type="text" name="interface_Url" lay-verify="required" placeholder="请输入接口链接" autocomplete="off" class="layui-input" value="{$interface_Url}">
             </div>
         </div>
-        <div class="layui-block-item layui-elem-quote">
-        <!-- 请求头部信息 -->
-            <label class="layui-form-label">接口链接</label>
-            <div class="layui-input-inline" style="width:20%;">
-                <input type="text" name="interface_Url" lay-verify="required" placeholder="请输入接口链接" autocomplete="off" class="layui-input" value="{$interface_Url}">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top:0px;">
+            <legend style="margin-left:27px;">请求头部信息</legend>
+        </fieldset>
+
+        <div class="layui-form-item" data-id="1">
+            <div class="layui-inline-block">
+            <div class="layui-input-inline">
+                <select name="header_key" lay-verify="required" lay-search="">
+                    <option value="">添加或者选择键类型</option>
+                    <option value="1">layer</option>
+                    <option value="2">form</option>
+                    <option value="3">layim</option>
+                    <option value="4">element</option>
+                    <option value="5">laytpl</option>
+                    <option value="6">upload</option>
+                    <option value="7">laydate</option>
+                    <option value="8">laypage</option>
+                </select>
             </div>
-            <div class="layui-input-block" style="width:66.6%;display:inline-block;">
-                <input type="text" name="interface_Url" lay-verify="required" placeholder="请输入接口链接" autocomplete="off" class="layui-input" value="{$interface_Url}">
+            <div class="layui-input-inline">
+                <input type="text" name="header_value" lay-verify="required" placeholder="请输入内容" autocomplete="off" class="layui-input" value="">
+            </div>
+            <div class="layui-input-inline" style="width:45%;">
+                <input type="text" name="header_remark" placeholder="请输入说明" autocomplete="off" class="layui-input" value="">
+            </div>
+            <div class="layui-input-inline" style="width:10%;">
+                <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-trash-o" style="font-size:1.4em;"></i></span></a>
+                <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-down" style="font-size:1.4em;"></i></span></a>
+                <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-up" style="font-size:1.4em;"></i></span></a>
+            </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item" data-id="2">
+            <div class="layui-inline-block">
+                <div class="layui-input-inline">
+                    <select name="header_key" lay-verify="required" lay-search="">
+                        <option value="">添加或者选择键类型</option>
+                        <option value="1">layer</option>
+                        <option value="2">form</option>
+                        <option value="3">layim</option>
+                        <option value="4">element</option>
+                        <option value="5">laytpl</option>
+                        <option value="6">upload</option>
+                        <option value="7">laydate</option>
+                        <option value="8">laypage</option>
+                    </select>
+                </div>
+                <div class="layui-input-inline">
+                    <input type="text" name="header_value" lay-verify="required" placeholder="请输入内容" autocomplete="off" class="layui-input" value="">
+                </div>
+                <div class="layui-input-inline" style="width:45%;">
+                    <input type="text" name="header_remark" placeholder="请输入说明" autocomplete="off" class="layui-input" value="">
+                </div>
+                <div class="layui-input-inline" style="width:10%;">
+                    <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-trash-o" style="font-size:1.4em;"></i></span></a>
+                    <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-down" style="font-size:1.4em;"></i></span></a>
+                    <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-up" style="font-size:1.4em;"></i></span></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item" data-id="3">
+            <div class="layui-inline-block">
+                <div class="layui-input-inline">
+                    <select name="header_key" lay-verify="required" lay-search="">
+                        <option value="">添加或者选择键类型</option>
+                        <option value="1">layer</option>
+                        <option value="2">form</option>
+                        <option value="3">layim</option>
+                        <option value="4">element</option>
+                        <option value="5">laytpl</option>
+                        <option value="6">upload</option>
+                        <option value="7">laydate</option>
+                        <option value="8">laypage</option>
+                    </select>
+                </div>
+                <div class="layui-input-inline">
+                    <input type="text" name="header_value" lay-verify="required" placeholder="请输入内容" autocomplete="off" class="layui-input" value="">
+                </div>
+                <div class="layui-input-inline" style="width:45%;">
+                    <input type="text" name="header_remark" placeholder="请输入说明" autocomplete="off" class="layui-input" value="">
+                </div>
+                <div class="layui-input-inline" style="width:10%;">
+                    <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-trash-o" style="font-size:1.4em;"></i></span></a>
+                    <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-down" style="font-size:1.4em;"></i></span></a>
+                    <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-up" style="font-size:1.4em;"></i></span></a>
+                </div>
             </div>
         </div>
 
@@ -69,7 +152,60 @@
 <script>
     layui.use(['form'], function(){
         var $ = layui.$,
-            form = layui.form;
+            form = layui.form,
+            h = 3;
+
+        $("input[name='header_value']").on('change', function(){
+            var item = $(this).parent().parent().parent();
+            if(item.attr('data-id') == h){
+                item.after(item.prop("outerHTML"));
+                item.next().attr('data-id', h+1);
+            }
+        });
+
+var j=2;
+var s;
+function add(){
+    var k=1;
+    var de=document.getElementsByName("edutypeid2");
+    for(var i=0;i<de.length;i++){
+        if(de[i].value==$('edutypeid').value){
+            k=0;
+            alert('已经添加');
+        }
+    }
+
+    if(k==1){
+        var tea=$('edutypeid');
+        var teacherid=$('edutypeid').value;
+        var teacher=tea.options[tea.selectedIndex].text;
+        var d = document.createElement("div");
+        d.innerHTML="<a class=\"bt\" onclick=\"javascript:sort(this)\">"+teacher+"</a><input name=\"edutypeid2\" value=\""+teacherid+"\" type=\"hidden\"><input type=\"button\" onclick=\"del(this)\" value=\"删除\"/><br/>";
+        //alert(d.innerHTML);
+        $('de').appendChild(d);
+
+    }
+}
+function del(v){
+    var is=confirm('是否删除?');
+    if(is){
+        var x=v.parentNode;
+        x.parentNode.removeChild(x);
+    }
+}
+function sort(v){
+    if(j%2==0){
+        //v.style.cursor="move";
+        s=v.parentNode.innerHTML;
+        var x=v.parentNode;
+        x.parentNode.removeChild(x);
+    }else{
+        var d = document.createElement("div");
+        d.innerHTML=s;
+        v.parentNode.parentNode.insertBefore(d,v.parentNode);
+    }
+    j++;
+}
 
         form.on('select(group_Parent)', function(data){
             $.get("/project/api_group?gid=" + data.value, function(res){
@@ -88,12 +224,13 @@
 
         form.on('submit(group)', function(data){
             if(data.field.group_Id == 0){
-                $.post("/project/api_group", data.field, function(res){
-                    if(res.status == 1)
-                        parent.window.location.reload();
-                    else
-                        parent.layer.msg(res.msg, {time: 2000, icon: 2});
-                });
+                console.log(data.field);
+//                $.post("/project/api_group", data.field, function(res){
+//                    if(res.status == 1)
+//                        parent.window.location.reload();
+//                    else
+//                        parent.layer.msg(res.msg, {time: 2000, icon: 2});
+//                });
             }else{
                 $.ajax({
                     url: "/project/api_group/" + data.field.group_Id,

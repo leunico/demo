@@ -25,7 +25,7 @@
 }
 .layui-input-submit {
     margin-left: 0px;
-    text-align: center;
+    text-align: right;
     /*background-color: #f2f2f2;*/
     height: 48px;
     line-height: 48px;
@@ -76,4 +76,14 @@
 .fa-search-input {
     width: 32px;
     color: #999;
+}
+.layui-inline-block {
+    margin-left: 38px;
+}
+.layui-badge-font {
+    height: 38px;
+    line-height: 44px;
+    border-radius: 2px;
+    width: 20px;
+    background-color: #f2f2f2!important;
 }
