@@ -35,8 +35,8 @@
 
 {block name="js"}
 <script>
-    layui.use(['form'], function(){
-        var $ = layui.$,
+    layui.use(['form', 'jquery'], function(){
+        var $ = layui.jquery,
             form = layui.form;
 
         form.on('submit(group)', function(data){

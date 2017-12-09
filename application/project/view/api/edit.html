@@ -51,7 +51,7 @@
             <legend style="margin-left:27px;">请求头部信息</legend>
         </fieldset>
 
-        <div class="layui-form-item" data-id="1">
+        <!-- <div class="layui-form-item" data-id="1">
             <div class="layui-inline-block">
             <div class="layui-input-inline">
                 <select name="header_key" lay-verify="required" lay-search="">
@@ -67,7 +67,7 @@
                 </select>
             </div>
             <div class="layui-input-inline">
-                <input type="text" name="header_value" lay-verify="required" placeholder="请输入内容" autocomplete="off" class="layui-input" value="">
+                <input type="text" name="header_value" lay-verify="required" placeholder="请输入内容" autocomplete="off" class="layui-input" value="" onchange="eventHeader(this)">
             </div>
             <div class="layui-input-inline" style="width:45%;">
                 <input type="text" name="header_remark" placeholder="请输入说明" autocomplete="off" class="layui-input" value="">
@@ -96,7 +96,7 @@
                     </select>
                 </div>
                 <div class="layui-input-inline">
-                    <input type="text" name="header_value" lay-verify="required" placeholder="请输入内容" autocomplete="off" class="layui-input" value="">
+                    <input type="text" name="header_value" lay-verify="required" placeholder="请输入内容" autocomplete="off" class="layui-input" value="" onchange="eventHeader(this)">
                 </div>
                 <div class="layui-input-inline" style="width:45%;">
                     <input type="text" name="header_remark" placeholder="请输入说明" autocomplete="off" class="layui-input" value="">
@@ -107,12 +107,12 @@
                     <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-up" style="font-size:1.4em;"></i></span></a>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <div class="layui-form-item" data-id="3">
+        <div class="layui-form-item" data-id="1">
             <div class="layui-inline-block">
                 <div class="layui-input-inline">
-                    <select name="header_key" lay-verify="required" lay-search="">
+                    <select name="header_key[]" lay-verify="required" lay-search="">
                         <option value="">添加或者选择键类型</option>
                         <option value="1">layer</option>
                         <option value="2">form</option>
@@ -125,13 +125,13 @@
                     </select>
                 </div>
                 <div class="layui-input-inline">
-                    <input type="text" name="header_value" lay-verify="required" placeholder="请输入内容" autocomplete="off" class="layui-input" value="">
+                    <input type="text" name="header_value[]" lay-verify="required" placeholder="请输入内容" autocomplete="off" class="layui-input" value="" onchange="eventHeader(this)">
                 </div>
                 <div class="layui-input-inline" style="width:45%;">
-                    <input type="text" name="header_remark" placeholder="请输入说明" autocomplete="off" class="layui-input" value="">
+                    <input type="text" name="header_remark[]" placeholder="请输入说明" autocomplete="off" class="layui-input" value="">
                 </div>
                 <div class="layui-input-inline" style="width:10%;">
-                    <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-trash-o" style="font-size:1.4em;"></i></span></a>
+                    <a href="javascript:" onclick="delHeader(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-trash-o" style="font-size:1.4em;"></i></span></a>
                     <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-down" style="font-size:1.4em;"></i></span></a>
                     <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-up" style="font-size:1.4em;"></i></span></a>
                 </div>
@@ -150,19 +150,8 @@
 
 {block name="js"}
 <script>
-    layui.use(['form'], function(){
-        var $ = layui.$,
-            form = layui.form,
-            h = 3;
-
-        $("input[name='header_value']").on('change', function(){
-            var item = $(this).parent().parent().parent();
-            if(item.attr('data-id') == h){
-                item.after(item.prop("outerHTML"));
-                item.next().attr('data-id', h+1);
-            }
-        });
-
+    var $ = layui.jquery;
+    var h = 1;
 var j=2;
 var s;
 function add(){
@@ -206,6 +195,30 @@ function sort(v){
     }
     j++;
 }
+    function eventHeader(e){
+        if(!$(e).attr("lay-verify")){
+            $(e).attr('lay-verify', 'required');
+            $(e).parent().prev().find('select').attr('lay-verify', 'required');
+        }
+
+        var item = $(e).parent().parent().parent();
+        if(item.attr('data-id') == h){
+            h++;
+            item.after(item.prop("outerHTML"));
+            var nextItem = item.next();
+            nextItem.attr('data-id', h);
+            nextItem.find('select').attr('lay-verify', '');
+            nextItem.find("input[name='header_value[]']").attr('lay-verify', '');
+        }
+    }
+
+    function delHeader(e){
+        $(e).parent().parent().parent().remove();
+    }
+
+    layui.use(['form', 'jquery'], function(){
+        var $ = layui.jquery,
+            form = layui.form;
 
         form.on('select(group_Parent)', function(data){
             $.get("/project/api_group?gid=" + data.value, function(res){
