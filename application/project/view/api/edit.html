@@ -73,9 +73,9 @@
                     <input type="text" name="header_remark[]" placeholder="请输入说明" autocomplete="off" class="layui-input" value="">
                 </div>
                 <div class="layui-input-inline" style="width:10%;">
-                    <a href="javascript:" onclick="delHeader(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-trash-o" style="font-size:1.4em;"></i></span></a>
-                    <a href="javascript:" onclick="downHeader(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-down" style="font-size:1.4em;"></i></span></a>
-                    <a href="javascript:" onclick="upHeader(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-up" style="font-size:1.4em;"></i></span></a>
+                    <a class="act" href="javascript:" onclick="delHeader(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-trash-o" style="font-size:1.4em;"></i></span></a>
+                    <a class="act" href="javascript:" onclick="downHeader(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-down" style="font-size:1.4em;"></i></span></a>
+                    <a class="act" href="javascript:" onclick="upHeader(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-up" style="font-size:1.4em;"></i></span></a>
                 </div>
             </div>
         </div>
@@ -92,9 +92,10 @@
 
 {block name="js"}
 <script>
-    layui.use(['form', 'jquery'], function(){
+    layui.use(['form', 'jquery', 'layer'], function(){
         var $ = layui.jquery,
             form = layui.form,
+            layer = layui.layer,
             h = 1,
             action = '',
             pagefun = {};
@@ -127,19 +128,30 @@
 
             upHeader: function (e){
                 var item = $(e).parent().parent().parent();
-                var prevNode = item.prev();
-                var p1 = item.offset(), p2 = prevNode.offset();
-                var h1 = item.attr('data-id'), h2 = prevNode.attr('data-id');
-                console.log(h1,h2);
-                item.animate(p2, 1000);
-                prevNode.animate(p1, 1000);
-                item.attr('data-id', parseInt(h2)+1);
-                prevNode.attr('data-id', h1-1);
+                if(item.attr('data-id') == 1)
+                    layer.msg('不能在往上了！');
+                else
+                    pagefun.changeOrder(item, item.prev());
             },
 
             downHeader: function (e){
                 var item = $(e).parent().parent().parent();
-                console.log(e);
+                if(item.attr('data-id') == (h-1))
+                    layer.msg('不能在往下了！');
+                else
+                    pagefun.changeOrder(item.next(), item);
+            },
+
+            changeOrder: function (itemNode, nextNode){
+                var id1 = itemNode.attr('data-id'), id2 = nextNode.attr('data-id');
+                itemNode.insertBefore(nextNode);
+                itemNode.attr('data-id', id2);
+                nextNode.attr('data-id', id1);
+                // if(id2 == 1)
+                //     itemNode.find(".act").eq(2).remove();
+
+                // if(id1 == (h-1))
+                //     nextNode.find(".act").eq(1).remove();
             }
         }
         eventHeader = pagefun.eventHeader;
