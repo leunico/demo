@@ -51,65 +51,7 @@
             <legend style="margin-left:27px;">请求头部信息</legend>
         </fieldset>
 
-        <!-- <div class="layui-form-item" data-id="1">
-            <div class="layui-inline-block">
-            <div class="layui-input-inline">
-                <select name="header_key" lay-verify="required" lay-search="">
-                    <option value="">添加或者选择键类型</option>
-                    <option value="1">layer</option>
-                    <option value="2">form</option>
-                    <option value="3">layim</option>
-                    <option value="4">element</option>
-                    <option value="5">laytpl</option>
-                    <option value="6">upload</option>
-                    <option value="7">laydate</option>
-                    <option value="8">laypage</option>
-                </select>
-            </div>
-            <div class="layui-input-inline">
-                <input type="text" name="header_value" lay-verify="required" placeholder="请输入内容" autocomplete="off" class="layui-input" value="" onchange="eventHeader(this)">
-            </div>
-            <div class="layui-input-inline" style="width:45%;">
-                <input type="text" name="header_remark" placeholder="请输入说明" autocomplete="off" class="layui-input" value="">
-            </div>
-            <div class="layui-input-inline" style="width:10%;">
-                <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-trash-o" style="font-size:1.4em;"></i></span></a>
-                <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-down" style="font-size:1.4em;"></i></span></a>
-                <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-up" style="font-size:1.4em;"></i></span></a>
-            </div>
-            </div>
-        </div>
-
-        <div class="layui-form-item" data-id="2">
-            <div class="layui-inline-block">
-                <div class="layui-input-inline">
-                    <select name="header_key" lay-verify="required" lay-search="">
-                        <option value="">添加或者选择键类型</option>
-                        <option value="1">layer</option>
-                        <option value="2">form</option>
-                        <option value="3">layim</option>
-                        <option value="4">element</option>
-                        <option value="5">laytpl</option>
-                        <option value="6">upload</option>
-                        <option value="7">laydate</option>
-                        <option value="8">laypage</option>
-                    </select>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="text" name="header_value" lay-verify="required" placeholder="请输入内容" autocomplete="off" class="layui-input" value="" onchange="eventHeader(this)">
-                </div>
-                <div class="layui-input-inline" style="width:45%;">
-                    <input type="text" name="header_remark" placeholder="请输入说明" autocomplete="off" class="layui-input" value="">
-                </div>
-                <div class="layui-input-inline" style="width:10%;">
-                    <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-trash-o" style="font-size:1.4em;"></i></span></a>
-                    <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-down" style="font-size:1.4em;"></i></span></a>
-                    <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-up" style="font-size:1.4em;"></i></span></a>
-                </div>
-            </div>
-        </div> -->
-
-        <div class="layui-form-item" data-id="1">
+        <div class="layui-form-item" data-id=1>
             <div class="layui-inline-block">
                 <div class="layui-input-inline">
                     <select name="header_key[]" lay-verify="required" lay-search="">
@@ -132,8 +74,8 @@
                 </div>
                 <div class="layui-input-inline" style="width:10%;">
                     <a href="javascript:" onclick="delHeader(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-trash-o" style="font-size:1.4em;"></i></span></a>
-                    <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-down" style="font-size:1.4em;"></i></span></a>
-                    <a href="javascript:"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-up" style="font-size:1.4em;"></i></span></a>
+                    <a href="javascript:" onclick="downHeader(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-down" style="font-size:1.4em;"></i></span></a>
+                    <a href="javascript:" onclick="upHeader(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-up" style="font-size:1.4em;"></i></span></a>
                 </div>
             </div>
         </div>
@@ -150,75 +92,60 @@
 
 {block name="js"}
 <script>
-    var $ = layui.jquery;
-    var h = 1;
-var j=2;
-var s;
-function add(){
-    var k=1;
-    var de=document.getElementsByName("edutypeid2");
-    for(var i=0;i<de.length;i++){
-        if(de[i].value==$('edutypeid').value){
-            k=0;
-            alert('已经添加');
-        }
-    }
-
-    if(k==1){
-        var tea=$('edutypeid');
-        var teacherid=$('edutypeid').value;
-        var teacher=tea.options[tea.selectedIndex].text;
-        var d = document.createElement("div");
-        d.innerHTML="<a class=\"bt\" onclick=\"javascript:sort(this)\">"+teacher+"</a><input name=\"edutypeid2\" value=\""+teacherid+"\" type=\"hidden\"><input type=\"button\" onclick=\"del(this)\" value=\"删除\"/><br/>";
-        //alert(d.innerHTML);
-        $('de').appendChild(d);
-
-    }
-}
-function del(v){
-    var is=confirm('是否删除?');
-    if(is){
-        var x=v.parentNode;
-        x.parentNode.removeChild(x);
-    }
-}
-function sort(v){
-    if(j%2==0){
-        //v.style.cursor="move";
-        s=v.parentNode.innerHTML;
-        var x=v.parentNode;
-        x.parentNode.removeChild(x);
-    }else{
-        var d = document.createElement("div");
-        d.innerHTML=s;
-        v.parentNode.parentNode.insertBefore(d,v.parentNode);
-    }
-    j++;
-}
-    function eventHeader(e){
-        if(!$(e).attr("lay-verify")){
-            $(e).attr('lay-verify', 'required');
-            $(e).parent().prev().find('select').attr('lay-verify', 'required');
-        }
-
-        var item = $(e).parent().parent().parent();
-        if(item.attr('data-id') == h){
-            h++;
-            item.after(item.prop("outerHTML"));
-            var nextItem = item.next();
-            nextItem.attr('data-id', h);
-            nextItem.find('select').attr('lay-verify', '');
-            nextItem.find("input[name='header_value[]']").attr('lay-verify', '');
-        }
-    }
-
-    function delHeader(e){
-        $(e).parent().parent().parent().remove();
-    }
-
     layui.use(['form', 'jquery'], function(){
         var $ = layui.jquery,
-            form = layui.form;
+            form = layui.form,
+            h = 1,
+            action = '',
+            pagefun = {};
+
+        pagefun = {
+            eventHeader: function(e){
+                var item = $(e).parent().parent().parent();
+                if(!$(e).attr("lay-verify")){
+                    $(e).attr('lay-verify', 'required');
+                    $(e).parent().prev().find('select').attr('lay-verify', 'required');
+                    $(e).parent().next().next().html(action);
+                }
+
+                if(item.attr('data-id') == h){
+                    h++;
+                    item.after(item.prop("outerHTML"));
+                    var nextItem = item.next();
+                    nextItem.attr('data-id', h);
+                    nextItem.find('select').attr('lay-verify', '');
+                    nextItem.find("input[name='header_value[]']").attr('lay-verify', '');
+                    action = nextItem.find(".layui-input-inline").eq(3).html();
+                    nextItem.find(".layui-input-inline").eq(3).html('');
+                    form.render('select');
+                }
+            },
+
+            delHeader: function(e){
+                $(e).parent().parent().parent().remove();
+            },
+
+            upHeader: function (e){
+                var item = $(e).parent().parent().parent();
+                var prevNode = item.prev();
+                var p1 = item.offset(), p2 = prevNode.offset();
+                var h1 = item.attr('data-id'), h2 = prevNode.attr('data-id');
+                console.log(h1,h2);
+                item.animate(p2, 1000);
+                prevNode.animate(p1, 1000);
+                item.attr('data-id', parseInt(h2)+1);
+                prevNode.attr('data-id', h1-1);
+            },
+
+            downHeader: function (e){
+                var item = $(e).parent().parent().parent();
+                console.log(e);
+            }
+        }
+        eventHeader = pagefun.eventHeader;
+        delHeader = pagefun.delHeader;
+        upHeader = pagefun.upHeader;
+        downHeader = pagefun.downHeader;
 
         form.on('select(group_Parent)', function(data){
             $.get("/project/api_group?gid=" + data.value, function(res){
