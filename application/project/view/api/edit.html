@@ -50,6 +50,9 @@
         <fieldset class="layui-elem-field layui-field-title" style="margin-top:0px;">
             <legend style="margin-left:27px;">请求头部信息</legend>
         </fieldset>
+        <div class="layui-item-but">
+            <button class="layui-btn layui-btn-small" @click="addMenu(0, 2)">导入头部</button>
+        </div>
 
         <div class="layui-form-item" data-id=1>
             <div class="layui-inline-block">
@@ -136,7 +139,7 @@
 
             downHeader: function (e){
                 var item = $(e).parent().parent().parent();
-                if(item.attr('data-id') == (h-1))
+                if(item.attr('data-id') < (h-1))
                     layer.msg('不能在往下了！');
                 else
                     pagefun.changeOrder(item.next(), item);
