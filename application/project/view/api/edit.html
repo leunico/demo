@@ -1,6 +1,6 @@
 {extend name="common@public/open" /}
 {block name="main"}
-<blockquote class="layui-elem-quote layui-text" style="margin-top:12px;">
+<blockquote class="layui-elem-quote layui-text layui-text-title">
     添加或编辑一个接口
 </blockquote>
 <div class="layui-tab-content">
@@ -51,10 +51,10 @@
             <legend style="margin-left:27px;">请求头部信息</legend>
         </fieldset>
         <div class="layui-item-but">
-            <button class="layui-btn layui-btn-small" @click="addMenu(0, 2)">导入头部</button>
+            <a href="javascript:;" class="layui-btn layui-btn-small" id="json_header">导入头部</a>
         </div>
 
-        <div class="layui-form-item" data-id=1>
+        <div class="layui-form-item item-header" data-id=1>
             <div class="layui-inline-block">
                 <div class="layui-input-inline">
                     <select name="header_key[]" lay-verify="required" lay-search="">
@@ -75,7 +75,7 @@
                 <div class="layui-input-inline" style="width:45%;">
                     <input type="text" name="header_remark[]" placeholder="请输入说明" autocomplete="off" class="layui-input" value="">
                 </div>
-                <div class="layui-input-inline" style="width:10%;">
+                <div class="layui-input-inline" style="width:10%;display:none">
                     <a class="act" href="javascript:" onclick="delHeader(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-trash-o" style="font-size:1.4em;"></i></span></a>
                     <a class="act" href="javascript:" onclick="downHeader(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-down" style="font-size:1.4em;"></i></span></a>
                     <a class="act" href="javascript:" onclick="upHeader(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-up" style="font-size:1.4em;"></i></span></a>
@@ -85,11 +85,16 @@
 
         <div class="layui-form-item">
             <div class="layui-input-block layui-input-submit">
-                <button class="layui-btn layui-btn-small" lay-submit="group" lay-filter="group">立即保存</button>
+                <button class="layui-btn layui-btn-small" lay-submit lay-filter="group">立即保存</button>
                 <button type="reset" class="layui-btn layui-btn-small layui-btn-primary">取消</button>
             </div>
         </div>
     </form>
+</div>
+<div class="layui-item-jsonup">
+    <textarea class="site-demo-text" id="jsonmain" placeholder="请输入要导入的Json数据，请满足基本的key-value格式，若有其他参数比如描述则需满足key-value-description格式"></textarea>
+    <a href="javascript:;" class="layui-btn layui-btn-small layui-btn-normal" onclick="jsonSbumit(jsonmain.value)" class="btns">全部替换</a>
+    <!--<a href="javascript:;" class="layui-btn layui-btn-small layui-btn-primary" style="right:93px;">后面添加</a>-->
 </div>
 {/block}
 
@@ -103,6 +108,20 @@
             action = '',
             pagefun = {};
 
+        var upjson = $('#json_header'), popJson = function(){
+            layer.open({
+                type: 1
+                ,title: '导入Json数据'
+                ,id: 'layer_json'
+                ,content: $('.layui-item-jsonup')
+                ,shade: 0
+                ,resize: false
+//                ,success: function(layero, index){}
+//                ,end: function(){}
+            });
+        };
+        upjson.on('click', popJson);
+
         pagefun = {
             eventHeader: function(e){
                 var item = $(e).parent().parent().parent();
@@ -110,6 +129,8 @@
                     $(e).attr('lay-verify', 'required');
                     $(e).parent().prev().find('select').attr('lay-verify', 'required');
                     $(e).parent().next().next().html(action);
+                }else{
+                    $(e).parent().next().next().show();
                 }
 
                 if(item.attr('data-id') == h){
@@ -131,18 +152,22 @@
 
             upHeader: function (e){
                 var item = $(e).parent().parent().parent();
-                if(item.attr('data-id') == 1)
+                if(item.attr('data-id') == 1) {
                     layer.msg('不能在往上了！');
-                else
+                }else{
                     pagefun.changeOrder(item, item.prev());
+                    item.fadeOut("900", "swing", function(){$(this).fadeIn("900", "swing")});
+                }
             },
 
             downHeader: function (e){
                 var item = $(e).parent().parent().parent();
-                if(item.attr('data-id') < (h-1))
+                if(item.attr('data-id') == (h-1) || h == 1) {
                     layer.msg('不能在往下了！');
-                else
+                }else{
                     pagefun.changeOrder(item.next(), item);
+                    item.fadeOut("900", "swing", function(){$(this).fadeIn("900", "swing")});
+                }
             },
 
             changeOrder: function (itemNode, nextNode){
@@ -150,13 +175,39 @@
                 itemNode.insertBefore(nextNode);
                 itemNode.attr('data-id', id2);
                 nextNode.attr('data-id', id1);
-                // if(id2 == 1)
-                //     itemNode.find(".act").eq(2).remove();
+            },
 
-                // if(id1 == (h-1))
-                //     nextNode.find(".act").eq(1).remove();
+            isJsonData: function (str){
+                if(typeof str == 'string'){
+                    try {
+                        var obj = JSON.parse(str);
+                        if(str.indexOf('{') > -1) {
+                            for(var k in obj){
+                                if(!obj[k].hasOwnProperty("key") || !obj[k].hasOwnProperty("value"))
+                                    return false;
+                            }
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    }catch(e){
+                        return false;
+                    }
+                }
+                return false;
+            },
+
+            jsonSbumit: function (v){
+                if(!pagefun.isJsonData(v))
+                    layer.msg("数据不标准！", {time: 2000, icon: 2});
+
+                var itemNode = $(".item-header:first");
+                itemNode.after(itemNode.prop("outerHTML"));
+
+                console.log($(".item-header:first"));
             }
-        }
+        };
+        jsonSbumit = pagefun.jsonSbumit;
         eventHeader = pagefun.eventHeader;
         delHeader = pagefun.delHeader;
         upHeader = pagefun.upHeader;
@@ -192,10 +243,10 @@
                     type: "PUT",
                     data: data.field,
                     success: function(res){
-                        if(res.status == 1)
-                            parent.window.location.reload();
-                        else
-                            parent.layer.msg(res.msg, {time: 2000, icon: 2});
+//                        if(res.status == 1)
+//                            parent.window.location.reload();
+//                        else
+//                            parent.layer.msg(res.msg, {time: 2000, icon: 2});
                     }
                 });
             }

@@ -1,4 +1,4 @@
-<script src="../../../../public/static/layui.js"></script>{extend name="common@public/base" /}
+{extend name="common@public/base" /}
 {block name="main"}
 <div class="layui-body">
     <!-- 内容主体区域 -->
@@ -135,7 +135,7 @@
                     ,id: 'group'
                     ,content: [url, 'no']
                     ,shade: 0
-                    ,area: ['485px', '288px']
+                    ,area: ['485px', '280px']
                     ,end: function(){} // window.location.reload();
                 });
             }
@@ -247,7 +247,7 @@
                             ,title: '项目修改'
                             ,content: ["/admin/project/" + id + "/edit", 'no']
                             ,shade: 0
-                            ,area: ['532px', '623px']
+                            ,area: ['532px', '615px']
                             ,end: function(){
                                 lists.loadProjectList(1);
                             }

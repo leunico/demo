@@ -97,7 +97,6 @@ function getImgPath($model)
 # 生成随机字符串
 function generatePassword($length = 8, $type = false)
 {
-
     // 密码字符集，可任意添加你需要的字符
     $chars = empty($type) ? 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_ []{}<>~`+=,.;:/?|' : 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     $password = '';
