@@ -274,6 +274,30 @@
                     }
                 },
 
+                jsonBody: function (val) {
+                    if(!pagefun.isJsonData(val, function(k,v){
+                            if(!v[k].hasOwnProperty("key") || !v[k].hasOwnProperty("value"))
+                                return true;
+                        })){
+                        layer.msg("数据不标准！", {time: 2000, icon: 2});
+                    }else{
+                        var itemNode = $(".item-body .layui-form-item:last-child"), fNote = $(".item-body"), jdata = JSON.parse(val);
+                        fNote.empty();
+                        for(var k in jdata){
+                            fNote.append(itemNode.prop("outerHTML"));
+                            var tNote = fNote.children(".layui-form-item:last-child");
+                            tNote.attr('data-id', k);
+                            tNote.find(".layui-input-inline").eq(5).show();
+                            tNote.find("select").attr('lay-verify', 'required').append("<option value="+ jdata[k]["key"] +" selected>"+ jdata[k]["key"] +"</option>")
+                            tNote.find("input[name='header_value[]']").attr('lay-verify', 'required').val(jdata[k]["value"]);
+                            if(jdata[k].hasOwnProperty("description"))
+                                tNote.find("input[name='header_remark[]']").val(jdata[k]["description"]);
+                        }
+                        form.render('select');
+                        fNote.append(itemNode.prop("outerHTML"));
+                    }
+                },
+
                 jsonSubmit: function (val, e){
                     var note = $(e).parent().parent().attr('id');
                     if(note == 'item-header')
@@ -293,6 +317,7 @@
         delItem = pagefun.delItem;
         upOrder = pagefun.upOrder;
         downOrder = pagefun.downOrder;
+
         form.on('select(group_Parent)', function(data){
             $.get("/project/api_group?gid=" + data.value, function(res){
                 if(res.status == 1){
