@@ -51,7 +51,7 @@
             <legend style="margin-left:27px;">请求头部</legend>
         </fieldset>
         <div class="layui-item-but">
-            <a href="javascript:;" class="layui-btn layui-btn-small" id="json_header">导入头部</a>
+            <a href="javascript:;" class="layui-btn layui-btn-small" onclick="upJson('item-header')">导入头部</a>
         </div>
 
         <div class="item-header">
@@ -78,7 +78,7 @@
                     </div>
                     <div class="layui-input-inline" style="width:10%;display:none">
                         <a class="act" href="javascript:" onclick="delItem(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-trash-o" style="font-size:1.4em;"></i></span></a>
-                        <a class="act" href="javascript:" onclick="downOrder(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-down" style="font-size:1.4em;"></i></span></a>
+                        <a class="act" href="javascript:" onclick="downOrder(this, 1)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-down" style="font-size:1.4em;"></i></span></a>
                         <a class="act" href="javascript:" onclick="upOrder(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-up" style="font-size:1.4em;"></i></span></a>
                     </div>
                 </div>
@@ -89,14 +89,14 @@
             <legend style="margin-left:27px;">请求参数</legend>
         </fieldset>
         <div class="layui-item-but">
-            <a href="javascript:;" class="layui-btn layui-btn-small" id="json_body">导入参数</a>
+            <a href="javascript:;" class="layui-btn layui-btn-small" onclick="upJson('item-body')">导入参数</a>
         </div>
 
-        <div class="item-header">
+        <div class="item-body">
             <div class="layui-form-item" data-id=1>
                 <div class="layui-inline-block">
                     <div class="layui-input-inline" style="width:1%">
-                        <input type="checkbox" name="body_check[]" lay-skin="primary" title="" >
+                        <input type="checkbox" name="body_check[]" lay-skin="primary" title="" checked>
                     </div>
                     <div class="layui-input-inline">
                         <input type="text" name="body_name[]" placeholder="请输入参数名" autocomplete="off" class="layui-input" value="" onchange="eventBody(this)">
@@ -122,7 +122,7 @@
                     </div>
                     <div class="layui-input-inline" style="width:10%;display:none">
                         <a class="act" href="javascript:" onclick="delItem(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-trash-o" style="font-size:1.4em;"></i></span></a>
-                        <a class="act" href="javascript:" onclick="downOrder(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-down" style="font-size:1.4em;"></i></span></a>
+                        <a class="act" href="javascript:" onclick="downOrder(this, 2)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-down" style="font-size:1.4em;"></i></span></a>
                         <a class="act" href="javascript:" onclick="upOrder(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-up" style="font-size:1.4em;"></i></span></a>
                     </div>
                 </div>
@@ -139,7 +139,7 @@
 </div>
 <div class="layui-item-jsonup">
     <textarea class="site-demo-text" id="jsonmain" placeholder="请输入要导入的Json数据，请满足基本的key-value格式，若有其他参数比如描述则需满足key-value-description格式"></textarea>
-    <a href="javascript:;" class="layui-btn layui-btn-small layui-btn-normal" onclick="jsonHeader(jsonmain.value)" class="btns">全部替换</a>
+    <a href="javascript:;" class="layui-btn layui-btn-small layui-btn-normal" onclick="jsonSubmit(jsonmain.value, this)" class="btns">全部替换</a>
     <!--<a href="javascript:;" class="layui-btn layui-btn-small layui-btn-primary" style="right:93px;">后面添加</a>-->
 </div>
 {/block}
@@ -150,140 +150,149 @@
         var $ = layui.jquery,
             form = layui.form,
             layer = layui.layer,
-            h = 1,
-            b = 1,
-            jo_id = '',
-            pagefun = {};
+            h = {"count": 1},
+            b = {"count": 1},
+            p = {"count": 1},
+            j_id = '',
+            pagefun = {
+                eventHeader: function(e){
+                    if(!$(e).attr("lay-verify")){
+                        $(e).attr('lay-verify', 'required');
+                        $(e).parent().prev().find('select').attr('lay-verify', 'required');
+                    }
+                    pagefun.changeAdd(e, h);
+                },
 
-        var upjson = $('#json_header'), popJson = function(){
-            jo_id = layer.open({
-                type: 1
-                ,title: '导入Json数据'
-                ,id: 'layer_json'
-                ,content: $('.layui-item-jsonup')
-                ,shade: 0
-                ,resize: false
-            });
-        };
-        upjson.on('click', popJson);
+                eventBody: function(e){
+                    if(!$(e).attr("lay-verify"))
+                        $(e).attr('lay-verify', 'required');
+                    pagefun.changeAdd(e, b);
+                    form.render('checkbox');
+                },
 
-        pagefun = {
-            eventHeader: function(e){
-                var item = $(e).parent().parent().parent();
-                if(!$(e).attr("lay-verify")){
-                    $(e).attr('lay-verify', 'required');
-                    $(e).parent().prev().find('select').attr('lay-verify', 'required');
-                }
+                delItem: function(e){
+                    $(e).parent().parent().parent().remove();
+                },
 
-                if(item.attr('data-id') == h){
-                    h++;
-                    item.after(item.prop("outerHTML"));
-                    item.next().attr('data-id', h);
-                    item.find(".layui-input-inline").eq(3).show();
-                    form.render('select');
-                }
-            },
+                upOrder: function (e){
+                    var item = $(e).parent().parent().parent();
+                    if(item.attr('data-id') == 1) {
+                        layer.msg('不能在往上了！');
+                    }else{
+                        pagefun.changeOrder(item, item.prev());
+                        item.fadeOut("900", "swing", function(){$(this).fadeIn("900", "swing")});
+                    }
+                },
 
-            eventBody: function(e){
-                var item = $(e).parent().parent().parent();
-                if(!$(e).attr("lay-verify"))
-                    $(e).attr('lay-verify', 'required');
+                downOrder: function (e, key){
+                    if(key == 1)
+                        key = h;
+                    else if(key == 2)
+                        key = b;
+                    else
+                        key = p;
 
-                if(item.attr('data-id') == b){
-                    b++;
-                    item.after(item.prop("outerHTML"));
-                    item.next().attr('data-id', b);
-                    item.find(".layui-input-inline").eq(5).show();
-                    form.render('select');
-                }
+                    var item = $(e).parent().parent().parent();
+                    if(item.attr('data-id') == (key.count-1) || key.count == 1) {
+                        layer.msg('不能在往下了！');
+                    }else{
+                        pagefun.changeOrder(item.next(), item);
+                        item.fadeOut("900", "swing", function(){$(this).fadeIn("900", "swing")});
+                    }
+                },
 
+                changeOrder: function (itemNode, nextNode){
+                    var id1 = itemNode.attr('data-id'), id2 = nextNode.attr('data-id');
+                    itemNode.insertBefore(nextNode);
+                    itemNode.attr('data-id', id2);
+                    nextNode.attr('data-id', id1);
+                },
 
-            },
+                changeAdd: function (e, key){
+                    var item = $(e).parent().parent().parent();
+                    if(item.attr('data-id') == key.count){
+                        key.count++;
+                        item.after(item.prop("outerHTML"));
+                        item.next().attr('data-id', key.count);
+                        item.find(".layui-inline-block").children(".layui-input-inline:last-child").show();
+                        form.render('select');
+                    }
+                },
 
-            delItem: function(e){
-                $(e).parent().parent().parent().remove();
-            },
+                upJson: function (k){
+                    j_id = layer.open({
+                        type: 1
+                        ,title: '导入Json数据'
+                        ,id: k
+                        ,content: $('.layui-item-jsonup')
+                        ,shade: 0
+                        ,resize: false
+                    });
+                },
 
-            upOrder: function (e){
-                var item = $(e).parent().parent().parent();
-                if(item.attr('data-id') == 1) {
-                    layer.msg('不能在往上了！');
-                }else{
-                    pagefun.changeOrder(item, item.prev());
-                    item.fadeOut("900", "swing", function(){$(this).fadeIn("900", "swing")});
-                }
-            },
-
-            downOrder: function (e){
-                var item = $(e).parent().parent().parent();
-                if(item.attr('data-id') == (h-1) || h == 1) {
-                    layer.msg('不能在往下了！');
-                }else{
-                    pagefun.changeOrder(item.next(), item);
-                    item.fadeOut("900", "swing", function(){$(this).fadeIn("900", "swing")});
-                }
-            },
-
-            changeOrder: function (itemNode, nextNode){
-                var id1 = itemNode.attr('data-id'), id2 = nextNode.attr('data-id');
-                itemNode.insertBefore(nextNode);
-                itemNode.attr('data-id', id2);
-                nextNode.attr('data-id', id1);
-            },
-
-            isJsonData: function (str, validate){
-                if(typeof str == 'string'){
-                    try {
-                        var obj = JSON.parse(str);
-                        if(str.indexOf('{') > -1) {
-                            for(var k in obj){
-                                if(validate(k, obj))
-                                    return false;
+                isJsonData: function (str, validate){
+                    if(typeof str == 'string'){
+                        try {
+                            var obj = JSON.parse(str);
+                            if(str.indexOf('{') > -1) {
+                                for(var k in obj){
+                                    if(validate(k, obj))
+                                        return false;
+                                }
+                                return true;
+                            }else{
+                                return false;
                             }
-                            return true;
-                        }else{
+                        }catch(e){
                             return false;
                         }
-                    }catch(e){
-                        return false;
                     }
-                }
-                return false;
-            },
+                    return false;
+                },
 
-            jsonHeader: function (val){
-                if(!pagefun.isJsonData(val, function(k,v){
-                        if(!v[k].hasOwnProperty("key") || !v[k].hasOwnProperty("value"))
-                            return true;
-                    })){
-                    layer.msg("数据不标准！", {time: 2000, icon: 2});
-                }else{
-                    var itemNode = $(".item-header .layui-form-item:last-child"), fNote = $(".item-header"), jdata = JSON.parse(val);
-                    fNote.empty();
-                    for(var k in jdata){
+                jsonHeader: function (val) {
+                    if(!pagefun.isJsonData(val, function(k,v){
+                            if(!v[k].hasOwnProperty("key") || !v[k].hasOwnProperty("value"))
+                                return true;
+                        })){
+                        layer.msg("数据不标准！", {time: 2000, icon: 2});
+                    }else{
+                        var itemNode = $(".item-header .layui-form-item:last-child"), fNote = $(".item-header"), jdata = JSON.parse(val);
+                        fNote.empty();
+                        for(var k in jdata){
+                            fNote.append(itemNode.prop("outerHTML"));
+                            var tNote = fNote.children(".layui-form-item:last-child");
+                            tNote.attr('data-id', k);
+                            tNote.find(".layui-input-inline").eq(3).show();
+                            tNote.find("select").attr('lay-verify', 'required').append("<option value="+ jdata[k]["key"] +" selected>"+ jdata[k]["key"] +"</option>")
+                            tNote.find("input[name='header_value[]']").attr('lay-verify', 'required').val(jdata[k]["value"]);
+                            if(jdata[k].hasOwnProperty("description"))
+                                tNote.find("input[name='header_remark[]']").val(jdata[k]["description"]);
+                        }
+                        form.render('select');
                         fNote.append(itemNode.prop("outerHTML"));
-                        var tNote = fNote.children(".layui-form-item:last-child");
-                        tNote.attr('data-id', k);
-                        tNote.find(".layui-input-inline").eq(3).show();
-                        tNote.find("select").attr('lay-verify', 'required').append("<option value="+ jdata[k]["key"] +" selected>"+ jdata[k]["key"] +"</option>")
-                        tNote.find("input[name='header_value[]']").attr('lay-verify', 'required').val(jdata[k]["value"]);
-                        if(jdata[k].hasOwnProperty("description"))
-                            tNote.find("input[name='header_remark[]']").val(jdata[k]["description"]);
                     }
-                    form.render('select');
-                    fNote.append(itemNode.prop("outerHTML"));
-                }
+                },
 
-                layer.close(jo_id);
-            }
-        };
+                jsonSubmit: function (val, e){
+                    var note = $(e).parent().parent().attr('id');
+                    if(note == 'item-header')
+                        pagefun.jsonHeader(val);
+                    else if(note == 'item-body')
+                        pagefun.jsonBody(val);
+                    else
+                        pagefun.jsonRequest(val);
+                    layer.close(j_id);
+                }
+            };
+
+        upJson = pagefun.upJson;
+        jsonSubmit = pagefun.jsonSubmit;
         eventBody = pagefun.eventBody;
-        jsonHeader = pagefun.jsonHeader;
         eventHeader = pagefun.eventHeader;
         delItem = pagefun.delItem;
         upOrder = pagefun.upOrder;
         downOrder = pagefun.downOrder;
-
         form.on('select(group_Parent)', function(data){
             $.get("/project/api_group?gid=" + data.value, function(res){
                 if(res.status == 1){
