@@ -94,6 +94,13 @@
 .layui-item-but {
     margin: 0px 0px 8px 38px;
 }
+.layui-item-but .layui-input-inline .layui-form-select .layui-select-title .layui-unselect {
+    background-color: #5fb878;
+    color: white;
+    height: 30px;
+    width: 120px;
+    font-size: 12px;
+}
 .layui-text-title {
     margin-top: 5px;
 }
@@ -118,4 +125,17 @@
     position: absolute;
     right: 20px;
     bottom: 20px;
+}
+.item-consult {
+    padding-left: 17px;
+}
+.item-consult .layui-tab-brief>.layui-tab-title .layui-this {
+    color: #5fb878;
+}
+.layui-tab-code {
+    /*border-radius: 3px;*/
+    border: 1px solid #e2e2e2;
+}
+.layui-btn-green {
+    background-color: #5fb878!important;
 }
