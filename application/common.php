@@ -74,9 +74,8 @@ function validateImg($url, $type)
 # 获取一个配置项的值
 function getConfigModel($name)
 {
-    $config = model('config')->where('config_Name', $name)->find();
-    $data = $config->getData();
-    return (array)json_decode($data['config_Value']);
+    $config = model('config')->where('config_Name', $name)->column('config_Value');
+    return (array)json_decode($config[0]);
 }
 
 # 返回包装好的json数据

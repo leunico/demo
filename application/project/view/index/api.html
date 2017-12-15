@@ -205,7 +205,7 @@
                 loadProjectList: function(page){
                     layer.load();
                     $.ajax({
-                        url : "/admin/project" + "?page=" + page,
+                        url : "/project/api" + "?page=" + page + "&gid=" + gpid,
                         type: "GET",
                         dataType: "json",
                         error:function(){layer.msg('请求栏目列表失败!', {anim: 6})},
