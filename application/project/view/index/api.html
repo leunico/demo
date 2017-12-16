@@ -19,7 +19,7 @@
                                     <button style="margin-left:1px;display:none" class="layui-btn layui-btn-small layui-btn-danger" id="delGroup">删除分组</button>
                                 </div>
                                 <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo" style="margin-top:5px;width:100%;">
-                                    <li class="layui-nav-item layui-this"><a href="javascript:;" data-gid=0><i class="fa fa-th-list">&nbsp;&nbsp;</i>所有接口</a></li>
+                                    <li class="layui-nav-item layui-this"><a href="javascript:;" data-gid=''><i class="fa fa-th-list">&nbsp;&nbsp;</i>所有接口</a></li>
                                     <li class="layui-nav-item"><a href="javascript:;" data-gid=0><i class="fa fa-trash">&nbsp;&nbsp;</i>接口回收站</a></li>
                                     {foreach $group as $vo}
                                         {if condition="($vo.group_ParentId eq 0) and (empty($vo.items) eq true)"}
@@ -51,34 +51,20 @@
                                             <thead>
                                             <tr>
                                                 <th>当前状态</th>
-                                                <th>项目名称</th>
-                                                <th>版本号</th>
-                                                <th style="text-align:center;">项目进度</th>
-                                                <th>&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                                                <th style="min-width:150px;">项目成员</th>
-                                                <th>创建时间</th>
+                                                <th>接口名称</th>
+                                                <th>接口链接</th>
+                                                <th>排序</th>
+                                                <th>最后操作时间</th>
                                                 <th>操作</th>
                                             </tr>
                                             </thead>
                                             <tbody v-cloak>
-                                            <tr v-for="item in menu_items">
-                                                <td><button class="layui-btn layui-btn-mini" :class="item.project_Status.style">{{ item.project_Status.str }}</button></td>
-                                                <td style="white-space:pre;">{{ item.project_Name }}</td>
-                                                <td>V {{ item.project_Version }}</td>
-                                                <td>
-                                                    <div class="layui-progress" style="margin-top:3px;">
-                                                        <div class="layui-progress-bar" :style="{width: item.project_Progress + '%'}">
-                                                            <!--<span class="layui-progress-text">当前进度{{ item.project_Progress }}%</span>-->
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td></td>
-                                                <td>
-                                                    <div class="layui-inline">
-                                                        <img alt="image233333" class="layui-circle" src="__IMG__/default/top.jpg" style="max-width:30px;">
-                                                    </div>
-                                                </td>
-                                                <td>{{ item.create_time }}</td>
+                                            <tr v-for="item in items">
+                                                <td><button class="layui-btn layui-btn-mini" :class="item.interface_Status.style">{{ item.interface_Status.str }}</button></td>
+                                                <td>{{ item.interface_Name }}</td>
+                                                <td><span class="layui-badge layui-btn-green" style="border-radius:2px;margin-right:5px;">{{ item.interface_Method }}</span>{{ item.interface_Url }}</td>
+                                                <td><span class="layui-badge-rim" @click="orderClick(item.cate_Id, item.cate_Order + 1)"><i class="fa fa-sort-up"></i></li></span><span class="layui-badge layui-bg-cyan" style="border-radius:1px;">{{ item.interface_Order }}</span><span @click="orderClick(item.cate_Id, item.cate_Order - 1)" class="layui-badge-rim" v-if="item.cate_Order"><i class="fa fa-sort-desc"></i></span></td>
+                                                <td>{{ item.update_time }}</td>
                                                 <td>
                                                     <a class="layui-btn layui-btn-normal layui-btn-mini" :href="'/project/index/' + item.project_Id + '.html'">查看项目</a>
                                                     <a class="layui-btn layui-btn-mini" @click="menuClick(2, item.project_Id)">编辑</a>
@@ -88,8 +74,7 @@
                                             </tbody>
                                         </table>
                                         <div id="page" style="text-align: center">
-                                            <pagination :cur="1" :all="pageAll" :page-num="perPage" @page-to="loadProjectList"></pagination>
-                                            <!--<button @click="nextList($event)" id="next" class="layui-btn layui-btn-small" style="background-color: #ffffff;color: black">加载更多</button>-->
+                                            <pagination :cur="1" :all="pageAll" :page-num="perPage" @page-to="loadInterfaceList"></pagination>
                                         </div>
                                     </div>
                                 </div>
@@ -111,7 +96,7 @@
             layer = layui.layer,
             pagefun = {},
             pid = $("#page_pid").val(),
-            gpid = 0;
+            gpid = '';
 
 //        element.on('tab(docDemoTabBrief)', function(data){
 //            if(data.index == 1)
@@ -196,25 +181,26 @@
         var lists = new Vue({
             el: "#main",
             data: {
-                menu_items: [],
+                items: [],
                 pageAll: 0,
                 perPage: 10  // 数字分页
             },
 
             methods: {
-                loadProjectList: function(page){
+                loadInterfaceList: function(page){
                     layer.load();
                     $.ajax({
-                        url : "/project/api" + "?page=" + page + "&gid=" + gpid,
+                        url : "/project/api" + "?page=" + page + "&gid=" + gpid + "&pid=" + pid,
                         type: "GET",
                         dataType: "json",
                         error:function(){layer.msg('请求栏目列表失败!', {anim: 6})},
                         success:function(res){
+                            console.log(res);
                             layer.closeAll('loading');
                             if (res.status > 0) {
                                 lists.perPage = res.data.per_page;
-                                lists.pageAll = res.data.last_page; // 数字分页
-                                lists.menu_items = res.data.data;
+                                lists.pageAll = res.data.last_page;
+                                lists.items = res.data.data;
                             }else{
                                 layer.msg(res.msg, {anim: 6});
                             }
@@ -273,7 +259,7 @@
             },
 
             mounted: function(){
-//                this.loadProjectList(1);
+                this.loadInterfaceList(1);
             }
         });
     });

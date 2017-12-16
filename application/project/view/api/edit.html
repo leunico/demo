@@ -25,7 +25,7 @@
             <label class="layui-form-label">是否启用</label>
             <div class="layui-input-inline">
                 <div class="layui-input-block" style="margin-left:0px;">
-                <input type="checkbox" value="1" name="interface_Status" lay-skin="switch" lay-filter="switchTest" lay-text="启用|弃用" {if condition="$interface_Status eq 1"}checked{/if}>
+                <input type="checkbox" value="1" name="interface_Status" lay-skin="switch" lay-filter="switchTest" lay-text="启用|弃用" {if condition="$interface_Status.id eq 1"}checked{/if}>
             </div>
             </div>
         </div>

@@ -9,7 +9,12 @@ class Api extends BaseController
     public function index()
     {
         if ($this->request->isAjax()){
-            $items = Loader::model('Api')->where()->order('project_Id')->paginate(10)->toArray();
+            $where['project_Id'] = $this->request->get('pid', 0);
+            if('' === $this->request->get('gid', ''))
+                $where['group_Id'] = ['>', 0];
+            else
+                $where['group_Id'] = $this->request->get('gid', '');
+            $items = Loader::model('Api')->where($where)->order('project_Id desc')->field('interface_Id,interface_Url,interface_Method,interface_Name,interface_Status,interface_Order,update_time')->paginate(10);
             return jsonOutPut(1, '', $items);
         }
 

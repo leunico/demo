@@ -15,4 +15,14 @@ class Api extends Model
         'interface_Body'     => 'json',
         'interface_Header'   => 'json'
     ];
+
+    public function getInterfaceStatusAttr($value)
+    {
+        $status = [
+            0 => ['id' => $value, 'str' => '已启用', 'style' => 'layui-btn-green'],
+            1 => ['id' => $value, 'str' => '已弃用', 'style' => 'layui-btn-disabled']
+        ];
+
+        return $status[$value];
+    }
 }
