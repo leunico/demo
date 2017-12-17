@@ -139,3 +139,12 @@
 .layui-btn-green {
     background-color: #5fb878!important;
 }
+.layui-btn-gray {
+    background-color: #666!important;
+}
+.layui-badge-list {
+    border-radius: 2px;
+    margin-right: 5px;
+    padding-top: 1px;
+    background-color: #333;
+}

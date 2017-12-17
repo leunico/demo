@@ -14,6 +14,10 @@ class Api extends BaseController
                 $where['group_Id'] = ['>', 0];
             else
                 $where['group_Id'] = $this->request->get('gid', '');
+
+            if(!empty($this->request->get('keyword', '')))
+                $where['interface_Name'] = ['LIKE', "%".$this->request->get('keyword', '')."%"];
+
             $items = Loader::model('Api')->where($where)->order('project_Id desc')->field('interface_Id,interface_Url,interface_Method,interface_Name,interface_Status,interface_Order,update_time')->paginate(10);
             return jsonOutPut(1, '', $items);
         }
@@ -24,8 +28,10 @@ class Api extends BaseController
     public function edit($id)
     {
         $data = Loader::model('Api')->find($id)->toArray();
-        dump($data);die;
-        $this->assign(Loader::model('Api')->find($id)->toArray());
+        $data['interface_countH'] = count($data['interface_Header']);
+        $data['interface_countB'] = count($data['interface_Body']);
+        $data['interface_countR'] = count($data['interface_Response']);
+        $this->assign($data);
         return $this->fetch('edit');
     }
 
@@ -39,12 +45,12 @@ class Api extends BaseController
             'interface_Name' => '',
             'interface_BodyModel' => 1,
             'interface_Header' => [],
-            'interface_countH' => 1,
+            'interface_countH' => 0,
             'interface_Body' => [],
-            'interface_countB' => 1,
+            'interface_countB' => 0,
             'interface_Response' => [],
-            'interface_countR' => 1,
-            'interface_Status' => 1,
+            'interface_countR' => 0,
+            'interface_Status' => ['id' => 1],
             'interface_Method' => '',
             'interface_SucessConsult' => '',
             'interface_ErrorConsult' => ''
@@ -55,6 +61,11 @@ class Api extends BaseController
     public function update()
     {
         return $this->save();
+    }
+
+    public function order($id)
+    {
+        return jsonOutPut(1, '操作成功', Loader::model('Api')->save(['interface_Order' => $this->request->put('order', 0)], ['interface_Id' => $id]));
     }
 
     public function save()
@@ -119,7 +130,6 @@ class Api extends BaseController
 
     public function delete($id)
     {
-        $delete = Loader::model('Api')->destroy($id);
-        return $delete ? jsonOutPut(1, '删除成功', $delete) : jsonOutPut(0, '删除失败', $delete);
+        return jsonOutPut(1, '操作成功', Loader::model('Api')->save(['group_Id' => 0], ['interface_Id' => $id]));
     }
 }

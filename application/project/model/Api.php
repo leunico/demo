@@ -19,8 +19,8 @@ class Api extends Model
     public function getInterfaceStatusAttr($value)
     {
         $status = [
-            0 => ['id' => $value, 'str' => '已启用', 'style' => 'layui-btn-green'],
-            1 => ['id' => $value, 'str' => '已弃用', 'style' => 'layui-btn-disabled']
+            0 => ['id' => $value, 'str' => '已弃用', 'style' => 'layui-btn-disabled'],
+            1 => ['id' => $value, 'str' => '已启用', 'style' => 'layui-btn-green']
         ];
 
         return $status[$value];

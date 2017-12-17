@@ -62,8 +62,8 @@
                         <div class="layui-input-inline">
                             <select name="header_key[]" lay-search>
                                 <option value="">添加或者选择键类型</option>
-                                {volist name=":getConfigModel('header_type')" id="vo"}
-                                <option value="{$key}" {eq name="key" value="$vo.header_key"}selected{/eq}>{$vo}</option>
+                                {volist name=":getConfigModel('header_type')" id="val"}
+                                <option value="{$key}" {eq name="key" value="$vo.header_key"}selected{/eq}>{$val}</option>
                                 {/volist}
                             </select>
                         </div>
@@ -73,7 +73,7 @@
                         <div class="layui-input-inline" style="width:47%;">
                             <input type="text" name="header_remark[]" placeholder="请输入说明" autocomplete="off" class="layui-input" value="{$vo.header_remark}">
                         </div>
-                        <div class="layui-input-inline" style="width:10%;display:none">
+                        <div class="layui-input-inline" style="width:10%;">
                             <a class="act" href="javascript:" onclick="delItem(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-trash-o" style="font-size:1.4em;"></i></span></a>
                             <a class="act" href="javascript:" onclick="downOrder(this, 1)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-down" style="font-size:1.4em;"></i></span></a>
                             <a class="act" href="javascript:" onclick="upOrder(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-up" style="font-size:1.4em;"></i></span></a>
@@ -113,25 +113,25 @@
             <a href="javascript:;" class="layui-btn layui-btn-small layui-btn-green" onclick="upJson('body')">导入参数</a>
             <div class="layui-input-inline">
                 <select name="body_mode" lay-filter="body_Model">
-                    <option value="1" selected>FROM-DATA</option>
-                    <option value="2">RESTFUL</option>
-                    <option value="3">RAW</option>
+                    <option value="1" {eq name="$interface_BodyModel" value="1"}selected{/eq}>FROM-DATA</option>
+                    <option value="2" {eq name="$interface_BodyModel" value="2"}selected{/eq}>RESTFUL</option>
+                    <option value="3" {eq name="$interface_BodyModel" value="3"}selected{/eq}>RAW</option>
                 </select>
             </div>
         </div>
 
-        <div class="layui-form-item" style="display:none">
+        <div class="layui-form-item" {if condition="$interface_BodyModel neq 3"}style="display:none"{/if}>
             <div class="layui-inline-block">
-                <textarea placeholder="请输入内容[raw]" name="body_raw" class="layui-textarea"></textarea>
+                <textarea placeholder="请输入内容[raw]" name="body_raw" class="layui-textarea">{if condition="$interface_BodyModel eq 3 AND $interface_Body"}{$interface_Body}{/if}</textarea>
             </div>
         </div>
         <div class="item-body">
-            {notempty name="interface_Body"}
+            {if condition="($interface_BodyModel neq 3) AND $interface_Body"}
                 {volist name="interface_Body" id="vo"}
                 <div class="layui-form-item" data-id={$key+1}>
                     <div class="layui-inline-block">
                         <div class="layui-input-inline" style="width:1%">
-                            <input type="checkbox" name="body_check[]" lay-skin="primary" title="" value="{$vo.body_check}" {eq name="$vo.body_check" value="1"}checked{/eq}>
+                            <input type="checkbox" name="body_check[]" lay-skin="primary" title="" value="{$vo.body_check}" {eq name="$vo.body_check" value="on"}checked{/eq}>
                         </div>
                         <div class="layui-input-inline">
                             <input type="text" name="body_name[]" placeholder="请输入参数名" autocomplete="off" class="layui-input" value="{$vo.body_name}" onchange="eventBody(this)">
@@ -141,15 +141,15 @@
                         </div>
                         <div class="layui-input-inline" style="width:10%">
                             <select name="body_type[]">
-                                {volist name=":getConfigModel('field_type')" id="vo"}
-                                <option value="{$key}" {eq name="key" value="$vo.body_type"}selected{/eq}>{$vo}</option>
+                                {volist name=":getConfigModel('field_type')" id="val"}
+                                <option value="{$key}" {eq name="key" value="$vo.body_type"}selected{/eq}>{$val}</option>
                                 {/volist}
                             </select>
                         </div>
                         <div class="layui-input-inline" style="width:23%">
                             <input type="text" name="body_value[]" placeholder="请输入参考值" autocomplete="off" class="layui-input" value="{$vo.body_value}">
                         </div>
-                        <div class="layui-input-inline" style="width:10%;display:none">
+                        <div class="layui-input-inline" style="width:10%;">
                             <a class="act" href="javascript:" onclick="delItem(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-trash-o" style="font-size:1.4em;"></i></span></a>
                             <a class="act" href="javascript:" onclick="downOrder(this, 2)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-down" style="font-size:1.4em;"></i></span></a>
                             <a class="act" href="javascript:" onclick="upOrder(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-up" style="font-size:1.4em;"></i></span></a>
@@ -157,8 +157,8 @@
                     </div>
                 </div>
                 {/volist}
-            {/notempty}
-            <div class="layui-form-item" data-id={$interface_countB+1}>
+            {/if}
+            <div class="layui-form-item" data-id="{$interface_countB+1}" {if condition="$interface_BodyModel eq 3"}style="display:none"{/if}>
                 <div class="layui-inline-block">
                     <div class="layui-input-inline" style="width:1%">
                         <input type="checkbox" name="body_check[]" lay-skin="primary" title="" checked value="1">
@@ -199,7 +199,7 @@
                 <div class="layui-form-item" data-id={$key+1}>
                     <div class="layui-inline-block">
                         <div class="layui-input-inline" style="width:1%">
-                            <input type="checkbox" name="response_check[]" lay-skin="primary" title="" value="{$vo.response_check}" {eq name="$vo.response_check" value="1"}checked{/eq}>
+                            <input type="checkbox" name="response_check[]" lay-skin="primary" title="" value="{$vo.response_check}" {eq name="$vo.response_check" value="on"}checked{/eq}>
                         </div>
                         <div class="layui-input-inline">
                             <input type="text" name="response_name[]" placeholder="请输入参数名" autocomplete="off" class="layui-input" value="{$vo.response_name}" onchange="eventResponse(this)">
@@ -209,15 +209,15 @@
                         </div>
                         <div class="layui-input-inline" style="width:10%">
                             <select name="response_type[]">
-                                {volist name=":getConfigModel('field_type')" id="vo"}
-                                <option value="{$key}" {eq name="key" value="$vo.response_type"}selected{/eq}>{$vo}</option>
+                                {volist name=":getConfigModel('field_type')" id="val"}
+                                <option value="{$key}" {eq name="key" value="$vo.response_type"}selected{/eq}>{$val}</option>
                                 {/volist}
                             </select>
                         </div>
                         <div class="layui-input-inline" style="width:23%">
                             <input type="text" name="response_value[]" placeholder="请输入参考值" autocomplete="off" class="layui-input" value="{$vo.response_value}">
                         </div>
-                        <div class="layui-input-inline" style="width:10%;display:none">
+                        <div class="layui-input-inline" style="width:10%;">
                             <a class="act" href="javascript:" onclick="delItem(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-trash-o" style="font-size:1.4em;"></i></span></a>
                             <a class="act" href="javascript:" onclick="downOrder(this, 3)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-down" style="font-size:1.4em;"></i></span></a>
                             <a class="act" href="javascript:" onclick="upOrder(this)"><span class="layui-badge layui-bg-gray layui-badge-font"><i class="fa fa-angle-double-up" style="font-size:1.4em;"></i></span></a>
@@ -305,9 +305,9 @@
             form = layui.form,
             element = layui.element,
             layer = layui.layer,
-            h = {"count": "{$interface_countH}"},
-            b = {"count": "{$interface_countB}"},
-            p = {"count": "{$interface_countR}"},
+            h = {"count": "{$interface_countH + 1}"},
+            b = {"count": "{$interface_countB + 1}"},
+            p = {"count": "{$interface_countR + 1}"},
             j_id = '',
             jsonStr = {},
             pagefun = {
@@ -558,7 +558,7 @@
                 });
             }else{
                 $.ajax({
-                    url: "/project/api" + data.field.interface_Id,
+                    url: "/project/api/" + data.field.interface_Id,
                     type: "PUT",
                     data: data.field,
                     success: function(res){
