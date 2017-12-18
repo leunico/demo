@@ -16,6 +16,11 @@ class Api extends Model
         'interface_Header'   => 'json'
     ];
 
+    public function apigroup()
+    {
+        return $this->belongsTo('apigroup');
+    }
+
     public function getInterfaceStatusAttr($value)
     {
         $status = [

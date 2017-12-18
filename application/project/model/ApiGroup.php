@@ -9,6 +9,12 @@ class ApiGroup extends Model
     use SoftDelete;
     protected $deleteTime = 'delete_time';
 
+
+    public function interface()
+    {
+        return $this->hasMany('api', 'group_Id', 'interface_Id')->field('interface_Id,interface_Url,interface_Method,interface_Name,interface_Status,interface_Order,update_time');
+    }
+
     /**
      * 获取分组列表
      * @author albert

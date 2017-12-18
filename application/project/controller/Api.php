@@ -3,11 +3,14 @@ namespace app\project\controller;
 
 use app\project\common\BaseController;
 use think\Loader;
+use app\project\model\ApiGroup;
 
 class Api extends BaseController
 {
     public function index()
     {
+        $apigroup = new ApiGroup;
+        dump(ApiGroup::with('interface')->select([10]));dump($apigroup->getLastSql());die; //->where('group_ParentId', 7)
         if ($this->request->isAjax()){
             $where['project_Id'] = $this->request->get('pid', 0);
             if('' === $this->request->get('gid', ''))
