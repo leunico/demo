@@ -11,16 +11,36 @@
 
 # 应用公共文件
 
-// 分组下拉框
-function apiGroupSelect($pid, $gpid)
+// 联动下拉框（api分组）
+function apiGroupSelect($gid = 0, $project_Id = 0)
 {
-    $parentGroups = model('ApiGroup')->where(['group_ParentId' => 0, 'project_Id' => $pid])->column('group_Id', 'group_Name');
-    if(empty($parentGroups))
-        return '';
+    $optionC = $optionP = '';
+    if(empty($gid)){
+        $pid = 0;
+    }else{
+        $pid = model('ApiGroup')->where(['group_Id' => $gid])->value('group_ParentId');
+        if(empty($pid)){
+            $pid = 0;
+        }else{
+            $childs = model('ApiGroup')->where(['group_ParentId' => $pid])->column('group_Id', 'group_Name');
+            foreach($childs as $k=>$v)
+                $optionC .= $gid == $v ? "<option value=$v selected>$k</option>" : "<option value=$v>$k</option>";
+        }
+    }
 
-    $html = '';
-    foreach($parentGroups as $k=>$v)
-        $html .= $gpid == $v ? "<option value=$v selected>$k</option>" : "<option value=$v>$k</option>";
+    $parents = model('ApiGroup')->where(['group_ParentId' => 0, 'project_Id' => $project_Id])->column('group_Id', 'group_Name');
+    if(!empty($parents)){
+        foreach($parents as $k=>$v)
+            $optionP .= $pid == $v ? "<option value=$v selected>$k</option>" : "<option value=$v>$k</option>";
+    }
 
-    return $html;
+    $htmlP = '<div class="layui-input-inline"><select name="group_Parent" lay-filter="group_Parent">%s</select></div>';
+    $htmlC = '<div class="layui-input-inline"><select name="group_Child"><option value=0>-可不设置子分组-</option>%s</select></div>';
+
+    return sprintf($htmlP, $optionP).sprintf($htmlC, $optionC);
+}
+
+function apiCondition()
+{
+
 }

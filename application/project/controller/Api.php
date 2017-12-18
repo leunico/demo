@@ -63,11 +63,6 @@ class Api extends BaseController
         return $this->save();
     }
 
-    public function order($id)
-    {
-        return jsonOutPut(1, '操作成功', Loader::model('Api')->save(['interface_Order' => $this->request->put('order', 0)], ['interface_Id' => $id]));
-    }
-
     public function save()
     {
         $data = $this->request->param();
@@ -128,8 +123,25 @@ class Api extends BaseController
         return jsonOutPut(1, '操作成功', $interface->save($field));
     }
 
+    public function reset($id)
+    {
+        $this->assign('interface_Id', $id);
+        return $this->fetch('reset');
+    }
+
     public function delete($id)
     {
         return jsonOutPut(1, '操作成功', Loader::model('Api')->save(['group_Id' => 0], ['interface_Id' => $id]));
+    }
+
+    public function order($id)
+    {
+        return jsonOutPut(1, '操作成功', Loader::model('Api')->save(['interface_Order' => $this->request->put('order', 0)], ['interface_Id' => $id]));
+    }
+
+    public function destroy($id)
+    {
+        $delete = Loader::model('Api')->destroy($id);
+        return $delete ? jsonOutPut(1, '删除成功', $delete) : jsonOutPut(0, '删除失败', $delete);
     }
 }

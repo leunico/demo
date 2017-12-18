@@ -20,7 +20,7 @@ class Api extends Model
     {
         $status = [
             0 => ['id' => $value, 'str' => '已弃用', 'style' => 'layui-btn-disabled'],
-            1 => ['id' => $value, 'str' => '已启用', 'style' => 'layui-btn-green']
+            1 => ['id' => $value, 'str' => '已启用', 'style' => '']
         ];
 
         return $status[$value];
