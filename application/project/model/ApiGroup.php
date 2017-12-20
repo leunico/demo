@@ -3,16 +3,23 @@ namespace app\project\model;
 
 use think\Model;
 use traits\model\SoftDelete;
+use app\project\model\Api;
 
 class ApiGroup extends Model
 {
     use SoftDelete;
     protected $deleteTime = 'delete_time';
 
-
-    public function interface()
+    protected static function init()
     {
-        return $this->hasMany('api', 'group_Id', 'interface_Id')->field('interface_Id,interface_Url,interface_Method,interface_Name,interface_Status,interface_Order,update_time');
+        self::event('before_delete', function (ApiGroup $api_group) {
+            Api::where('group_Id', $api_group->group_Id)->update(['group_Id' => 0]);
+        });
+    }
+
+    public function api()
+    {
+        return $this->hasMany('api', 'group_Id', 'group_Id');
     }
 
     /**
@@ -35,6 +42,8 @@ class ApiGroup extends Model
         if(!empty($items)){
             foreach ($items as $v)
                 $this->delGroup($v);
+        }else{
+            return $items;
         }
     }
 }

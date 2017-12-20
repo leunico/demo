@@ -29,6 +29,8 @@ class Cate extends Model
         if(!empty($items)){
             foreach ($items as $v)
                 $this->delMenu($v);
+        }else{
+            return $items;
         }
     }
 }

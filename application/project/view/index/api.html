@@ -143,6 +143,10 @@
                 $(this).removeClass('layui-this');
             });
 
+            $(".layui-nav").find('dd').each(function(){
+                $(this).removeClass('layui-this');
+            });
+
             if(!nav.hasClass('layui-this'))
                 nav.addClass('layui-this');
 
@@ -160,7 +164,7 @@
         });
 
         $("#delGroup").click(function(){
-            layer.confirm('你确定要删除吗？', {
+            layer.confirm('你确定要删除吗，有子分组也会被删除哦！', {
                 btn: ['继续','取消']
             }, function(){
                 $.ajax({
@@ -178,6 +182,7 @@
         var lists = new Vue({
             el: "#main",
             data: {
+                isp: 0,
                 gpid: gpid,
                 items: [],
                 keyword: '',
@@ -235,6 +240,22 @@
                     });
                 },
 
+                delAllInterface: function(){
+                    layer.confirm('你真的要全部删除吗？', {
+                        btn: ['继续','取消']
+                    }, function(){
+                        $.ajax({
+                            url : "/project/api/all_destroy/" + pid,
+                            type: "DELETE",
+                            error:function(){layer.msg('删除失败！', {anim: 6})},
+                            success:function(res){
+                                layer.msg("删除成功！", {time: 1000, icon: 1});
+                                lists.loadInterfaceList(1);
+                            }
+                        });
+                    });
+                },
+
                 interfaceClick: function(type, id){
                     switch(type)
                     {
@@ -271,10 +292,10 @@
                             layer.open({
                                 type: 2
                                 ,title: '接口恢复'
-                                ,id: 'interfaceEdit'
-                                ,content: ["/project/api/reset" + id]
+                                ,id: 'interfaceReset'
+                                ,content: ["/project/api/reset/" + id + "?pid=" + pid, 'no']
                                 ,shade: 0
-                                ,area: ['400px', '300px']
+                                ,area: ['550px', '227px']
                                 ,end: function(){
                                     lists.loadInterfaceList(1);
                                 }

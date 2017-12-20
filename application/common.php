@@ -109,15 +109,3 @@ function generatePassword($length = 8, $type = false)
 
     return $password;
 }
-
-# 判断文件夹是否存在不存在则创建
-function mkdirs($dir, $mode = 0777)
-{
-    if (is_dir($dir) || @mkdir($dir, $mode))
-        return TRUE;
-
-    if (!mkdirs(dirname($dir), $mode))
-        return FALSE;
-
-    return @mkdir($dir, $mode);
-}

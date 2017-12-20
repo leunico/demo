@@ -12,7 +12,9 @@
             <div class="layui-input-block">
                 <select name="group_ParentId" lay-filter="aihao" lay-verify="required">
                     <option value=0>不设置父分组</option>
-                    {:apiGroupSelect($project_Id, $group_ParentId)}
+                    {volist name=":model('ApiGroup')->where(['group_ParentId' => 0, 'project_Id' => $project_Id])->column('group_Id', 'group_Name')" id="vo"}
+                    <option value="{$vo}" {eq name="vo" value="$group_ParentId"}selected{/eq}>{$key}</option>
+                    {/volist}
                 </select>
             </div>
         </div>
@@ -42,10 +44,12 @@
         form.on('submit(group)', function(data){
             if(data.field.group_Id == 0){
                 $.post("/project/api_group", data.field, function(res){
-                    if(res.status == 1)
+                    if(res.status == 1){
+                        parent.layer.closeAll();
                         parent.window.location.reload();
-                    else
+                    }else{
                         parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                    }
                 });
             }else{
                 $.ajax({
@@ -53,10 +57,12 @@
                     type: "PUT",
                     data: data.field,
                     success: function(res){
-                        if(res.status == 1)
+                        if(res.status == 1){
+                            parent.layer.closeAll();
                             parent.window.location.reload();
-                        else
+                        }else{
                             parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                        }
                     }
                 });
             }

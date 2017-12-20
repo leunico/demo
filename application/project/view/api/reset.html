@@ -3,21 +3,12 @@
 <blockquote class="layui-elem-quote layui-text layui-text-title">
     接口恢复
 </blockquote>
-<div class="layui-tab-content" style="min-height:500px;">
+<div class="layui-tab-content">
     <form class="layui-form" action="">
         <input type="hidden" name="interface_Id" value="{$interface_Id}" />
         <div class="layui-form-item">
             <label class="layui-form-label">选择分组</label>
-            <div class="layui-input-inline">
-                <select name="group_Parent" lay-filter="group_Parent">
-                    {:apiGroupSelect($project_Id, $group_Id)}
-                </select>
-            </div>
-            <div class="layui-input-inline">
-                <select name="group_Child" lay-filter="group_Child">
-                    <option value=0>-可不设置子分组-</option>
-                </select>
-            </div>
+            {:apiGroupSelect(0, $project_Id)}
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block layui-input-submit">
@@ -35,10 +26,25 @@
         var $ = layui.jquery,
             form = layui.form;
 
+        form.on('select(group_Parent)', function(data){
+            $.get("/project/api_group?gid=" + data.value, function(res){
+                if(res.status == 1){
+                    $html = '<option value=0>-可不设置子分组-</option>';
+                    for(var key in res.data)
+                        $html += '<option value=' + key + '>' + res.data[key] + '</option>'
+
+                    $("select[name='group_Child']").html($html);
+                    form.render('select');
+                }else{
+                    parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                }
+            });
+        });
+
         form.on('submit(group)', function(data){
-            $.post("/project/api_group", data.field, function(res){
+            $.post("/project/api/reset", data.field, function(res){
                 if(res.status == 1)
-                    parent.window.location.reload();
+                    parent.layer.closeAll();
                 else
                     parent.layer.msg(res.msg, {time: 2000, icon: 2});
             });

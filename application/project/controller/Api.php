@@ -3,29 +3,15 @@ namespace app\project\controller;
 
 use app\project\common\BaseController;
 use think\Loader;
-use app\project\model\ApiGroup;
 
 class Api extends BaseController
 {
     public function index()
     {
-        $apigroup = new ApiGroup;
-        dump(ApiGroup::with('interface')->select([10]));dump($apigroup->getLastSql());die; //->where('group_ParentId', 7)
-        if ($this->request->isAjax()){
-            $where['project_Id'] = $this->request->get('pid', 0);
-            if('' === $this->request->get('gid', ''))
-                $where['group_Id'] = ['>', 0];
-            else
-                $where['group_Id'] = $this->request->get('gid', '');
-
-            if(!empty($this->request->get('keyword', '')))
-                $where['interface_Name'] = ['LIKE', "%".$this->request->get('keyword', '')."%"];
-
-            $items = Loader::model('Api')->where($where)->order('project_Id desc')->field('interface_Id,interface_Url,interface_Method,interface_Name,interface_Status,interface_Order,update_time')->paginate(10);
-            return jsonOutPut(1, '', $items);
-        }
-
-//        abort(404, '请求错误！');
+        if ($this->request->isAjax())
+            return jsonOutPut(1, '', Loader::model('Api')->where($this->apiCondition())->order('interface_Order ASC')->field('interface_Id,interface_Url,interface_Method,interface_Name,interface_Status,interface_Order,update_time')->paginate(10));
+        else
+            abort(404, '请求错误！');
     }
 
     public function edit($id)
@@ -123,28 +109,47 @@ class Api extends BaseController
             }
         }
         $interface = isset($data['id']) ? Loader::model('Api')->get($data['id']) : Loader::model('Api');
-        return jsonOutPut(1, '操作成功', $interface->save($field));
+        return jsonOutPut(1, '操作成功', $interface->save($field)); // 不做状态判断！
     }
 
     public function reset($id)
     {
         $this->assign('interface_Id', $id);
+        $this->assign('project_Id', $this->request->get('pid', 0));
         return $this->fetch('reset');
+    }
+
+    public function group()
+    {
+        if(empty($this->request->post('interface_Id', 0)) || empty($this->request->post('group_Parent', 0)))
+            jsonOutPut(0, '参数错误', []);
+
+        $field['group_Id'] = !empty($this->request->post('group_Child', 0)) ? $this->request->post('group_Child') : $this->request->post('group_Parent');
+        $group = Loader::model('Api')->get($this->request->post('interface_Id'))->save($field);
+        return $group ? jsonOutPut(1, '操作成功', $group) : jsonOutPut(0, '操作失败', []);
     }
 
     public function delete($id)
     {
-        return jsonOutPut(1, '操作成功', Loader::model('Api')->save(['group_Id' => 0], ['interface_Id' => $id]));
+        $delete = Loader::model('Api')->save(['group_Id' => 0], ['interface_Id' => $id]);
+        return $delete ? jsonOutPut(1, '删除成功', $delete) : jsonOutPut(0, '删除失败', []);
     }
 
     public function order($id)
     {
-        return jsonOutPut(1, '操作成功', Loader::model('Api')->save(['interface_Order' => $this->request->put('order', 0)], ['interface_Id' => $id]));
+        $order = Loader::model('Api')->save(['interface_Order' => $this->request->put('order', 0)], ['interface_Id' => $id]);
+        return $order ? jsonOutPut(1, '操作成功', $order) : jsonOutPut(0, '操作失败', []);
     }
 
     public function destroy($id)
     {
         $delete = Loader::model('Api')->destroy($id);
+        return $delete ? jsonOutPut(1, '删除成功', $delete) : jsonOutPut(0, '删除失败', $delete);
+    }
+
+    public function all_destroy($id)
+    {
+        $delete = Loader::model('Api')->where(['project_Id' => $id, 'group_Id' => 0])->destroy($id);
         return $delete ? jsonOutPut(1, '删除成功', $delete) : jsonOutPut(0, '删除失败', $delete);
     }
 }
