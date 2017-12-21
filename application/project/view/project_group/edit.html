@@ -7,13 +7,14 @@
     <form class="layui-form" action="">
         <input type="hidden" name="project_id" value="{$project_id}" />
         <input type="hidden" name="group_id" value="{$group_id}" />
+        <input type="hidden" name="group_type" value="{$group_type}" />
         <div class="layui-form-item">
             <label class="layui-form-label">选择父分组</label>
             <div class="layui-input-block">
                 <select name="group_parent_id" lay-filter="aihao" lay-verify="required">
                     <option value=0>-不设置父分组-</option>
                     {notempty name="group_parent_id"}
-                        {volist name=":model('ProjectGroup')->where(['group_parent_id' => 0, 'project_id' => $project_id])->column('group_id', 'group_name')" id="vo"}
+                        {volist name=":model('ProjectGroup')->where(['group_parent_id' => 0, 'project_id' => $project_id, 'group_type' => $group_type])->column('group_id', 'group_name')" id="vo"}
                         <option value="{$vo}" {eq name="vo" value="$group_parent_id"}selected{/eq}>{$key}</option>
                         {/volist}
                     {/notempty}

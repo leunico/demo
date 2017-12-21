@@ -10,8 +10,6 @@ Route::get('project/:id/team', 'project/index/team');
 Route::get('project/:id/log', 'project/index/log');
 
 Route::resource('project/project_group', 'project/project_group');
-Route::resource('project/code_group', 'project/code_group');
-Route::resource('project/doc_group', 'project/doc_group');
 
 Route::put('project/api/order/:id', 'project/api/order');
 Route::delete('project/api/destroy/:id', 'project/api/destroy');

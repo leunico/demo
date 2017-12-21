@@ -14,8 +14,15 @@ class Project extends Model
     {
         self::event('after_insert', function (Project $project) {
             $project_id = $project->getLastInsID();
-            if (!empty($project_id))
-                ProjectGroup::create(['project_id' => $project_id, 'group_Name' => '默认分组']);
+            if (!empty($project_id)){
+                $project_group = new ProjectGroup;
+                $list = [
+                    ['project_id'=>$project_id, 'group_Name'=>'默认分组', 'group_type' => 1],
+                    ['project_id'=>$project_id, 'group_Name'=>'默认分组', 'group_type' => 2],
+                    ['project_id'=>$project_id, 'group_Name'=>'默认分组', 'group_type' => 3]
+                ];
+                $project_group->saveAll($list);
+            }
         });
     }
 

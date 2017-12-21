@@ -16,43 +16,22 @@ class Index extends BaseController
 
     public function api($id)
     {
-        $items = Loader::model('ProjectGroup')->getListGroup($id);
-        $group = [];
-        foreach ($items['data'] as $v) {
-            $group[$v['group_id']] = $v;
-            $group[$v['group_id']]['items'] = [];
-            if ($v['group_parent_id'] != 0)
-                $group[$v['group_parent_id']]['items'][$v['group_id']] = &$group[$v['group_id']];
-        }
-
-        foreach ($group as $k=>$v) {
-            if ($v['group_parent_id'] != 0)
-                unset($group[$k]);
-        }
-
-        $this->assign('group', $group);
         $this->assign('id', $id);
+        $this->assign('group', $this->getGroupList($id, 1));
         return $this->fetch('api');
     }
 
     public function code($id)
     {
-        $items = Loader::model('CodeGroup')->getListGroup($id);
-        $group = [];
-        foreach ($items['data'] as $v) {
-            $group[$v['group_id']] = $v;
-            $group[$v['group_id']]['items'] = [];
-            if ($v['group_parent_id'] != 0)
-                $group[$v['group_parent_id']]['items'][$v['group_id']] = &$group[$v['group_id']];
-        }
-
-        foreach ($group as $k=>$v) {
-            if ($v['group_parent_id'] != 0)
-                unset($group[$k]);
-        }
-
-        $this->assign('group', $group);
         $this->assign('id', $id);
+        $this->assign('group', $this->getGroupList($id, 2));
         return $this->fetch('code');
+    }
+
+    public function doc($id)
+    {
+        $this->assign('id', $id);
+        $this->assign('group', $this->getGroupList($id, 3));
+        return $this->fetch('doc');
     }
 }

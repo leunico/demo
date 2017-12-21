@@ -19,21 +19,20 @@
                                     <button style="margin-left:1px;display:none" class="layui-btn layui-btn-small layui-btn-danger" id="delGroup">删除分组</button>
                                 </div>
                                 <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo" style="margin-top:5px;width:100%;">
-                                    <li class="layui-nav-item layui-this"><a href="javascript:;" data-gid=''><i class="fa fa-th-list">&nbsp;&nbsp;</i>所有接口</a></li>
-                                    <li class="layui-nav-item"><a href="javascript:;" data-gid=0><i class="fa fa-trash">&nbsp;&nbsp;</i>接口回收站</a></li>
+                                    <li class="layui-nav-item layui-this"><a href="javascript:;" data-gid=0><i class="fa fa-th-list">&nbsp;&nbsp;</i>所有错误码</a></li>
                                     {foreach $group as $vo}
-                                    {if condition="($vo.group_parent_id eq 0) and (empty($vo.items) eq true)"}
-                                    <li class="layui-nav-item"><a href="javascript:;" data-gid="{$vo.group_id}">{$vo.group_name}</a></li>
-                                    {else /}
-                                    <li class="layui-nav-item">
-                                        <a href="javascript:;" class="twonav" data-gid="{$vo.group_id}">{$vo.group_name}</a>
-                                        <dl class="layui-nav-child">
-                                            {foreach $vo.items as $v}
-                                            <dd><a href="javascript:;" data-gid="{$v.group_id}">{$v.group_name}</a></dd>
-                                            {/foreach}
-                                        </dl>
-                                    </li>
-                                    {/if}
+                                        {if condition="($vo.group_parent_id eq 0) and (empty($vo.items) eq true)"}
+                                            <li class="layui-nav-item"><a href="javascript:;" data-gid="{$vo.group_id}">{$vo.group_name}</a></li>
+                                        {else /}
+                                            <li class="layui-nav-item">
+                                                <a href="javascript:;" class="twonav" data-gid="{$vo.group_id}">{$vo.group_name}</a>
+                                                <dl class="layui-nav-child">
+                                                    {foreach $vo.items as $v}
+                                                        <dd><a href="javascript:;" data-gid="{$v.group_id}">{$v.group_name}</a></dd>
+                                                    {/foreach}
+                                                </dl>
+                                            </li>
+                                        {/if}
                                     {/foreach}
                                 </ul>
                             </div>
@@ -42,10 +41,9 @@
                             <div class="layui-tab-item layui-show">
                                 <div class="layui-anim layui-anim-upbit">
                                     <div class="layui-block-item layui-elem-quote" v-cloak>
-                                        <button v-if="parseInt(gpid) === 0" class="layui-btn layui-btn-small layui-btn-danger" @click="delAllInterface()">全部删除</button>
-                                        <button v-else class="layui-btn layui-btn-small" @click="addInterface()">添加接口</button>
+                                        <button class="layui-btn layui-btn-small" @click="addCode()">添加错误码</button>
                                         <div class="layui-input-inline" style="margin-left:2px;">
-                                            <input type="tel" name="phone" placeholder="请输入关键字" v-model='keyword' @change="loadInterfaceList(1)" autocomplete="off" class="layui-input item-search">
+                                            <input type="tel" name="phone" placeholder="请输入关键字" v-model='keyword' @change="loadCodeList(1)" autocomplete="off" class="layui-input item-search">
                                             <div class="item-search-fa"><i class="fa fa-search fa-search-input">&nbsp;&nbsp;</i></div>
                                         </div>
                                         <table class="layui-table" lay-even="" lay-skin="nob">
@@ -66,23 +64,15 @@
                                                 <td><span class="layui-badge layui-badge-list">{{ item.interface_method }}</span>{{ item.interface_url }}</td>
                                                 <td><span class="layui-badge-rim" @click="orderClick(item.interface_id, item.interface_order + 1)"><i class="fa fa-sort-up"></i></li></span><span class="layui-badge layui-bg-cyan" style="border-radius:1px;">{{ item.interface_order }}</span><span @click="orderClick(item.interface_id, item.interface_order - 1)" class="layui-badge-rim" v-if="item.interface_order"><i class="fa fa-sort-desc"></i></span></td>
                                                 <td>{{ item.update_time }}</td>
-                                                <td v-if="parseInt(gpid) === 0">
-                                                    <a class="layui-btn layui-btn-mini" @click="interfaceClick(7, item.interface_id)">恢复</a>
-                                                    <a class="layui-btn layui-btn-danger layui-btn-mini" @click="interfaceClick(8, item.interface_id)">彻底删除</a>
-                                                </td>
-                                                <td v-else>
-                                                    <a class="layui-btn layui-btn-mini" :href="'/project/index/' + item.interface_id + '.html'">查看接口</a>
+                                                <td>
                                                     <a class="layui-btn layui-btn-mini" @click="interfaceClick(2, item.interface_id)">编辑</a>
-                                                    <a class="layui-btn layui-btn-mini" @click="interfaceClick(6, item.interface_id)">Mock</a>
-                                                    <a class="layui-btn layui-btn-mini" @click="interfaceClick(4, item.interface_id)">说明</a>
-                                                    <a class="layui-btn layui-btn-mini" @click="interfaceClick(5, item.interface_id)">历史</a>
                                                     <a class="layui-btn layui-btn-danger layui-btn-mini" @click="interfaceClick(3, item.interface_id)">删除</a>
                                                 </td>
                                             </tr>
                                             </tbody>
                                         </table>
                                         <div id="page" style="text-align: center">
-                                            <pagination :cur="1" :all="pageAll" :page-num="perPage" @page-to="loadInterfaceList"></pagination>
+                                            <pagination :cur="1" :all="pageAll" :page-num="perPage" @page-to="loadCodeList"></pagination>
                                         </div>
                                     </div>
                                 </div>
@@ -122,7 +112,7 @@
                         ,content: [url, 'no']
                         ,shade: 0
                         ,area: ['485px', '280px']
-                        ,end: function(){} // window.location.reload();
+                        ,end: function(){}
                     });
                 }
             };
@@ -134,7 +124,7 @@
 
             lists.gpid = data.children("a:first-child").attr('data-gid');
             pagefun.actionMenu();
-            lists.loadInterfaceList(1);
+            lists.loadCodeList(1);
         });
 
         $(".twonav").click(function(){
@@ -152,11 +142,11 @@
 
             lists.gpid = $(this).attr('data-gid');
             pagefun.actionMenu();
-            lists.loadInterfaceList(1);
+            lists.loadCodeList(1);
         });
 
         $("#addGroup").click(function(){
-            pagefun.openProjectGroup('分组添加', "{:Url('project/project_group/create')}" + "?pid=" + pid + "&gpid=" + lists.gpid);
+            pagefun.openProjectGroup('分组添加', "{:Url('project/project_group/create')}" + "?type=2&pid=" + pid + "&gpid=" + lists.gpid);
         });
 
         $("#editGroup").click(function(){
@@ -182,19 +172,18 @@
         var lists = new Vue({
             el: "#main",
             data: {
-                isp: 0,
                 gpid: gpid,
                 items: [],
                 keyword: '',
                 pageAll: 0,
-                perPage: 10  // 数字分页
+                perPage: 10
             },
 
             methods: {
-                loadInterfaceList: function(page){
+                loadCodeList: function(page){
                     layer.load();
                     $.ajax({
-                        url : "/project/api" + "?page=" + page + "&gid=" + this.gpid + "&pid=" + pid + "&keyword=" + this.keyword,
+                        url : "/project/code" + "?page=" + page + "&gid=" + this.gpid + "&pid=" + pid + "&keyword=" + this.keyword,
                         type: "GET",
                         dataType: "json",
                         error:function(){layer.msg('请求栏目列表失败!', {anim: 6})},
@@ -211,48 +200,32 @@
                     });
                 },
 
-                addInterface: function(){
+                addCode: function(){
                     layer.open({
                         type: 2
-                        ,title: '接口添加'
+                        ,title: '错误码添加'
                         ,id: 'interfaceAdd'
-                        ,content: ["{:Url('project/api/create')}" + "?gid=" + this.gpid + "&pid=" + pid]
+                        ,content: ["{:Url('project/code/create')}" + "?gid=" + this.gpid + "&pid=" + pid]
                         ,shade: 0
                         ,resize: false
                         ,area: ['1060px', '800px']
                         ,end: function(){
-                            lists.loadInterfaceList(1);
+                           lists.loadCodeList(1);
                         }
                     });
                 },
 
                 orderClick: function(id, order){
                     $.ajax({
-                        url: "/project/api/order/" + id,
+                        url: "/project/code/order/" + id,
                         type: "PUT",
                         data: {order: order},
                         success: function(res){
                             if(res.status == 1)
-                                lists.loadInterfaceList(1);
+                                lists.loadCodeList(1);
                             else
                                 layer.msg(res.msg, {time: 2000, icon: 2});
                         }
-                    });
-                },
-
-                delAllInterface: function(){
-                    layer.confirm('你真的要全部删除吗？', {
-                        btn: ['继续','取消']
-                    }, function(){
-                        $.ajax({
-                            url : "/project/api/all_destroy/" + pid,
-                            type: "DELETE",
-                            error:function(){layer.msg('删除失败！', {anim: 6})},
-                            success:function(res){
-                                layer.msg("删除成功！", {time: 1000, icon: 1});
-                                lists.loadInterfaceList(1);
-                            }
-                        });
                     });
                 },
 
@@ -262,14 +235,14 @@
                         case 2:
                             layer.open({
                                 type: 2
-                                ,title: '项目修改'
+                                ,title: '错误码修改'
                                 ,id: 'interfaceEdit'
                                 ,content: ["/project/api/" + id + "/edit"]
                                 ,shade: 0
                                 ,resize: false
                                 ,area: ['1060px', '800px']
                                 ,end: function(){
-                                    lists.loadInterfaceList(1);
+                                    lists.loadCodeList(1);
                                 }
                             });
                             break;
@@ -283,35 +256,7 @@
                                     error:function(){layer.msg('删除失败！', {anim: 6})},
                                     success:function(res){
                                         layer.msg("删除成功！", {time: 1000, icon: 1});
-                                        lists.loadInterfaceList(1);
-                                    }
-                                });
-                            });
-                            break;
-                        case 7:
-                            layer.open({
-                                type: 2
-                                ,title: '接口恢复'
-                                ,id: 'interfaceReset'
-                                ,content: ["/project/api/reset/" + id + "?pid=" + pid, 'no']
-                                ,shade: 0
-                                ,area: ['550px', '227px']
-                                ,end: function(){
-                                    lists.loadInterfaceList(1);
-                                }
-                            });
-                            break;
-                        case 8:
-                            layer.confirm('你确定要彻底删除吗？', {
-                                btn: ['继续','取消']
-                            }, function(){
-                                $.ajax({
-                                    url : "/project/api/destroy/" + id,
-                                    type: "DELETE",
-                                    error:function(){layer.msg('删除失败！', {anim: 6})},
-                                    success:function(res){
-                                        layer.msg("删除成功！", {time: 1000, icon: 1});
-                                        lists.loadInterfaceList(1);
+                                        lists.loadCodeList(1);
                                     }
                                 });
                             });
@@ -323,7 +268,7 @@
             },
 
             mounted: function(){
-                this.loadInterfaceList(1);
+                // this.loadCodeList(1);
             }
         });
     });

@@ -12,7 +12,7 @@ class ProjectGroup extends BaseController
             $gid = $this->request->get('gid', 0);
             if(!empty($gid)){
                 $items = Loader::model('ProjectGroup')->where('group_parent_id', $gid)->column('group_id,group_name');
-                return jsonOutPut(1, '请求成功！', $items);
+                return $items ? jsonOutPut(1, '请求成功！', $items) : jsonOutPut(0, '暂无数据！', []);
             }else{
                 return jsonOutPut(0, '请求失败！', []);
             }
@@ -31,6 +31,7 @@ class ProjectGroup extends BaseController
         $this->assign([
             'project_id' => $this->request->get('pid', 0),
             'group_parent_id' => $this->request->get('gpid', 0),
+            'group_type' => $this->request->get('type', 0),
             'group_name' => '',
             'group_id' => 0
         ]);
@@ -46,7 +47,7 @@ class ProjectGroup extends BaseController
     {
         $data = $this->request->param();
         $validate = Loader::validate('ProjectGroup');
-        if(!$validate->check($data) && !isset($data['group_order']))
+        if(!$validate->check($data))
             return jsonOutPut(0, $validate->getError(), '');
 
         $cate = isset($data['id']) ? Loader::model('ProjectGroup')->get($data['id']) : Loader::model('ProjectGroup');

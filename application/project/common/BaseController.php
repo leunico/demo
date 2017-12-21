@@ -14,6 +14,26 @@ class BaseController extends Controller
 
     }
 
+    # 获取分组
+    protected function getGroupList($id, $type)
+    {
+        $items = Loader::model('ProjectGroup')->getListGroup($id, $type);
+        $group = [];
+        foreach ($items['data'] as $v) {
+            $group[$v['group_id']] = $v;
+            $group[$v['group_id']]['items'] = [];
+            if ($v['group_parent_id'] != 0)
+                $group[$v['group_parent_id']]['items'][$v['group_id']] = &$group[$v['group_id']];
+        }
+
+        foreach ($group as $k=>$v) {
+            if ($v['group_parent_id'] != 0)
+                unset($group[$k]);
+        }
+
+        return $group;
+    }
+
     # api控制器的条件筛选
     protected function apiCondition()
     {

@@ -26,9 +26,9 @@ class ProjectGroup extends Model
      * 获取分组列表
      * @author albert
      */
-    public function getListGroup($project_id)
+    public function getListGroup($project_id, $group_type)
     {
-        return $this->where('project_id', $project_id)->order('group_parent_id, group_order, group_id')->paginate(100)->toArray();
+        return $this->where(['project_id'=> $project_id, 'group_type' => $group_type])->order('group_parent_id, group_order, group_id')->paginate(100)->toArray();
     }
 
     /**

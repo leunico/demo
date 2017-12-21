@@ -156,7 +156,7 @@
         });
 
         $("#addGroup").click(function(){
-            pagefun.openProjectGroup('分组添加', "{:Url('project/project_group/create')}" + "?pid=" + pid + "&gpid=" + lists.gpid);
+            pagefun.openProjectGroup('分组添加', "{:Url('project/project_group/create')}" + "?type=1&pid=" + pid + "&gpid=" + lists.gpid);
         });
 
         $("#editGroup").click(function(){
@@ -182,7 +182,6 @@
         var lists = new Vue({
             el: "#main",
             data: {
-                isp: 0,
                 gpid: gpid,
                 items: [],
                 keyword: '',
@@ -262,7 +261,7 @@
                         case 2:
                             layer.open({
                                 type: 2
-                                ,title: '项目修改'
+                                ,title: '接口修改'
                                 ,id: 'interfaceEdit'
                                 ,content: ["/project/api/" + id + "/edit"]
                                 ,shade: 0
