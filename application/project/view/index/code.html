@@ -22,18 +22,18 @@
                                     <li class="layui-nav-item layui-this"><a href="javascript:;" data-gid=''><i class="fa fa-th-list">&nbsp;&nbsp;</i>所有接口</a></li>
                                     <li class="layui-nav-item"><a href="javascript:;" data-gid=0><i class="fa fa-trash">&nbsp;&nbsp;</i>接口回收站</a></li>
                                     {foreach $group as $vo}
-                                        {if condition="($vo.group_parent_id eq 0) and (empty($vo.items) eq true)"}
-                                            <li class="layui-nav-item"><a href="javascript:;" data-gid="{$vo.group_id}">{$vo.group_name}</a></li>
-                                        {else /}
-                                            <li class="layui-nav-item">
-                                                <a href="javascript:;" class="twonav" data-gid="{$vo.group_id}">{$vo.group_name}</a>
-                                                <dl class="layui-nav-child">
-                                                    {foreach $vo.items as $v}
-                                                        <dd><a href="javascript:;" data-gid="{$v.group_id}">{$v.group_name}</a></dd>
-                                                    {/foreach}
-                                                </dl>
-                                            </li>
-                                        {/if}
+                                    {if condition="($vo.group_parent_id eq 0) and (empty($vo.items) eq true)"}
+                                    <li class="layui-nav-item"><a href="javascript:;" data-gid="{$vo.group_id}">{$vo.group_name}</a></li>
+                                    {else /}
+                                    <li class="layui-nav-item">
+                                        <a href="javascript:;" class="twonav" data-gid="{$vo.group_id}">{$vo.group_name}</a>
+                                        <dl class="layui-nav-child">
+                                            {foreach $vo.items as $v}
+                                            <dd><a href="javascript:;" data-gid="{$v.group_id}">{$v.group_name}</a></dd>
+                                            {/foreach}
+                                        </dl>
+                                    </li>
+                                    {/if}
                                     {/foreach}
                                 </ul>
                             </div>
@@ -221,7 +221,7 @@
                         ,resize: false
                         ,area: ['1060px', '800px']
                         ,end: function(){
-                           lists.loadInterfaceList(1);
+                            lists.loadInterfaceList(1);
                         }
                     });
                 },

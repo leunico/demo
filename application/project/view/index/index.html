@@ -20,15 +20,15 @@
                                     <div class="layui-col-md12">
                                         <div class="layui-row grid-demo">
                                             <div class="layui-col-md4">
-                                                <div><img src="{$project_Cover}" style="width:30%;height:100%;background-size:100%;overflow:hidden;"/></div>
+                                                <div><img src="{$project_cover}" style="width:30%;height:100%;background-size:100%;overflow:hidden;"/></div>
                                             </div>
                                             <div class="layui-col-md8">
                                                 <div class="layui-grid">
-                                                    <div class="title">{$project_Name}</div>
+                                                    <div class="title">{$project_name}</div>
                                                     <ul class="l-con-box">
                                                         <li>
                                                             <b>状态：</b>
-                                                            <button class="layui-btn layui-btn-mini {$project_Status.style}">{$project_Status.str}</button>
+                                                            <button class="layui-btn layui-btn-mini {$project_status.style}">{$project_status.str}</button>
                                                         </li>
                                                         <li>
                                                             <b>最后更新时间：</b>
@@ -44,7 +44,7 @@
                                                         </li>
                                                         <li>
                                                             <b>版本：</b>
-                                                            <span>v{$project_Version}</span>
+                                                            <span>v{$project_version}</span>
                                                         </li>
                                                         <li>
                                                             <b>团队成员：</b>
@@ -55,7 +55,7 @@
                                                         <li class="puld">
                                                             <b>当前进度：</b>
                                                             <div class="layui-progress layui-progress-big" lay-showpercent="true">
-                                                                <div class="layui-progress-bar" lay-percent="{$project_Progress}%"></div>
+                                                                <div class="layui-progress-bar" lay-percent="{$project_progress}%"></div>
                                                             </div>
                                                         </li>
                                                     </ul>

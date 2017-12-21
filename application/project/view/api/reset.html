@@ -5,10 +5,10 @@
 </blockquote>
 <div class="layui-tab-content">
     <form class="layui-form" action="">
-        <input type="hidden" name="interface_Id" value="{$interface_Id}" />
+        <input type="hidden" name="interface_id" value="{$interface_id}" />
         <div class="layui-form-item">
             <label class="layui-form-label">选择分组</label>
-            {:apiGroupSelect(0, $project_Id)}
+            {:ProjectGroupSelect(0, $project_id)}
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block layui-input-submit">
@@ -27,7 +27,7 @@
             form = layui.form;
 
         form.on('select(group_Parent)', function(data){
-            $.get("/project/api_group?gid=" + data.value, function(res){
+            $.get("/project/project_group?gid=" + data.value, function(res){
                 if(res.status == 1){
                     $html = '<option value=0>-可不设置子分组-</option>';
                     for(var key in res.data)

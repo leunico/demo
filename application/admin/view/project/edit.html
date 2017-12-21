@@ -10,20 +10,20 @@
 
 <div class="layui-tab-content">
     <form class="layui-form" action="">
-        <input type="hidden" name="project_Id" value="{$project_Id}" />
+        <input type="hidden" name="project_id" value="{$project_id}" />
         <div class="layui-form-item">
             <label class="layui-form-label">项目权限</label>
             <div class="layui-input-block">
-                <input type="checkbox" value="1" name="project_Type" lay-skin="switch" lay-filter="switchTest" lay-text="公开|私有" {if condition="$project_Type eq 1"}checked{/if}>
+                <input type="checkbox" value="1" name="project_type" lay-skin="switch" lay-filter="switchTest" lay-text="公开|私有" {if condition="$project_type eq 1"}checked{/if}>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">项目封面</label>
-            <input type="hidden" name="project_Cover" value="{$project_Cover}" />
+            <input type="hidden" name="project_cover" value="{$project_cover}" />
             <div class="layui-upload">
-                <button type="button" class="layui-btn layui-btn-small" style="width:100px;margin-top:3px;background-color:#5fb878;" id="project_Cover"><i class="fa fa-upload">&nbsp;&nbsp;</i>上传图片</button>
+                <button type="button" class="layui-btn layui-btn-small" style="width:100px;margin-top:3px;background-color:#5fb878;" id="project_cover"><i class="fa fa-upload">&nbsp;&nbsp;</i>上传图片</button>
                 <div class="layui-upload-list" style="height:100px;padding-left:110px;">
-                    <img class="layui-upload-img" style="height:inherit;" id="demo1" src="{$project_Cover}">
+                    <img class="layui-upload-img" style="height:inherit;" id="demo1" src="{$project_cover}">
                      <p id="demoText"></p>
                 </div>
             </div>
@@ -31,19 +31,19 @@
         <div class="layui-form-item">
             <label class="layui-form-label">项目名称</label>
             <div class="layui-input-block">
-                <input type="text" name="project_Name" lay-verify="required" placeholder="请输入项目名称" autocomplete="off" class="layui-input" value="{$project_Name}">
+                <input type="text" name="project_name" lay-verify="required" placeholder="请输入项目名称" autocomplete="off" class="layui-input" value="{$project_name}">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">项目简介</label>
             <div class="layui-input-block">
-                <textarea placeholder="请输入项目简介" name="project_Remark" class="layui-textarea">{$project_Remark}</textarea>
+                <textarea placeholder="请输入项目简介" name="project_remark" class="layui-textarea">{$project_remark}</textarea>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">项目版本</label>
             <div class="layui-input-block">
-                <input type="text" name="project_Version" lay-verify="required" placeholder="请输入版本号（例如：1.0）" autocomplete="off" class="layui-input" value="{$project_Version}">
+                <input type="text" name="project_version" lay-verify="required" placeholder="请输入版本号（例如：1.0）" autocomplete="off" class="layui-input" value="{$project_version}">
             </div>
         </div>
         <div class="layui-form-item">
@@ -66,7 +66,7 @@
 
         // 图片上传
         upload.render({
-            elem: '#project_Cover'
+            elem: '#project_cover'
             ,url: '/admin/project/upload'
             ,before: function(obj){
                 obj.preview(function(index, file, result){
@@ -76,7 +76,7 @@
             ,done: function(res){
                 layer.msg(res.msg);
                 if(res.status > 0)
-                    $("input[name='project_Cover']").val(res.data.SaveName);
+                    $("input[name='project_cover']").val(res.data.SaveName);
             }
             ,error: function(){
                 var demoText = $('#demoText');
@@ -85,7 +85,7 @@
         });
 
         form.on('submit(project)', function(data){
-            if(data.field.project_Id < 1){
+            if(data.field.project_id < 1){
                 $.post("/admin/project", data.field, function(res){
                     if(res.status > 0)
                         parent.layer.closeAll();
@@ -94,7 +94,7 @@
                 });
             }else{
                 $.ajax({
-                    url: "/admin/project/" + data.field.project_Id,
+                    url: "/admin/project/" + data.field.project_id,
                     type: "PUT",
                     data: data.field,
                     success: function(res){

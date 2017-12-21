@@ -2,7 +2,7 @@
 namespace app\common\model;
 
 use think\Model;
-use app\project\model\ApiGroup;
+use app\project\model\ProjectGroup;
 use traits\model\SoftDelete;
 
 class Project extends Model
@@ -15,7 +15,7 @@ class Project extends Model
         self::event('after_insert', function (Project $project) {
             $project_id = $project->getLastInsID();
             if (!empty($project_id))
-                ApiGroup::create(['project_Id' => $project_id, 'group_Name' => '默认分组']);
+                ProjectGroup::create(['project_id' => $project_id, 'group_Name' => '默认分组']);
         });
     }
 

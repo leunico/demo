@@ -11,14 +11,14 @@ class Api extends Model
     protected $deleteTime = 'delete_time';
 
     protected $type = [
-        'interface_Response' => 'json',
-        'interface_Body'     => 'json',
-        'interface_Header'   => 'json'
+        'interface_response' => 'json',
+        'interface_body'     => 'json',
+        'interface_header'   => 'json'
     ];
 
-    public function apigroup()
+    public function ProjectGroup()
     {
-        return $this->belongsTo('apigroup');
+        return $this->belongsTo('ProjectGroup');
     }
 
     public function getInterfaceStatusAttr($value)

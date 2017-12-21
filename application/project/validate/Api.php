@@ -6,8 +6,8 @@ use think\Validate;
 class Api extends Validate
 {
     protected $rule = [
-        'interface_Name'   => 'require|max:32',
-        'interface_Url'    => 'require|url',
+        'interface_name'   => 'require|max:32',
+        'interface_url'    => 'require|url',
         'body_mode'        => 'in:1,2,3',
         'header_key'       => 'array',
         'header_value'     => 'array',

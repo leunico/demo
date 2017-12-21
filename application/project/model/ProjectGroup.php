@@ -5,21 +5,21 @@ use think\Model;
 use traits\model\SoftDelete;
 use app\project\model\Api;
 
-class ApiGroup extends Model
+class ProjectGroup extends Model
 {
     use SoftDelete;
     protected $deleteTime = 'delete_time';
 
     protected static function init()
     {
-        self::event('before_delete', function (ApiGroup $api_group) {
-            Api::where('group_Id', $api_group->group_Id)->update(['group_Id' => 0]);
+        self::event('before_delete', function (ProjectGroup $project_group) {
+            Api::where('group_id', $project_group->group_id)->update(['group_id' => 0]);
         });
     }
 
     public function api()
     {
-        return $this->hasMany('api', 'group_Id', 'group_Id');
+        return $this->hasMany('api', 'group_id', 'group_id');
     }
 
     /**
@@ -28,7 +28,7 @@ class ApiGroup extends Model
      */
     public function getListGroup($project_id)
     {
-        return $this->where('project_Id', $project_id)->order('group_ParentId, group_Order, group_Id')->paginate(100)->toArray();
+        return $this->where('project_id', $project_id)->order('group_parent_id, group_order, group_id')->paginate(100)->toArray();
     }
 
     /**
@@ -38,7 +38,7 @@ class ApiGroup extends Model
     public function delGroup($id)
     {
         $this->destroy($id);
-        $items = $this->where('group_ParentId', $id)->column('group_Id');
+        $items = $this->where('group_parent_id', $id)->column('group_id');
         if(!empty($items)){
             foreach ($items as $v)
                 $this->delGroup($v);

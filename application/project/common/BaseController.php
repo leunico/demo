@@ -17,22 +17,22 @@ class BaseController extends Controller
     # api控制器的条件筛选
     protected function apiCondition()
     {
-        $where['project_Id'] = $this->request->get('pid', 0);
+        $where['project_id'] = $this->request->get('pid', 0);
 
         if(!empty($this->request->get('keyword', '')))
-            $where['interface_Name'] = ['LIKE', "%".$this->request->get('keyword', '')."%"];
+            $where['interface_name'] = ['LIKE', "%".$this->request->get('keyword', '')."%"];
 
         $gid = $this->request->get('gid', '');
         if('' === $gid){
-            $where['group_Id'] = ['>', 0];
+            $where['group_id'] = ['>', 0];
         }else if(0 == $gid){
-            $where['group_Id'] = $gid;
+            $where['group_id'] = $gid;
         }else{
-            $child = Loader::model('ApiGroup')->where(['group_ParentId' => $gid])->column('group_Id');
+            $child = Loader::model('ProjectGroup')->where(['group_parent_id' => $gid])->column('group_id');
             if(empty($child))
-                $where['group_Id'] = $gid;
+                $where['group_id'] = $gid;
             else
-                $where['group_Id'] = ['IN', array_merge($child, [$gid])];
+                $where['group_id'] = ['IN', array_merge($child, [$gid])];
         }
 
         return $where;

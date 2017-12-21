@@ -5,23 +5,25 @@
 </blockquote>
 <div class="layui-tab-content" style="min-height:500px;">
     <form class="layui-form" action="">
-        <input type="hidden" name="project_Id" value="{$project_Id}" />
-        <input type="hidden" name="group_Id" value="{$group_Id}" />
+        <input type="hidden" name="project_id" value="{$project_id}" />
+        <input type="hidden" name="group_id" value="{$group_id}" />
         <div class="layui-form-item">
             <label class="layui-form-label">选择父分组</label>
             <div class="layui-input-block">
-                <select name="group_ParentId" lay-filter="aihao" lay-verify="required">
-                    <option value=0>不设置父分组</option>
-                    {volist name=":model('ApiGroup')->where(['group_ParentId' => 0, 'project_Id' => $project_Id])->column('group_Id', 'group_Name')" id="vo"}
-                    <option value="{$vo}" {eq name="vo" value="$group_ParentId"}selected{/eq}>{$key}</option>
-                    {/volist}
+                <select name="group_parent_id" lay-filter="aihao" lay-verify="required">
+                    <option value=0>-不设置父分组-</option>
+                    {notempty name="group_parent_id"}
+                        {volist name=":model('ProjectGroup')->where(['group_parent_id' => 0, 'project_id' => $project_id])->column('group_id', 'group_name')" id="vo"}
+                        <option value="{$vo}" {eq name="vo" value="$group_parent_id"}selected{/eq}>{$key}</option>
+                        {/volist}
+                    {/notempty}
                 </select>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">分组名称</label>
             <div class="layui-input-block">
-                <input type="text" name="group_Name" lay-verify="required" placeholder="请输入分组名称" autocomplete="off" class="layui-input" value="{$group_Name}">
+                <input type="text" name="group_name" lay-verify="required" placeholder="请输入分组名称" autocomplete="off" class="layui-input" value="{$group_name}">
             </div>
         </div>
 
@@ -42,8 +44,8 @@
             form = layui.form;
 
         form.on('submit(group)', function(data){
-            if(data.field.group_Id == 0){
-                $.post("/project/api_group", data.field, function(res){
+            if(data.field.group_id == 0){
+                $.post("/project/project_group", data.field, function(res){
                     if(res.status == 1){
                         parent.layer.closeAll();
                         parent.window.location.reload();
@@ -53,7 +55,7 @@
                 });
             }else{
                 $.ajax({
-                    url: "/project/api_group/" + data.field.group_Id,
+                    url: "/project/project_group/" + data.field.group_id,
                     type: "PUT",
                     data: data.field,
                     success: function(res){

@@ -9,7 +9,7 @@ class Project extends BaseController
     public function index()
     {
         if ($this->request->isAjax()){
-            $items = Loader::model('Project')->order('project_Id')->paginate(10)->toArray();
+            $items = Loader::model('Project')->order('project_id')->paginate(10)->toArray();
             return jsonOutPut(1, '', $items);
         }
 
@@ -25,12 +25,12 @@ class Project extends BaseController
     public function create()
     {
         $this->assign([
-            'project_Version' => '',
-            'project_Type' => 1,
-            'project_Remark' => '',
-            'project_Name' => '',
-            'project_Id' => 0,
-            'project_Cover' => validateImg('', 'project')
+            'project_version' => '',
+            'project_type' => 1,
+            'project_remark' => '',
+            'project_name' => '',
+            'project_id' => 0,
+            'project_cover' => validateImg('', 'project')
         ]);
 
         return $this->fetch('edit');

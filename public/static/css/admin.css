@@ -63,7 +63,11 @@
     /*margin-bottom: 20px;*/
 }
 .item-title {
-    margin:0px 0px 5px 15px;
+    /*margin:0px 0px 5px 0px;*/
+    margin-bottom: 5px;
+}
+.item-title .layui-btn {
+    padding: 0 7px;
 }
 .item-search {
     font-size: 10px;

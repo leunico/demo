@@ -29,13 +29,13 @@
                             </thead>
                             <tbody v-cloak>
                             <tr v-for="item in menu_items">
-                                <td><button class="layui-btn layui-btn-mini" :class="item.project_Status.style">{{ item.project_Status.str }}</button></td>
-                                <td style="white-space:pre;">{{ item.project_Name }}</td>
-                                <td>V {{ item.project_Version }}</td>
+                                <td><button class="layui-btn layui-btn-mini" :class="item.project_status.style">{{ item.project_status.str }}</button></td>
+                                <td style="white-space:pre;">{{ item.project_name }}</td>
+                                <td>V {{ item.project_version }}</td>
                                 <td>
                                     <div class="layui-progress" style="margin-top:3px;">
-                                        <div class="layui-progress-bar" :style="{width: item.project_Progress + '%'}">
-                                            <!--<span class="layui-progress-text">当前进度{{ item.project_Progress }}%</span>-->
+                                        <div class="layui-progress-bar" :style="{width:item.project_progress + '%'}">
+                                            <!--<span class="layui-progress-text">当前进度{{ item.project_progress }}%</span>-->
                                         </div>
                                     </div>
                                 </td>
@@ -47,9 +47,9 @@
                                 </td>
                                 <td>{{ item.create_time }}</td>
                                 <td>
-                                    <a class="layui-btn layui-btn-normal layui-btn-mini" :href="'/project/' + item.project_Id + '/index.html'">查看项目</a>
-                                    <a class="layui-btn layui-btn-mini" @click="menuClick(2, item.project_Id)">编辑</a>
-                                    <a class="layui-btn layui-btn-danger layui-btn-mini" @click="menuClick(3, item.project_Id)">删除</a>
+                                    <a class="layui-btn layui-btn-normal layui-btn-mini" :href="'/project/' + item.project_id + '/index.html'">查看项目</a>
+                                    <a class="layui-btn layui-btn-mini" @click="menuClick(2, item.project_id)">编辑</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-mini" @click="menuClick(3, item.project_id)">删除</a>
                                 </td>
                             </tr>
                             </tbody>
