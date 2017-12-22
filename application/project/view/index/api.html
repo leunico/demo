@@ -104,8 +104,8 @@
         var element = layui.element,
             $ = layui.jquery,
             layer = layui.layer,
+            gcount = "{:count($group)}",
             pid = $("#page_pid").val(),
-            gpid = '',
             pagefun = {
                 actionMenu: function(){
                     if(lists.gpid < 1){
@@ -184,7 +184,7 @@
         var lists = new Vue({
             el: "#main",
             data: {
-                gpid: gpid,
+                gpid: '',
                 items: [],
                 keyword: '',
                 pageAll: 0,
@@ -213,18 +213,22 @@
                 },
 
                 addInterface: function(){
-                    layer.open({
-                        type: 2
-                        ,title: '接口添加'
-                        ,id: 'interfaceAdd'
-                        ,content: ["{:Url('project/api/create')}" + "?gid=" + this.gpid + "&pid=" + pid]
-                        ,shade: 0
-                        ,resize: false
-                        ,area: ['1060px', '800px']
-                        ,end: function(){
-                           lists.loadInterfaceList(1);
-                        }
-                    });
+                    if(gcount == 0){
+                        layer.msg('请先添加分组！', {anim: 6})
+                    }else{
+                        layer.open({
+                            type: 2
+                            , title: '接口添加'
+                            , id: 'interfaceAdd'
+                            , content: ["{:Url('project/api/create')}" + "?gid=" + this.gpid + "&pid=" + pid]
+                            , shade: 0
+                            , resize: false
+                            , area: ['1060px', '800px']
+                            , end: function () {
+                                lists.loadInterfaceList(1);
+                            }
+                        });
+                    }
                 },
 
                 orderClick: function(id, order){

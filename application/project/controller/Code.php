@@ -9,7 +9,7 @@ class Code extends BaseController
     public function index()
     {
         if ($this->request->isAjax())
-            return jsonOutPut(1, '', Loader::model('Code')->where($this->groupCondition('code'))->order('code_order ASC')->field('code_id,code_name,code_remark,create_time,code_order')->paginate(10));
+            return jsonOutPut(1, '', Loader::model('Code')->with('projectGroup')->field('group_id,code_id,code_name,code_remark,create_time,code_order')->where($this->groupCondition('code'))->order('code_order ASC')->paginate(10));
         else
             abort(404, '请求错误！');
     }

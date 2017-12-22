@@ -9,8 +9,8 @@ class Code extends Model
     use SoftDelete;
     protected $deleteTime = 'delete_time';
 
-    public function project_group()
+    public function projectGroup()
     {
-        return $this->belongsTo('ProjectGroup');
+        return $this->belongsTo('ProjectGroup', 'group_id', 'group_id');
     }
 }
