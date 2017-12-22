@@ -9,7 +9,7 @@ class Api extends BaseController
     public function index()
     {
         if ($this->request->isAjax())
-            return jsonOutPut(1, '', Loader::model('Api')->where($this->apiCondition())->order('interface_order ASC')->field('interface_id,interface_url,interface_method,interface_name,interface_status,interface_order,update_time')->paginate(10));
+            return jsonOutPut(1, '', Loader::model('Api')->where($this->groupCondition('interface'))->order('interface_order ASC')->field('interface_id,interface_url,interface_method,interface_name,interface_status,interface_order,update_time')->paginate(10));
         else
             abort(404, '请求错误！');
     }

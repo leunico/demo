@@ -6,6 +6,7 @@ use think\Validate;
 class Api extends Validate
 {
     protected $rule = [
+        'project_id'       => 'require|number',
         'interface_name'   => 'require|max:32',
         'interface_url'    => 'require|url',
         'body_mode'        => 'in:1,2,3',

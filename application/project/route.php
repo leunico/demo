@@ -17,3 +17,6 @@ Route::delete('project/api/all_destroy/:id', 'project/api/all_destroy');
 Route::get('project/api/reset/:id', 'project/api/reset');
 Route::post('project/api/reset', 'project/api/group');
 Route::resource('project/api', 'project/api');
+
+Route::resource('project/code', 'project/code');
+Route::put('project/code/order/:id', 'project/code/order');

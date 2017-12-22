@@ -17,9 +17,9 @@ class Project extends Model
             if (!empty($project_id)){
                 $project_group = new ProjectGroup;
                 $list = [
-                    ['project_id'=>$project_id, 'group_Name'=>'默认分组', 'group_type' => 1],
-                    ['project_id'=>$project_id, 'group_Name'=>'默认分组', 'group_type' => 2],
-                    ['project_id'=>$project_id, 'group_Name'=>'默认分组', 'group_type' => 3]
+                    ['project_id'=>$project_id, 'group_name'=>'默认分组', 'group_type' => 1],
+                    ['project_id'=>$project_id, 'group_name'=>'默认分组', 'group_type' => 2],
+                    ['project_id'=>$project_id, 'group_name'=>'默认分组', 'group_type' => 3]
                 ];
                 $project_group->saveAll($list);
             }

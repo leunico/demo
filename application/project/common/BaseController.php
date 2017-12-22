@@ -34,13 +34,15 @@ class BaseController extends Controller
         return $group;
     }
 
-    # api控制器的条件筛选
-    protected function apiCondition()
+    # 分组控制器的条件筛选
+    protected function groupCondition($model)
     {
         $where['project_id'] = $this->request->get('pid', 0);
 
-        if(!empty($this->request->get('keyword', '')))
-            $where['interface_name'] = ['LIKE', "%".$this->request->get('keyword', '')."%"];
+        if(!empty($model)){
+            if (!empty($this->request->get('keyword', '')))
+                $where[$model . '_name'] = ['LIKE', "%" . $this->request->get('keyword', '') . "%"];
+        }
 
         $gid = $this->request->get('gid', '');
         if('' === $gid){

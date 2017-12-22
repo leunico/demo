@@ -1,0 +1,81 @@
+{extend name="common@public/open" /}
+{block name="main"}
+<blockquote class="layui-elem-quote layui-text layui-text-title">
+    添加或编辑一个状态码
+</blockquote>
+<div class="layui-tab-content">
+    <form class="layui-form">
+        <input type="hidden" name="project_id" value="{$project_id}"/>
+        <input type="hidden" name="code_id" value="{$code_id}" />
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择分组</label>
+            {:projectGroupSelect($group_id, $project_id, 2)}
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态码</label>
+            <div class="layui-input-block">
+                <input type="text" name="code_name" lay-verify="required" placeholder="1~32位的字符串" autocomplete="off" class="layui-input" value="{$code_name}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态码描述</label>
+            <div class="layui-input-block">
+                <input type="text" name="code_remark" lay-verify="required" placeholder="1~255位的字符串" autocomplete="off" class="layui-input" value="{$code_remark}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block layui-input-submit">
+                <button class="layui-btn layui-btn-small" lay-submit="code" lay-filter="code">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-small layui-btn-primary">取消</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(['form', 'jquery'], function(){
+        var $ = layui.jquery,
+            form = layui.form;
+
+        form.on('select(group_Parent)', function(data){
+            $.get("/project/project_group?gid=" + data.value, function(res){
+                if(res.status == 1){
+                    $html = '<option value=0>-可不设置子分组-</option>';
+                    for(var key in res.data)
+                        $html += '<option value=' + key + '>' + res.data[key] + '</option>'
+
+                    $("select[name='group_Child']").html($html);
+                    form.render('select');
+                }else{
+                    parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                }
+            });
+        });
+
+        form.on('submit(code)', function(data){
+            if(data.field.code_id < 1){
+                $.post("/project/code", data.field, function(res){
+                    if(res.status > 0)
+                        parent.layer.closeAll();
+                    else
+                        parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                });
+            }else{
+                $.ajax({
+                    url: "/project/code/" + data.field.code_id,
+                    type: "PUT",
+                    data: data.field,
+                    success: function(res){
+                        if(res.status > 0)
+                            parent.layer.closeAll();
+                        else
+                            parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                    }
+                });
+            }
+        });
+    });
+</script>
+{/block}

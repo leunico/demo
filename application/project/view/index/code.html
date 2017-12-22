@@ -19,7 +19,7 @@
                                     <button style="margin-left:1px;display:none" class="layui-btn layui-btn-small layui-btn-danger" id="delGroup">删除分组</button>
                                 </div>
                                 <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo" style="margin-top:5px;width:100%;">
-                                    <li class="layui-nav-item layui-this"><a href="javascript:;" data-gid=0><i class="fa fa-th-list">&nbsp;&nbsp;</i>所有错误码</a></li>
+                                    <li class="layui-nav-item layui-this"><a href="javascript:;" data-gid=''><i class="fa fa-th-list">&nbsp;&nbsp;</i>所有状态码</a></li>
                                     {foreach $group as $vo}
                                         {if condition="($vo.group_parent_id eq 0) and (empty($vo.items) eq true)"}
                                             <li class="layui-nav-item"><a href="javascript:;" data-gid="{$vo.group_id}">{$vo.group_name}</a></li>
@@ -41,7 +41,7 @@
                             <div class="layui-tab-item layui-show">
                                 <div class="layui-anim layui-anim-upbit">
                                     <div class="layui-block-item layui-elem-quote" v-cloak>
-                                        <button class="layui-btn layui-btn-small" @click="addCode()">添加错误码</button>
+                                        <button class="layui-btn layui-btn-small" @click="addCode()">添加状态码</button>
                                         <div class="layui-input-inline" style="margin-left:2px;">
                                             <input type="tel" name="phone" placeholder="请输入关键字" v-model='keyword' @change="loadCodeList(1)" autocomplete="off" class="layui-input item-search">
                                             <div class="item-search-fa"><i class="fa fa-search fa-search-input">&nbsp;&nbsp;</i></div>
@@ -49,24 +49,22 @@
                                         <table class="layui-table" lay-even="" lay-skin="nob">
                                             <thead>
                                             <tr>
-                                                <th>当前状态</th>
-                                                <th>接口名称</th>
-                                                <th>接口链接</th>
+                                                <th>状态码</th>
+                                                <th>状态码描述</th>
                                                 <th>排序</th>
-                                                <th>最后操作时间</th>
+                                                <th>添加时间</th>
                                                 <th>操作</th>
                                             </tr>
                                             </thead>
                                             <tbody v-cloak>
                                             <tr v-for="item in items">
-                                                <td><button class="layui-btn layui-btn-mini" :class="item.interface_status.style">{{ item.interface_status.str }}</button></td>
-                                                <td>{{ item.interface_name }}</td>
-                                                <td><span class="layui-badge layui-badge-list">{{ item.interface_method }}</span>{{ item.interface_url }}</td>
-                                                <td><span class="layui-badge-rim" @click="orderClick(item.interface_id, item.interface_order + 1)"><i class="fa fa-sort-up"></i></li></span><span class="layui-badge layui-bg-cyan" style="border-radius:1px;">{{ item.interface_order }}</span><span @click="orderClick(item.interface_id, item.interface_order - 1)" class="layui-badge-rim" v-if="item.interface_order"><i class="fa fa-sort-desc"></i></span></td>
-                                                <td>{{ item.update_time }}</td>
+                                                <td>{{ item.code_name }}</td>
+                                                <td>{{ item.code_remark }}</td>
+                                                <td><span class="layui-badge-arrow layui-badge-rim" @click="orderClick(item.code_id, item.code_order + 1)"><i class="fa fa-chevron-up"></i></span><span class="layui-badge layui-bg-green" style="border-radius:1px;">{{ item.code_order }}</span><span @click="orderClick(item.code_id, item.code_order - 1)" class="layui-badge-arrow layui-badge-rim" v-if="item.code_order"><i class="fa fa-chevron-down"></i></span></td>
+                                                <td>{{ item.create_time }}</td>
                                                 <td>
-                                                    <a class="layui-btn layui-btn-mini" @click="interfaceClick(2, item.interface_id)">编辑</a>
-                                                    <a class="layui-btn layui-btn-danger layui-btn-mini" @click="interfaceClick(3, item.interface_id)">删除</a>
+                                                    <a class="layui-btn layui-btn-mini" @click="codeClick(2, item.code_id)">编辑</a>
+                                                    <a class="layui-btn layui-btn-danger layui-btn-mini" @click="codeClick(3, item.code_id)">删除</a>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -161,7 +159,7 @@
                     url : "/project/project_group/" + lists.gpid,
                     type: "DELETE",
                     error:function(){layer.msg('删除失败！', {anim: 6})},
-                    success:function(res){
+                    success:function(){
                         layer.msg("删除成功！", {time: 2000, icon: 1});
                         window.location.reload();
                     }
@@ -203,12 +201,12 @@
                 addCode: function(){
                     layer.open({
                         type: 2
-                        ,title: '错误码添加'
+                        ,title: '状态码添加'
                         ,id: 'interfaceAdd'
-                        ,content: ["{:Url('project/code/create')}" + "?gid=" + this.gpid + "&pid=" + pid]
+                        ,content: ["{:Url('project/code/create')}" + "?gid=" + this.gpid + "&pid=" + pid, 'no']
                         ,shade: 0
                         ,resize: false
-                        ,area: ['1060px', '800px']
+                        ,area: ['636px', '335px']
                         ,end: function(){
                            lists.loadCodeList(1);
                         }
@@ -229,18 +227,18 @@
                     });
                 },
 
-                interfaceClick: function(type, id){
+                codeClick: function(type, id){
                     switch(type)
                     {
                         case 2:
                             layer.open({
                                 type: 2
-                                ,title: '错误码修改'
-                                ,id: 'interfaceEdit'
-                                ,content: ["/project/api/" + id + "/edit"]
+                                ,title: '状态码修改'
+                                ,id: 'codeEdit'
+                                ,content: ["/project/code/" + id + "/edit", 'no']
                                 ,shade: 0
                                 ,resize: false
-                                ,area: ['1060px', '800px']
+                                ,area: ['636px', '335px']
                                 ,end: function(){
                                     lists.loadCodeList(1);
                                 }
@@ -251,10 +249,10 @@
                                 btn: ['继续','取消']
                             }, function(){
                                 $.ajax({
-                                    url : "/project/api/" + id,
+                                    url : "/project/code/" + id,
                                     type: "DELETE",
                                     error:function(){layer.msg('删除失败！', {anim: 6})},
-                                    success:function(res){
+                                    success:function(){
                                         layer.msg("删除成功！", {time: 1000, icon: 1});
                                         lists.loadCodeList(1);
                                     }
@@ -268,7 +266,7 @@
             },
 
             mounted: function(){
-                // this.loadCodeList(1);
+                 this.loadCodeList(1);
             }
         });
     });

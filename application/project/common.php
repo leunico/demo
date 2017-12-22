@@ -11,25 +11,24 @@
 
 # 应用公共文件
 
-// 联动下拉框（api分组）
-function ProjectGroupSelect($gid = 0, $project_id = 0)
+// 联动下拉框
+function projectGroupSelect($gid = 0, $project_id = 0, $type = 1)
 {
     $optionC = $optionP = '';
     if(empty($gid)){
         $pid = 0;
     }else{
         $pid = model('ProjectGroup')->where(['group_id' => $gid])->value('group_parent_id');
-        if(empty($pid)){
+        if(empty($pid))
             $pid = $gid;
-        }else{
-            $child = model('ProjectGroup')->where(['group_parent_id' => $pid])->column('group_id', 'group_name');
-            foreach($child as $k=>$v)
-                $optionC .= $gid == $v ? "<option value=$v selected>$k</option>" : "<option value=$v>$k</option>";
-        }
+
+        $child = model('ProjectGroup')->where(['group_parent_id' => $pid])->column('group_id', 'group_name');
+        foreach($child as $k=>$v)
+            $optionC .= $gid == $v ? "<option value=$v selected>$k</option>" : "<option value=$v>$k</option>";
     }
 
     if(!empty($project_id)){
-        $parents = model('ProjectGroup')->where(['group_parent_id' => 0, 'project_id' => $project_id])->column('group_id', 'group_name');
+        $parents = model('ProjectGroup')->where(['group_parent_id' => 0, 'project_id' => $project_id, 'group_type' => $type])->column('group_id', 'group_name');
         if(!empty($parents)){
             foreach($parents as $k=>$v)
                 $optionP .= $pid == $v ? "<option value=$v selected>$k</option>" : "<option value=$v>$k</option>";

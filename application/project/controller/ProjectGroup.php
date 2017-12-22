@@ -10,14 +10,13 @@ class ProjectGroup extends BaseController
     {
         if ($this->request->isAjax()){
             $gid = $this->request->get('gid', 0);
-            if(!empty($gid)){
-                $items = Loader::model('ProjectGroup')->where('group_parent_id', $gid)->column('group_id,group_name');
-                return $items ? jsonOutPut(1, '请求成功！', $items) : jsonOutPut(0, '暂无数据！', []);
-            }else{
+            if(!empty($gid))
+                return jsonOutPut(1, '请求成功！', Loader::model('ProjectGroup')->where('group_parent_id', $gid)->column('group_id,group_name'));
+            else
                 return jsonOutPut(0, '请求失败！', []);
-            }
+        }else{
+            abort(404, '请求错误！');
         }
-        abort(404, '请求错误！');
     }
 
     public function edit($id)

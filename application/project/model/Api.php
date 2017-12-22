@@ -16,11 +16,6 @@ class Api extends Model
         'interface_header'   => 'json'
     ];
 
-    public function ProjectGroup()
-    {
-        return $this->belongsTo('ProjectGroup');
-    }
-
     public function getInterfaceStatusAttr($value)
     {
         $status = [

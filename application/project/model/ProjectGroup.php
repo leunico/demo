@@ -4,6 +4,7 @@ namespace app\project\model;
 use think\Model;
 use traits\model\SoftDelete;
 use app\project\model\Api;
+use app\project\model\Code;
 
 class ProjectGroup extends Model
 {
@@ -13,13 +14,27 @@ class ProjectGroup extends Model
     protected static function init()
     {
         self::event('before_delete', function (ProjectGroup $project_group) {
-            Api::where('group_id', $project_group->group_id)->update(['group_id' => 0]);
+            switch ($project_group->group_type){
+                case 1:
+                    Api::where('group_id', $project_group->group_id)->update(['group_id' => 0]);
+                    break;
+                case 2:
+                    Code::where('group_id', $project_group->group_id)->update(['group_id' => 0]);
+                    break;
+                default:
+                    break;
+            }
         });
     }
 
-    public function api()
+    public function codes()
     {
-        return $this->hasMany('api', 'group_id', 'group_id');
+        return $this->hasMany('Code');
+    }
+
+    public function apis()
+    {
+        return $this->hasMany('Api');
     }
 
     /**
