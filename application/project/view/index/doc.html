@@ -1,0 +1,265 @@
+{extend name="common@public/base" /}
+{block name="main"}
+<div class="layui-body">
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <ul class="layui-tab-title">
+            <li class="layui-this"><i class="fa fa-bookmark">&nbsp;&nbsp;</i>文档列表</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div class="layui-anim layui-anim-upbit">
+                    <div class="layui-row layui-col-space10">
+                        <div class="layui-col-md2" style="width:14%;">
+                            <div class="layui-elem-quote layui-block-item" style="overflow:hidden;padding-right:0px;">
+                                <div class="item-title">
+                                    <input type="hidden" name="pid" value="{$id}" id="page_pid"/>
+                                    <button class="layui-btn layui-btn-small" id="addGroup">添加分组</button>
+                                    <button style="margin-left:1px;display:none" class="layui-btn layui-btn-small layui-btn-warm" id="editGroup">修改分组</button>
+                                    <button style="margin-left:1px;display:none" class="layui-btn layui-btn-small layui-btn-danger" id="delGroup">删除分组</button>
+                                </div>
+                                <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo" style="margin-top:5px;width:100%;">
+                                    <li class="layui-nav-item layui-this"><a href="javascript:;" data-gid=''><i class="fa fa-th-list">&nbsp;&nbsp;</i>所有文档</a></li>
+                                    {foreach $group as $vo}
+                                    {if condition="($vo.group_parent_id eq 0) and (empty($vo.items) eq true)"}
+                                    <li class="layui-nav-item"><a href="javascript:;" data-gid="{$vo.group_id}">{$vo.group_name}</a></li>
+                                    {else /}
+                                    <li class="layui-nav-item">
+                                        <a href="javascript:;" class="twonav" data-gid="{$vo.group_id}">{$vo.group_name}</a>
+                                        <dl class="layui-nav-child">
+                                            {foreach $vo.items as $v}
+                                            <dd><a href="javascript:;" data-gid="{$v.group_id}">{$v.group_name}</a></dd>
+                                            {/foreach}
+                                        </dl>
+                                    </li>
+                                    {/if}
+                                    {/foreach}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="layui-col-md10" id="main" style="width:86%;">
+                            <div class="layui-tab-item layui-show">
+                                <div class="layui-anim layui-anim-upbit">
+                                    <div class="layui-block-item layui-elem-quote" v-cloak>
+                                        <button class="layui-btn layui-btn-small" @click="addDoc()">添加文档</button>
+                                        <div class="layui-input-inline" style="margin-left:2px;">
+                                            <input type="tel" name="phone" placeholder="请输入关键字" v-model='keyword' @change="loadDocList(1)" autocomplete="off" class="layui-input item-search">
+                                            <div class="item-search-fa"><i class="fa fa-search fa-search-input">&nbsp;&nbsp;</i></div>
+                                        </div>
+                                        <table class="layui-table" lay-even="" lay-skin="nob">
+                                            <thead>
+                                            <tr>
+                                                <th>状态码</th>
+                                                <th>状态码描述</th>
+                                                <th>排序</th>
+                                                <th>分组</th>
+                                                <th>添加时间</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody v-cloak>
+                                            <tr v-for="item in items">
+                                                <td>{{ item.code_name }}</td>
+                                                <td>{{ item.code_remark }}</td>
+                                                <td><span class="layui-badge-arrow layui-badge-rim" @click="orderClick(item.code_id, item.code_order + 1)"><i class="fa fa-chevron-up"></i></span><span class="layui-badge layui-bg-green" style="border-radius:1px;">{{ item.code_order }}</span><span @click="orderClick(item.code_id, item.code_order - 1)" class="layui-badge-arrow layui-badge-rim" v-if="item.code_order"><i class="fa fa-chevron-down"></i></span></td>
+                                                <td>{{ item.project_group.group_name }}</td>
+                                                <td>{{ item.create_time }}</td>
+                                                <td>
+                                                    <a class="layui-btn layui-btn-mini" @click="docClick(2, item.code_id)">编辑</a>
+                                                    <a class="layui-btn layui-btn-danger layui-btn-mini" @click="docClick(3, item.code_id)">删除</a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <div id="page" style="text-align: center">
+                                            <pagination :cur="1" :all="pageAll" :page-num="perPage" @page-to="loadDocList"></pagination>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(['element', 'layer', "jquery"], function(){
+        var element = layui.element,
+            $ = layui.jquery,
+            layer = layui.layer,
+            gcount = "{:count($group)}",
+            pid = $("#page_pid").val(),
+            pagefun = {
+                actionMenu: function(){
+                    if(lists.gpid < 1){
+                        $("#editGroup").hide();
+                        $("#delGroup").hide();
+                    }else{
+                        $("#editGroup").show();
+                        $("#delGroup").show();
+                    }
+                },
+                openProjectGroup: function(title, url){
+                    layer.open({
+                        type: 2
+                        ,title: title
+                        ,id: 'group'
+                        ,content: [url, 'no']
+                        ,shade: 0
+                        ,area: ['485px', '280px']
+                        ,end: function(){}
+                    });
+                }
+            };
+
+        element.on('nav(demo)', function(data){
+            $(".twonav").each(function(){
+                $(this).removeClass('layui-this');
+            });
+
+            lists.gpid = data.children("a:first-child").attr('data-gid');
+            pagefun.actionMenu();
+            lists.loadDocList(1);
+        });
+
+        $(".twonav").click(function(){
+            var nav = $(this).parent();
+            $(".layui-nav-item").each(function(){
+                $(this).removeClass('layui-this');
+            });
+
+            $(".layui-nav").find('dd').each(function(){
+                $(this).removeClass('layui-this');
+            });
+
+            if(!nav.hasClass('layui-this'))
+                nav.addClass('layui-this');
+
+            lists.gpid = $(this).attr('data-gid');
+            pagefun.actionMenu();
+            lists.loadDocList(1);
+        });
+
+        $("#addGroup").click(function(){
+            pagefun.openProjectGroup('分组添加', "{:Url('project/project_group/create')}" + "?type=3&pid=" + pid + "&gpid=" + lists.gpid);
+        });
+
+        $("#editGroup").click(function(){
+            pagefun.openProjectGroup('分组编辑', "/project/project_group/" + lists.gpid + "/edit");
+        });
+
+        $("#delGroup").click(function(){
+            layer.confirm('你确定要删除吗，有子分组也会被删除哦！', {
+                btn: ['继续','取消']
+            }, function(){
+                $.ajax({
+                    url : "/project/project_group/" + lists.gpid,
+                    type: "DELETE",
+                    error:function(){layer.msg('删除失败！', {anim: 6})},
+                    success:function(){
+                        layer.msg("删除成功！", {time: 2000, icon: 1});
+                        window.location.reload();
+                    }
+                });
+            });
+        });
+
+        var lists = new Vue({
+            el: "#main",
+            data: {
+                gpid: '',
+                items: [],
+                keyword: '',
+                pageAll: 0,
+                perPage: 10
+            },
+
+            methods: {
+                loadDocList: function(page){
+                    layer.load();
+                    $.ajax({
+                        url : "/project/doc" + "?page=" + page + "&gid=" + this.gpid + "&pid=" + pid + "&keyword=" + this.keyword,
+                        type: "GET",
+                        dataType: "json",
+                        error:function(){layer.msg('请求栏目列表失败!', {anim: 6})},
+                        success:function(res){
+                            layer.closeAll('loading');
+                            if (res.status > 0) {
+                                lists.perPage = res.data.per_page;
+                                lists.pageAll = res.data.last_page;
+                                lists.items = res.data.data;
+                            }else{
+                                layer.msg(res.msg, {anim: 6});
+                            }
+                        }
+                    });
+                },
+
+                addDoc: function(){
+                    if(gcount == 0){
+                        layer.msg('请先添加分组！', {anim: 6})
+                    }else{
+                        layer.open({
+                            type: 2
+                            ,title: '状态码添加'
+                            ,id: 'interfaceAdd'
+                            ,content: ["{:Url('project/doc/create')}" + "?gid=" + this.gpid + "&pid=" + pid, 'no']
+                            ,shade: 0
+                            ,resize: false
+                            ,area: ['636px', '335px']
+                            ,end: function(){
+                                lists.loadDocList(1);
+                            }
+                        });
+                    }
+                },
+
+                docClick: function(type, id){
+                    switch(type)
+                    {
+                        case 2:
+                            layer.open({
+                                type: 2
+                                ,title: '状态码修改'
+                                ,id: 'codeEdit'
+                                ,content: ["/project/doc/" + id + "/edit", 'no']
+                                ,shade: 0
+                                ,resize: false
+                                ,area: ['636px', '335px']
+                                ,end: function(){
+                                    lists.loadDocList(1);
+                                }
+                            });
+                            break;
+                        case 3:
+                            layer.confirm('你确定要删除吗？', {
+                                btn: ['继续','取消']
+                            }, function(){
+                                $.ajax({
+                                    url : "/project/doc/" + id,
+                                    type: "DELETE",
+                                    error:function(){layer.msg('删除失败！', {anim: 6})},
+                                    success:function(){
+                                        layer.msg("删除成功！", {time: 1000, icon: 1});
+                                        lists.loadDocList(1);
+                                    }
+                                });
+                            });
+                            break;
+                        default:
+                            layer.msg("参数错误");
+                    }
+                }
+            },
+
+            mounted: function(){
+                // this.loadCodeList(1);
+            }
+        });
+    });
+</script>
+{/block}

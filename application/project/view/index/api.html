@@ -65,7 +65,7 @@
                                                 <td><button class="layui-btn layui-btn-mini" :class="item.interface_status.style">{{ item.interface_status.str }}</button></td>
                                                 <td>{{ item.interface_name }}</td>
                                                 <td><span class="layui-badge layui-badge-list">{{ item.interface_method }}</span>{{ item.interface_url }}</td>
-                                                <td><span class="layui-badge-arrow layui-badge-rim" @click="orderClick(item.interface_id, item.interface_order + 1)"><i class="fa fa-chevron-up"></i></span><span class="layui-badge layui-bg-cyan" style="border-radius:1px;">{{ item.interface_order }}</span><span @click="orderClick(item.interface_id, item.interface_order - 1)" class="layui-badge-arrow layui-badge-rim" v-if="item.interface_order"><i class="fa fa-chevron-down"></i></span></td>
+                                                <td><span class="layui-badge-arrow layui-badge-rim" @click="orderClick(item.interface_id, item.interface_order + 1)"><i class="fa fa-chevron-up"></i></span><span class="layui-badge layui-bg-green" style="border-radius:1px;">{{ item.interface_order }}</span><span @click="orderClick(item.interface_id, item.interface_order - 1)" class="layui-badge-arrow layui-badge-rim" v-if="item.interface_order"><i class="fa fa-chevron-down"></i></span></td>
                                                 <td>帅哥星</td>
                                                 <td>{{ item.update_time }}</td>
                                                 <td v-if="parseInt(gpid) === 0">

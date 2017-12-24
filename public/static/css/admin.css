@@ -43,6 +43,7 @@
     background-color: rgba(231, 242, 241, 0.83);
     color: #009688;
 }
+
 .layui-field-block {
     margin-left: 0px!important;
     padding: 0px!important;
@@ -146,11 +147,14 @@
 .layui-btn-gray {
     background-color: #666!important;
 }
+.layui-btn-blue {
+    background-color: #009688!important;
+}
 .layui-badge-list {
-    border-radius: 2px;
+    border-radius: 3px;
     margin-right: 5px;
     padding-top: 1px;
-    background-color: #333;
+    background-color: #009688;
 }
 .layui-badge-arrow {
     height: 18px;
