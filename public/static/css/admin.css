@@ -44,6 +44,12 @@
     color: #009688;
 }
 
+.layui-form .layui-tab-brief>.layui-tab-title .layui-this:after {
+    border: none;
+    border-radius: 0;
+    border-bottom: 2px solid #5fb878;
+}
+
 .layui-field-block {
     margin-left: 0px!important;
     padding: 0px!important;

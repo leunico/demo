@@ -48,8 +48,8 @@
                                         <table class="layui-table" lay-even="" lay-skin="nob">
                                             <thead>
                                             <tr>
-                                                <th>状态码</th>
-                                                <th>状态码描述</th>
+                                                <th>文档</th>
+                                                <th>文档描述</th>
                                                 <th>排序</th>
                                                 <th>分组</th>
                                                 <th>添加时间</th>
@@ -205,12 +205,12 @@
                     }else{
                         layer.open({
                             type: 2
-                            ,title: '状态码添加'
+                            ,title: '文档添加'
                             ,id: 'interfaceAdd'
                             ,content: ["{:Url('project/doc/create')}" + "?gid=" + this.gpid + "&pid=" + pid, 'no']
                             ,shade: 0
-                            ,resize: false
-                            ,area: ['636px', '335px']
+//                            ,resize: false
+                            ,area: ['1021px', '713px']
                             ,end: function(){
                                 lists.loadDocList(1);
                             }
@@ -224,12 +224,12 @@
                         case 2:
                             layer.open({
                                 type: 2
-                                ,title: '状态码修改'
+                                ,title: '文档修改'
                                 ,id: 'codeEdit'
                                 ,content: ["/project/doc/" + id + "/edit", 'no']
                                 ,shade: 0
                                 ,resize: false
-                                ,area: ['636px', '335px']
+                                ,area: ['1021px', '713px']
                                 ,end: function(){
                                     lists.loadDocList(1);
                                 }

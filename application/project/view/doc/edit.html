@@ -1,28 +1,34 @@
 {extend name="common@public/open" /}
+{block name="head"}
+<link rel="stylesheet" href="__CSS__/editormd.min.css" />
+{/block}
 {block name="main"}
 <blockquote class="layui-elem-quote layui-text layui-text-title">
-    添加或编辑一个状态码
+    添加或编辑一个文档
 </blockquote>
 <div class="layui-tab-content">
     <form class="layui-form">
         <input type="hidden" name="project_id" value="{$project_id}"/>
-        <input type="hidden" name="code_id" value="{$code_id}" />
+        <input type="hidden" name="doc_id" value="{$doc_id}" />
         <div class="layui-form-item">
             <label class="layui-form-label">选择分组</label>
-            {:projectGroupSelect($group_id, $project_id, 2)}
+            {:projectGroupSelect($group_id, $project_id, 3)}
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">状态码</label>
-            <div class="layui-input-block">
-                <input type="text" name="code_name" lay-verify="required" placeholder="1~32位的字符串" autocomplete="off" class="layui-input" value="{$code_name}">
+        <div class="layui-form-item" style="margin-bottom:0px">
+            <div class="item-consult">
+                <div class="layui-tab layui-tab-brief" lay-filter="tabContent">
+                    <ul class="layui-tab-title">
+                        <li lay-id='1'>富文本</li>
+                        <li lay-id='2'>Markdown</li>
+                    </ul>
+                    <div class="layui-tab-content" style="width:100%">
+                        <div class="layui-tab-item layui-tab-code layui-show"><div id="editor">{$doc_content1}</div></div>
+                        <div class="layui-tab-item layui-tab-code" id="editormd"><textarea name="doc_content2" style="display:none;">{$doc_content2}</textarea></div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">状态码描述</label>
-            <div class="layui-input-block">
-                <input type="text" name="code_remark" lay-verify="required" placeholder="1~255位的字符串" autocomplete="off" class="layui-input" value="{$code_remark}">
-            </div>
-        </div>
+
         <div class="layui-form-item">
             <div class="layui-input-block layui-input-submit">
                 <button class="layui-btn layui-btn-small" lay-submit="code" lay-filter="code">立即提交</button>
@@ -34,11 +40,33 @@
 {/block}
 
 {block name="js"}
+<script type="text/javascript" src="__JS__/jquery.min.js"></script>
+<script type="text/javascript" src="__JS__/wangEditor.min.js"></script>
+<script type="text/javascript" src="__JS__/editormd.min.js"></script>
+
 <script>
-    layui.use(['form', 'jquery'], function(){
-        var $ = layui.jquery,
+    var E = window.wangEditor;
+    var editor = new E('#editor');
+    editor.create();
+
+    $(function(){
+        var docEditor = editormd("editormd", {
+            width: "100%",
+            height: 320,
+            syncScrolling: "single",
+            path: "__JS__/editor.md/",
+            toolbarIcons : function() {
+                return ["undo", "redo", "|", "bold", "hr", "del", "italic", "quote", "|", "h1", "h2", "h3", "h4", "h5", "h6", "|", "list-ul", "list-ol", "|", "link", "code", "table", "image", "|", "watch", "fullscreen"]
+            }
+//            saveHTMLToTextarea : true
+        });
+    });
+
+    layui.use(['form', 'element'], function(){
+        var element = layui.element,
             form = layui.form;
 
+        element.tabChange('tabContent', "{$doc_type}");
         form.on('select(group_Parent)', function(data){
             $.get("/project/project_group?gid=" + data.value, function(res){
                 if(res.status == 1){
@@ -55,8 +83,9 @@
         });
 
         form.on('submit(code)', function(data){
+            data.field.doc_content = editor.txt.html();
             if(data.field.code_id < 1){
-                $.post("/project/code", data.field, function(res){
+                $.post("/project/doc", data.field, function(res){
                     if(res.status > 0)
                         parent.layer.closeAll();
                     else
@@ -64,7 +93,7 @@
                 });
             }else{
                 $.ajax({
-                    url: "/project/code/" + data.field.code_id,
+                    url: "/project/doc/" + data.field.code_id,
                     type: "PUT",
                     data: data.field,
                     success: function(res){

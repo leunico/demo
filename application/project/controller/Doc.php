@@ -26,9 +26,10 @@ class Doc extends BaseController
             'project_id' => $this->request->get('pid', 0),
             'group_id' => $this->request->get('gid', 0),
             'doc_id' => 0,
-            'doc_type' => 1,
+            'doc_type' => 2,
             'doc_name' => '',
-            'doc_content' => ''
+            'doc_content1' => '',
+            'doc_content2' => ''
         ]);
         return $this->fetch('edit');
     }
