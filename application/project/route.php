@@ -27,3 +27,4 @@ Route::put('project/code/order/:id', 'project/code/order');
 
 # doc控制器模块
 Route::resource('project/doc', 'project/doc');
+Route::put('project/doc/order/:id', 'project/doc/order');

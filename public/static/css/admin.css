@@ -139,6 +139,7 @@
 }
 .item-consult {
     padding-left: 17px;
+    /*padding-right: 37px;*/
 }
 .item-consult .layui-tab-brief>.layui-tab-title .layui-this {
     color: #5fb878;
@@ -168,4 +169,23 @@
     background-color: #e6e6e6;
     color: #b2b2b2;
     border: 0px solid #ffffff;
+}
+.layui-wang-editor {
+    background-color: #f8f8f8;
+    height: 400px;
+}
+.w-e-item h1, .w-e-text h1 {
+    font-size: 36px;
+}
+.w-e-item h2, .w-e-text h2 {
+    font-size: 30px;
+}
+.w-e-item h3, .w-e-text h3 {
+    font-size: 24px;
+}
+.w-e-item h4, .w-e-text h4 {
+    font-size: 18px;
+}
+.w-e-item h5, .w-e-text h5 {
+    font-size: 14px;
 }

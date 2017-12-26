@@ -1,4 +1,4 @@
--- Adminer 4.2.5 MySQL dump
+-- Adminer 4.2.2 MySQL dump
 
 SET NAMES utf8;
 SET time_zone = '+00:00';
@@ -59,10 +59,19 @@ CREATE TABLE `albert_code` (
 
 INSERT INTO `albert_code` (`code_id`, `project_id`, `group_id`, `code_name`, `code_remark`, `code_order`, `update_time`, `create_time`, `delete_time`) VALUES
 (2,	8,	0,	'2333',	'成都成都',	2,	'2017-12-22 07:42:22',	'2017-12-22 06:14:19',	NULL),
-(3,	8,	27,	'2322',	'搽了很多次',	1,	'2017-12-22 13:47:55',	'2017-12-22 07:50:58',	NULL),
+(3,	8,	27,	'232278',	'搽了很多次',	1,	'2017-12-26 09:57:48',	'2017-12-22 07:50:58',	NULL),
 (4,	8,	22,	'232311',	'哈哈啊是多少',	2,	'2017-12-22 14:21:35',	'2017-12-22 08:00:16',	NULL),
 (5,	8,	21,	'23123',	'地方大师傅',	0,	'2017-12-22 08:00:59',	'2017-12-22 08:00:40',	'2017-12-22 08:00:59'),
-(6,	8,	0,	'34555',	'士大夫十分',	0,	'2017-12-22 08:00:47',	'2017-12-22 08:00:47',	NULL);
+(6,	8,	0,	'34555',	'士大夫十分',	0,	'2017-12-22 08:00:47',	'2017-12-22 08:00:47',	NULL),
+(7,	8,	22,	'1234141',	'大大苏打',	1,	'2017-12-26 10:53:22',	'2017-12-26 10:51:49',	NULL),
+(8,	8,	26,	'12312312',	'无人区',	1,	'2017-12-26 10:53:23',	'2017-12-26 10:52:01',	NULL),
+(9,	8,	22,	'78787',	'冯绍峰',	1,	'2017-12-26 10:53:24',	'2017-12-26 10:52:08',	NULL),
+(10,	8,	26,	'978748',	'法随风倒十分',	1,	'2017-12-26 10:53:20',	'2017-12-26 10:52:17',	NULL),
+(11,	8,	22,	'5456465',	'dads的',	1,	'2017-12-26 10:53:25',	'2017-12-26 10:52:28',	NULL),
+(12,	8,	22,	'2312321',	'啊实打实',	1,	'2017-12-26 10:53:24',	'2017-12-26 10:52:39',	NULL),
+(13,	8,	22,	'23123',	'啊实打实的',	1,	'2017-12-26 10:53:22',	'2017-12-26 10:52:48',	NULL),
+(14,	8,	22,	'32444',	'vs的方式',	1,	'2017-12-26 10:53:21',	'2017-12-26 10:52:55',	NULL),
+(15,	8,	22,	'45546',	'方法士大夫',	1,	'2017-12-26 10:53:19',	'2017-12-26 10:53:05',	NULL);
 
 DROP TABLE IF EXISTS `albert_config`;
 CREATE TABLE `albert_config` (
@@ -111,6 +120,7 @@ CREATE TABLE `albert_doc` (
   `group_id` int(11) unsigned NOT NULL,
   `doc_name` varchar(64) NOT NULL,
   `doc_type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '内容类型1-富文本，2-Markdown',
+  `doc_order` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `doc_content` text NOT NULL,
   `update_time` timestamp NULL DEFAULT NULL,
   `create_time` timestamp NULL DEFAULT NULL,
@@ -119,6 +129,9 @@ CREATE TABLE `albert_doc` (
   KEY `project_id` (`project_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+INSERT INTO `albert_doc` (`doc_id`, `project_id`, `group_id`, `doc_name`, `doc_type`, `doc_order`, `doc_content`, `update_time`, `create_time`, `delete_time`) VALUES
+(1,	8,	34,	'设置内容',	2,	1,	'[TOC]\n\n#### Disabled options\n\n- TeX (Based on KaTeX);\n- Emoji;\n- Task lists;\n- HTML tags decode;\n- Flowchart and Sequence Diagram;\n\n#### Editor.md directory\n\n    editor.md/\n            lib/\n            css/\n            scss/\n            tests/\n            fonts/\n            images/\n            plugins/\n            examples/\n            languages/     \n            editormd.js\n            ...\n\n```html\n<!-- English -->\n<script src=\"../dist/js/languages/en.js\"></script>\n\n<!-- 繁體中文 -->\n<script src=\"../dist/js/languages/zh-tw.js\"></script>\n```\n',	'2017-12-26 10:35:42',	'2017-12-26 10:06:32',	NULL),
+(2,	8,	36,	'完整示例',	1,	2,	'<h1 data-line=\"0\">设置内容</h1><p>以下方式中，如果条件允许，尽量使用第一种方式，效率最高。</p><h2 data-line=\"4\"><a id=\"html__4\"></a>html 初始化内容</h2><p>直接将内容写到要创建编辑器的<code>&lt;div&gt;</code>标签中</p><pre><code>&lt;div id=\"div1\"&gt;\n    &lt;p&gt;初始化的内容&lt;/p&gt;\n    &lt;p&gt;初始化的内容&lt;/p&gt;\n&lt;/div&gt;\n\n&lt;script type=\"text/javascript\" src=\"/wangEditor.min.js\"&gt;&lt;/script&gt;\n&lt;script type=\"text/javascript\"&gt;\n    var E = window.wangEditor\n    var editor = new E(\'#div1\')\n    editor.create()\n&lt;/script&gt;</code></pre>',	'2017-12-26 10:35:20',	'2017-12-26 10:07:24',	NULL);
 
 DROP TABLE IF EXISTS `albert_interface`;
 CREATE TABLE `albert_interface` (
@@ -229,6 +242,8 @@ INSERT INTO `albert_project_group` (`group_id`, `project_id`, `group_parent_id`,
 (31,	8,	26,	'哈哈对的',	0,	2,	'2017-12-24 03:03:51',	'2017-12-24 03:03:51',	NULL),
 (32,	8,	26,	'威威qq',	0,	2,	'2017-12-24 03:19:48',	'2017-12-24 03:04:33',	'2017-12-24 03:19:48'),
 (33,	8,	0,	'默认分组',	0,	2,	'2017-12-24 04:33:50',	'2017-12-24 04:33:45',	'2017-12-24 04:33:50'),
-(34,	8,	0,	'默认分组',	0,	3,	'2017-12-24 04:34:20',	'2017-12-24 04:34:20',	NULL);
+(34,	8,	0,	'默认分组',	0,	3,	'2017-12-24 04:34:20',	'2017-12-24 04:34:20',	NULL),
+(35,	8,	0,	'菜市场',	0,	3,	'2017-12-25 03:35:29',	'2017-12-25 03:35:29',	NULL),
+(36,	8,	35,	'发发发发',	0,	3,	'2017-12-25 03:35:35',	'2017-12-25 03:35:35',	NULL);
 
--- 2017-12-24 14:17:07
+-- 2017-12-26 10:55:26

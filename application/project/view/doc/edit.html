@@ -14,16 +14,31 @@
             <label class="layui-form-label">选择分组</label>
             {:projectGroupSelect($group_id, $project_id, 3)}
         </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">文档名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="doc_name" lay-verify="required" placeholder="请输入文档名称" autocomplete="off" class="layui-input" value="{$doc_name}">
+            </div>
+        </div>
         <div class="layui-form-item" style="margin-bottom:0px">
             <div class="item-consult">
                 <div class="layui-tab layui-tab-brief" lay-filter="tabContent">
                     <ul class="layui-tab-title">
-                        <li lay-id='1'>富文本</li>
+                        <li lay-id='1'>富文本编辑</li>
                         <li lay-id='2'>Markdown</li>
                     </ul>
                     <div class="layui-tab-content" style="width:100%">
-                        <div class="layui-tab-item layui-tab-code layui-show"><div id="editor">{$doc_content1}</div></div>
-                        <div class="layui-tab-item layui-tab-code" id="editormd"><textarea name="doc_content2" style="display:none;">{$doc_content2}</textarea></div>
+                        <div class="layui-tab-item layui-show">
+                            <div id="menu_edit">
+                            </div>
+                            <!--<div style="padding:5px 0;color:#ccc">请在下方输入内容</div>-->
+                            <div id="con_edit" class="layui-wang-editor">
+                                {$doc_content1}
+                            </div>
+                        </div>
+                        <div class="layui-tab-item" id="editormd" style="margin-bottom:0px;">
+                            <textarea style="display:none;">{$doc_content2}</textarea>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -43,30 +58,33 @@
 <script type="text/javascript" src="__JS__/jquery.min.js"></script>
 <script type="text/javascript" src="__JS__/wangEditor.min.js"></script>
 <script type="text/javascript" src="__JS__/editormd.min.js"></script>
-
 <script>
-    var E = window.wangEditor;
-    var editor = new E('#editor');
-    editor.create();
+    layui.use(['form', 'element'], function(){
+        var element = layui.element,
+            form = layui.form,
+            E = window.wangEditor,
+            doc_type = "{$doc_type-1}",
+            docEditor;
 
-    $(function(){
-        var docEditor = editormd("editormd", {
+        var editor = new E('#menu_edit', '#con_edit');
+        editor.create();
+        docEditor = editormd("editormd", {
             width: "100%",
-            height: 320,
+            height: 424,
             syncScrolling: "single",
-            path: "__JS__/editor.md/",
+            path : '__JS__/editor.md/',
             toolbarIcons : function() {
                 return ["undo", "redo", "|", "bold", "hr", "del", "italic", "quote", "|", "h1", "h2", "h3", "h4", "h5", "h6", "|", "list-ul", "list-ol", "|", "link", "code", "table", "image", "|", "watch", "fullscreen"]
             }
-//            saveHTMLToTextarea : true
         });
-    });
-
-    layui.use(['form', 'element'], function(){
-        var element = layui.element,
-            form = layui.form;
 
         element.tabChange('tabContent', "{$doc_type}");
+        element.on('tab(tabContent)', function(data){
+            doc_type = data.index;
+            if(data.index === 1)
+                docEditor.unwatch();
+        });
+
         form.on('select(group_Parent)', function(data){
             $.get("/project/project_group?gid=" + data.value, function(res){
                 if(res.status == 1){
@@ -83,8 +101,12 @@
         });
 
         form.on('submit(code)', function(data){
-            data.field.doc_content = editor.txt.html();
-            if(data.field.code_id < 1){
+            if(doc_type > 0)
+                data.field.doc_content = docEditor.getMarkdown();
+            else
+                data.field.doc_content = editor.txt.html();
+            data.field.doc_type = doc_type+1;
+            if(data.field.doc_id < 1){
                 $.post("/project/doc", data.field, function(res){
                     if(res.status > 0)
                         parent.layer.closeAll();
@@ -93,7 +115,7 @@
                 });
             }else{
                 $.ajax({
-                    url: "/project/doc/" + data.field.code_id,
+                    url: "/project/doc/" + data.field.doc_id,
                     type: "PUT",
                     data: data.field,
                     success: function(res){

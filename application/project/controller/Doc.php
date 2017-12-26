@@ -9,14 +9,22 @@ class Doc extends BaseController
     public function index()
     {
         if ($this->request->isAjax())
-            return jsonOutPut(1, '', Loader::model('Doc')->with('projectGroup')->field('group_id,doc_id,doc_name,update_time')->where($this->groupCondition('doc'))->order('update_time ASC')->paginate(10));
+            return jsonOutPut(1, '', Loader::model('Doc')->with('projectGroup')->field('group_id,doc_id,doc_name,doc_order,update_time')->where($this->groupCondition('doc'))->order('doc_order ASC,update_time ASC')->paginate(10));
         else
             abort(404, '请求错误！');
     }
 
     public function edit($id)
     {
-        $this->assign(Loader::model('Doc')->find($id)->toArray());
+        $data = Loader::model('Doc')->find($id)->toArray();
+        if($data['doc_type'] == 1){
+            $data['doc_content1'] = $data['doc_content'];
+            $data['doc_content2'] = '';
+        }else{
+            $data['doc_content1'] = '';
+            $data['doc_content2'] = $data['doc_content'];
+        }
+        $this->assign($data);
         return $this->fetch('edit');
     }
 
@@ -26,7 +34,7 @@ class Doc extends BaseController
             'project_id' => $this->request->get('pid', 0),
             'group_id' => $this->request->get('gid', 0),
             'doc_id' => 0,
-            'doc_type' => 2,
+            'doc_type' => 1,
             'doc_name' => '',
             'doc_content1' => '',
             'doc_content2' => ''
@@ -55,5 +63,11 @@ class Doc extends BaseController
     {
         $delete = Loader::model('Doc')->destroy($id);
         return $delete ? jsonOutPut(1, '删除成功', $delete) : jsonOutPut(0, '删除失败', $delete);
+    }
+
+    public function order($id)
+    {
+        $order = Loader::model('Doc')->save(['doc_order' => $this->request->put('order', 0)], ['doc_id' => $id]);
+        return $order ? jsonOutPut(1, '操作成功', $order) : jsonOutPut(0, '操作失败', []);
     }
 }
