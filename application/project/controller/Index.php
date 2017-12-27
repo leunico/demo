@@ -34,4 +34,10 @@ class Index extends BaseController
         $this->assign('group', $this->getGroupList($id, 3));
         return $this->fetch('doc');
     }
+
+    public function team($id)
+    {
+        $this->assign('id', $id);
+        return $this->fetch('team');
+    }
 }

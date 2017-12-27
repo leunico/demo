@@ -64,9 +64,9 @@
             form = layui.form,
             E = window.wangEditor,
             doc_type = "{$doc_type-1}",
-            docEditor;
+            docEditor, editor;
 
-        var editor = new E('#menu_edit', '#con_edit');
+        editor = new E('#menu_edit', '#con_edit');
         editor.create();
         docEditor = editormd("editormd", {
             width: "100%",
@@ -106,6 +106,7 @@
             else
                 data.field.doc_content = editor.txt.html();
             data.field.doc_type = doc_type+1;
+
             if(data.field.doc_id < 1){
                 $.post("/project/doc", data.field, function(res){
                     if(res.status > 0)

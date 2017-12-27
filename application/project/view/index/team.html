@@ -1,0 +1,126 @@
+{extend name="common@public/base" /}
+{block name="main"}
+<div class="layui-body" id="main">
+    <!-- 内容主体区域 -->
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <ul class="layui-tab-title">
+            <li class="layui-this"><i class="fa fa-exclamation-circle">&nbsp;&nbsp;</i>项目概况</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div class="layui-anim layui-anim-upbit">
+                    <div class="layui-row layui-col-space10">
+                        <div class="layui-col-md9">
+                            <div class="layui-elem-quote layui-block-item">
+                                <fieldset class="layui-elem-field layui-field-title">
+                                    <legend class="layui-field-block">项目详情</legend>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="layui-col-md3">
+                            <div class="layui-elem-quote layui-block-item">
+                                <fieldset class="layui-elem-field layui-field-title">
+                                    <legend class="layui-field-block">后台部分左侧栏目</legend>
+                                </fieldset>
+                                <div style="padding: 15px;">内容主体区域</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(['layer', "jquery"], function(){
+        var $ = layui.jquery,
+            layer = layui.layer;
+
+        var lists = new Vue({
+            el: "#main",
+            data: {
+                menu_items: [],
+                pageAll: 0,
+                perPage: 10  // 数字分页
+            },
+
+            methods: {
+                loadTeamList: function(page){
+                    layer.load();
+                    $.ajax({
+                        url : "/project/team" + "?page=" + page,
+                        type: "GET",
+                        dataType: "json",
+                        error:function(){layer.msg('请求列表失败!', {anim: 6})},
+                        success:function(res){
+                            layer.closeAll('loading');
+                            if (res.status > 0) {
+                                lists.perPage = res.data.per_page;
+                                lists.pageAll = res.data.last_page; // 数字分页
+                                lists.menu_items = res.data.data;
+                            }else{
+                                layer.msg(res.msg, {anim: 6});
+                            }
+                        }
+                    });
+                },
+
+                addTeam: function(id){
+                    layer.open({
+                        type: 2
+                        ,title: '项目添加'
+                        ,id: 'menu'
+                        ,content: ["{:Url('project/create')}" + "?id=" + id, 'no']
+                        ,shade: 0
+                        ,area: ['532px', '623px']
+                        ,end: function(){
+                            lists.loadProjectList(1);
+                            // window.location.reload();
+                        }
+                    });
+                },
+
+                teamClick: function(type, id){
+                    if(type == 1){
+                        this.addMenu(id);
+                    }else if(type == 2){
+                        layer.open({
+                            type: 2
+                            ,title: '项目修改'
+                            ,content: ["/admin/project/" + id + "/edit", 'no']
+                            ,shade: 0
+                            ,area: ['532px', '623px']
+                            ,end: function(){
+                                lists.loadProjectList(1);
+                            }
+                        });
+                    }else if(type == 3){
+                        layer.confirm('你确定要删除吗？', {
+                            btn: ['继续','取消']
+                        }, function(){
+                            $.ajax({
+                                url : "/admin/project/" + id,
+                                type: "DELETE",
+                                error:function(){layer.msg('删除失败！', {anim: 6})},
+                                success:function(res){
+                                    layer.msg("删除成功！", {time: 1000, icon: 1});
+                                    lists.loadProjectList(1);
+                                }
+                            });
+                        });
+                    }else{
+                        layer.msg("参数错误");
+                    }
+                }
+            },
+
+            mounted: function(){
+//                this.loadTeamList(1);
+            }
+        });
+    });
+</script>
+{/block}
