@@ -122,7 +122,6 @@
                         ,title: title
                         ,id: 'group'
                         ,content: [url, 'no']
-                        ,shade: 0
                         ,area: ['485px', '280px']
                         ,end: function(){} // window.location.reload();
                     });
@@ -221,7 +220,6 @@
                             , title: '接口添加'
                             , id: 'interfaceAdd'
                             , content: ["{:Url('project/api/create')}" + "?gid=" + this.gpid + "&pid=" + pid]
-                            , shade: 0
                             , resize: false
                             , area: ['1060px', '800px']
                             , end: function () {
@@ -270,7 +268,6 @@
                                 ,title: '接口修改'
                                 ,id: 'interfaceEdit'
                                 ,content: ["/project/api/" + id + "/edit"]
-                                ,shade: 0
                                 ,resize: false
                                 ,area: ['1060px', '800px']
                                 ,end: function(){
@@ -299,7 +296,6 @@
                                 ,title: '接口恢复'
                                 ,id: 'interfaceReset'
                                 ,content: ["/project/api/reset/" + id + "?pid=" + pid, 'no']
-                                ,shade: 0
                                 ,area: ['550px', '227px']
                                 ,end: function(){
                                     lists.loadInterfaceList(1);

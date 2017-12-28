@@ -30,10 +30,9 @@
     height: 48px;
     line-height: 48px;
 }
-/*.layui-input:focus {*/
-    /*border: 1px solid #ddd!important;*/
-    /*background-color: white;*/
-/*}*/
+.layui-input:hover, .layui-textarea:hover {
+    background-color: #f3f3f3;
+}
 .layui-block-item {
     margin-top: 5px;
     border-left:0px solid #ffffff;
@@ -81,6 +80,13 @@
     height: 32px;
     border-radius: 3px;
     padding-left: 30px;
+    background-color: #eee;
+}
+.item-search-buttom {
+    font-size: 10px;
+    height: 31px;
+    width: 200px;
+    border-radius: 1px;
     background-color: #eee;
 }
 .item-search-fa {
@@ -173,6 +179,101 @@
 .layui-wang-editor {
     background-color: #f8f8f8;
     height: 400px;
+}
+.admin-li, .partner-li {
+    padding: 15px 0px;
+    overflow: auto;
+    margin-bottom: 15px;
+}
+.item-li .title-p {
+    margin: 10px 0 20px;
+    border: none;
+    border-top: 1px solid #e2e2e2;
+}
+.admin-li .item-child-li {
+    width: 220px;
+    padding: 10px;
+    height: 45px;
+    line-height: 45px;
+    overflow: hidden;
+    margin-right: 10px;
+    /*border: 1px solid #ededed;*/
+    background-color: #f3f3f3;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    margin-top: 10px;
+}
+.pull-left {
+    float: left;
+}
+.pull-right {
+    float: right;
+}
+.item-li .people-ul {
+    height: 40px;
+    line-height: 40px;
+    margin-top: 0px;
+}
+.people-ul .name-summary-li {
+    -webkit-border-radius: 23px;
+    border-radius: 23px;
+    width: 41px;
+    height: 41px;
+    line-height: 41px;
+    background-color: #009688;
+    text-align: center;
+    color: #ffffff;
+    border: 1px solid #f3f3f3;
+    font-size: 15px;
+}
+.item-li .people-ul .people-li {
+    margin-left: 15px;
+    width: 142px;
+}
+.item-li .people-ul .people-li p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 21.5px;
+    line-height: 21.5px;
+    font-size: 14px;
+}
+.admin-li .item-child-li .people-ul .list-li .icon-caidan {
+    display: block;
+    color: #333;
+    font-size: 16px;
+    cursor: pointer;
+}
+.admin-li .item-child-li .people-ul .list-li .list-function-wrap {
+    position: absolute;
+    cursor: default;
+    margin-left: -65px;
+    margin-top: -54px;
+    min-width: 90px;
+    margin-bottom: 10px;
+}
+.admin-li .item-child-li .people-ul .list-li .list-function-wrap .list-function-ul {
+    background-color: #fbfbfb;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 16px 24px 2px rgba(0,0,0,.04), 0 6px 30px 5px rgba(0,0,0,.08), 0 8px 10px -5px rgba(0,0,0,.12);
+    box-shadow: 0 16px 24px 2px rgba(0,0,0,.04), 0 6px 30px 5px rgba(0,0,0,.08), 0 8px 10px -5px rgba(0,0,0,.12);
+}
+.admin-li .item-child-li .people-ul .list-li .list-function-wrap .list-function-ul li {
+    float: none;
+    cursor: pointer;
+    font-weight: initial;
+    text-align: left;
+    height: auto;
+}
+.admin-li .item-child-li .people-ul .list-li .list-function-wrap .list-function-ul .list-function-detail li {
+    height: 35px;
+    line-height: 35px;
+    padding: 0 10px;
+    font-size: 13px;
+}
+.admin-li .item-child-li .people-ul .list-li .list-function-wrap .list-function-ul .list-function-detail li:hover {
+    background-color: #f0f0f0;
 }
 .w-e-item h1, .w-e-text h1 {
     font-size: 36px;

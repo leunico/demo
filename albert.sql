@@ -200,7 +200,7 @@ CREATE TABLE `albert_project_group` (
   `group_parent_id` int(11) unsigned NOT NULL DEFAULT '0',
   `group_name` varchar(100) NOT NULL,
   `group_order` int(11) unsigned NOT NULL DEFAULT '0',
-  `group_type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '分组类型：1-接口，2-错误码，3-文档',
+  `group_type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '分组类型：1-接口，2-状态码，3-文档',
   `update_time` timestamp NULL DEFAULT NULL,
   `create_time` timestamp NULL DEFAULT NULL,
   `delete_time` timestamp NULL DEFAULT NULL,
@@ -246,4 +246,31 @@ INSERT INTO `albert_project_group` (`group_id`, `project_id`, `group_parent_id`,
 (35,	8,	0,	'菜市场',	0,	3,	'2017-12-25 03:35:29',	'2017-12-25 03:35:29',	NULL),
 (36,	8,	35,	'发发发发',	0,	3,	'2017-12-25 03:35:35',	'2017-12-25 03:35:35',	NULL);
 
--- 2017-12-26 10:55:26
+DROP TABLE IF EXISTS `albert_user`;
+CREATE TABLE `albert_user` (
+  `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(64) NOT NULL,
+  `user_email` varchar(64) NOT NULL,
+  `user_password` varchar(64) NOT NULL,
+  `user_status` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `user_type` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `update_time` timestamp NULL DEFAULT NULL,
+  `create_time` timestamp NULL DEFAULT NULL,
+  `delete_time` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `albert_user_project`;
+CREATE TABLE `albert_user_project` (
+  `up_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
+  `project_id` int(11) unsigned NOT NULL,
+  `create_time` timestamp NULL DEFAULT NULL,
+  `update_time` timestamp NULL DEFAULT NULL,
+  `delete_time` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`up_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- 2017-12-28 10:22:51

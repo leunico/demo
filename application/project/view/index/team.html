@@ -1,7 +1,6 @@
 {extend name="common@public/base" /}
 {block name="main"}
 <div class="layui-body" id="main">
-    <!-- 内容主体区域 -->
     <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
         <ul class="layui-tab-title">
             <li class="layui-this"><i class="fa fa-exclamation-circle">&nbsp;&nbsp;</i>项目概况</li>
@@ -9,20 +8,119 @@
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
                 <div class="layui-anim layui-anim-upbit">
-                    <div class="layui-row layui-col-space10">
-                        <div class="layui-col-md9">
-                            <div class="layui-elem-quote layui-block-item">
-                                <fieldset class="layui-elem-field layui-field-title">
-                                    <legend class="layui-field-block">项目详情</legend>
+                    <div class="layui-block-item layui-elem-quote">
+                        <div class="layui-input-inline"><input name="keyword" placeholder="请输入成员的邮箱或名字" v-model='keyword' autocomplete="off" class="layui-input item-search-buttom"></div>
+                        <button class="layui-btn layui-btn-small" @click="addTeam()"><i class="fa fa-search" style="font-size:13px!important;">&nbsp;</i>搜索成员</button>
+
+                        <div class="layui-form-item">
+                            <div class="item-li admin-li">
+                                <fieldset class="layui-elem-field title-p">
+                                    <legend style="font-size:16px">管理员</legend>
                                 </fieldset>
+                                <ul class="list-ul">
+                                    <li class="item-child-li pull-left ng-scope">
+                                        <ul class="people-ul">
+                                            <li class="pull-left name-summary-li">黎哈哈</li>
+                                            <li class="pull-left people-li">
+                                                <p><span>黎哈哈</span><span class="iconfont">&nbsp;<i class="fa fa-flag"></i></span></p>
+                                                <p>超级管理员</p></li>
+                                            <li class="pull-right list-li">
+                                                <span class="icon-caidan" @click="menuOpen($event)"><i class="fa fa-bars"></i></span>
+                                                <div class="list-function-wrap" style="display:none">
+                                                    <ul class="list-function-ul">
+                                                        <li class="list-function-detail">
+                                                            <ul>
+                                                                <li>修改备注名</li>
+                                                                <li>设为普通成员[读写]</li>
+                                                                <li>设为普通成员[只读]</li>
+                                                                <li>踢出项目</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="item-child-li pull-left">
+                                        <ul class="people-ul">
+                                            <li class="pull-left name-summary-li">巨沼怪</li>
+                                            <li class="pull-left people-li">
+                                                <p><span>巨沼怪</span><span class="iconfont"></span></p>
+                                                <p>协作管理员</p>
+                                            </li>
+                                            <li class="pull-right list-li">
+                                                <span class="icon-caidan" @click="menuOpen($event)"><i class="fa fa-bars"></i></span>
+                                                <div class="list-function-wrap" style="display:none">
+                                                    <ul class="list-function-ul">
+                                                        <li class="list-function-detail">
+                                                            <ul><li>修改备注名</li>
+                                                                <li>设为普通成员[读写]</li>
+                                                                <li>设为普通成员[只读]</li>
+                                                                <li>转让项目</li>
+                                                                <li>踢出项目</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
                             </div>
-                        </div>
-                        <div class="layui-col-md3">
-                            <div class="layui-elem-quote layui-block-item">
-                                <fieldset class="layui-elem-field layui-field-title">
-                                    <legend class="layui-field-block">后台部分左侧栏目</legend>
+                            <div class="item-li admin-li">
+                                <fieldset class="layui-elem-field title-p">
+                                    <legend style="font-size:16px">协作成员</legend>
                                 </fieldset>
-                                <div style="padding: 15px;">内容主体区域</div>
+                                <ul class="list-ul">
+                                    <li class="item-child-li pull-left">
+                                        <ul class="people-ul">
+                                            <li class="pull-left name-summary-li">巨沼怪</li>
+                                            <li class="pull-left people-li">
+                                                <p><span>巨沼怪</span><span class="iconfont"></span></p>
+                                                <p>协作管理员</p>
+                                            </li>
+                                            <li class="pull-right list-li">
+                                                <span class="icon-caidan" @click="menuOpen($event)"><i class="fa fa-bars"></i></span>
+                                                <div class="list-function-wrap" style="display:none">
+                                                    <ul class="list-function-ul">
+                                                        <li class="list-function-detail">
+                                                            <ul><li>修改备注名</li>
+                                                                <li>设为普通成员[读写]</li>
+                                                                <li>设为普通成员[只读]</li>
+                                                                <li>转让项目</li>
+                                                                <li>踢出项目</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="item-child-li pull-left">
+                                        <ul class="people-ul">
+                                            <li class="pull-left name-summary-li">巨沼怪</li>
+                                            <li class="pull-left people-li">
+                                                <p><span>巨沼怪</span><span class="iconfont"></span></p>
+                                                <p>只读成员</p>
+                                            </li>
+                                            <li class="pull-right list-li">
+                                                <span class="icon-caidan" @click="menuOpen($event)"><i class="fa fa-bars"></i></span>
+                                                <div class="list-function-wrap" style="display:none">
+                                                    <ul class="list-function-ul">
+                                                        <li class="list-function-detail">
+                                                            <ul><li>修改备注名</li>
+                                                                <li>设为普通成员[读写]</li>
+                                                                <li>设为普通成员[只读]</li>
+                                                                <li>转让项目</li>
+                                                                <li>踢出项目</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -43,6 +141,7 @@
             el: "#main",
             data: {
                 menu_items: [],
+                keyword: '',
                 pageAll: 0,
                 perPage: 10  // 数字分页
             },
@@ -114,6 +213,11 @@
                     }else{
                         layer.msg("参数错误");
                     }
+                },
+
+                menuOpen: function(e){
+                    $(e.target).parent().next().show();
+                    $(e.target).parent().next().mouseleave(function(){$(this).hide();});
                 }
             },
 

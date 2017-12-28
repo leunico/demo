@@ -107,7 +107,6 @@
                         ,title: title
                         ,id: 'group'
                         ,content: [url, 'no']
-                        ,shade: 0
                         ,area: ['485px', '280px']
                         ,end: function(){}
                     });
@@ -206,7 +205,6 @@
                             ,title: '文档添加'
                             ,id: 'interfaceAdd'
                             ,content: ["{:Url('project/doc/create')}" + "?gid=" + this.gpid + "&pid=" + pid, 'no']
-                            ,shade: 0
                             ,resize: false
                             ,area: ['1060px', '777px']
                             ,end: function(){
@@ -239,7 +237,6 @@
                                 ,title: '文档修改'
                                 ,id: 'codeEdit'
                                 ,content: ["/project/doc/" + id + "/edit", 'no']
-                                ,shade: 0
                                 ,resize: false
                                 ,area: ['1060px', '777px']
                                 ,end: function(){

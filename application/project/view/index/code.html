@@ -43,7 +43,7 @@
                                     <div class="layui-block-item layui-elem-quote" v-cloak>
                                         <button class="layui-btn layui-btn-small" @click="addCode()">添加状态码</button>
                                         <div class="layui-input-inline" style="margin-left:2px;">
-                                            <input type="tel" name="phone" placeholder="请输入关键字" v-model='keyword' @change="loadCodeList(1)" autocomplete="off" class="layui-input item-search">
+                                            <input name="keyword" placeholder="请输入关键字" v-model='keyword' @change="loadCodeList(1)" autocomplete="off" class="layui-input item-search">
                                             <div class="item-search-fa"><i class="fa fa-search fa-search-input">&nbsp;&nbsp;</i></div>
                                         </div>
                                         <table class="layui-table" lay-even="" lay-skin="nob">
@@ -110,7 +110,6 @@
                         ,title: title
                         ,id: 'group'
                         ,content: [url, 'no']
-                        ,shade: 0
                         ,area: ['485px', '280px']
                         ,end: function(){}
                     });
@@ -209,7 +208,6 @@
                             ,title: '状态码添加'
                             ,id: 'interfaceAdd'
                             ,content: ["{:Url('project/code/create')}" + "?gid=" + this.gpid + "&pid=" + pid, 'no']
-                            ,shade: 0
                             ,resize: false
                             ,area: ['636px', '335px']
                             ,end: function(){
@@ -242,7 +240,6 @@
                                 ,title: '状态码修改'
                                 ,id: 'codeEdit'
                                 ,content: ["/project/code/" + id + "/edit", 'no']
-                                ,shade: 0
                                 ,resize: false
                                 ,area: ['636px', '335px']
                                 ,end: function(){

@@ -148,7 +148,6 @@
                         ,title: '项目添加'
                         ,id: 'menu'
                         ,content: ["{:Url('project/create')}" + "?id=" + id, 'no']
-                        ,shade: 0
                         ,area: ['532px', '623px']
                         ,end: function(){
                             lists.loadProjectList(1);
@@ -165,7 +164,6 @@
                             type: 2
                             ,title: '项目修改'
                             ,content: ["/admin/project/" + id + "/edit", 'no']
-                            ,shade: 0
                             ,area: ['532px', '623px']
                             ,end: function(){
                                 lists.loadProjectList(1);

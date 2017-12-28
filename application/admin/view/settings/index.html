@@ -167,7 +167,6 @@ layui.use(['element', 'layer', "jquery"], function(){
                     ,title: '栏目添加'
                     ,id: 'menu'
                     ,content: ["{:Url('menu/create')}" + "?id=" + id + "&type=" + type, 'no']
-                    ,shade: 0
                     ,area: ['432px', '392px']
                     ,end: function(){
                         lists.loadMenuList(1);
@@ -182,7 +181,6 @@ layui.use(['element', 'layer', "jquery"], function(){
                         type: 2
                         ,title: '栏目修改'
                         ,content: ["/admin/menu/" + id + "/edit", 'no']
-                        ,shade: 0
                         ,area: ['432px', '392px']
                         ,end: function(){
                             lists.loadMenuList(1);
