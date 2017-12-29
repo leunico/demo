@@ -186,9 +186,11 @@
     margin-bottom: 15px;
 }
 .item-li .title-p {
-    margin: 10px 0 20px;
-    border: none;
-    border-top: 1px solid #e2e2e2;
+    font-size: 14px;
+    font-weight: 700;
+    height: 36px;
+    line-height: 44px;
+    text-indent: 0;
 }
 .admin-li .item-child-li {
     width: 220px;
