@@ -34,7 +34,7 @@
     background-color: #f3f3f3;
 }
 .layui-block-item {
-    margin-top: 5px;
+    /*margin-top: 5px;*/
     border-left:0px solid #ffffff;
     background-color: #ffffff;
 }
@@ -181,7 +181,7 @@
     height: 400px;
 }
 .admin-li, .partner-li {
-    padding: 15px 0px;
+    padding: 10px 0px;
     overflow: auto;
     margin-bottom: 15px;
 }
@@ -189,8 +189,10 @@
     font-size: 14px;
     font-weight: 700;
     height: 36px;
-    line-height: 44px;
-    text-indent: 0;
+    width: 6%;
+    line-height: 36px;
+    text-align: center;
+    /*border-bottom: 2px solid #5fb878;*/
 }
 .admin-li .item-child-li {
     width: 220px;
@@ -204,6 +206,7 @@
     -webkit-border-radius: 3px;
     border-radius: 3px;
     margin-top: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 .pull-left {
     float: left;
@@ -222,7 +225,7 @@
     width: 41px;
     height: 41px;
     line-height: 41px;
-    background-color: #009688;
+    background-color: #5fb878;
     text-align: center;
     color: #ffffff;
     border: 1px solid #f3f3f3;
