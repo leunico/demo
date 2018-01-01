@@ -3,6 +3,7 @@ namespace app\common\model;
 
 use think\Model;
 use app\project\model\ProjectGroup;
+use app\project\model\UserProject;
 use traits\model\SoftDelete;
 
 class Project extends Model
@@ -15,11 +16,17 @@ class Project extends Model
         self::event('after_insert', function (Project $project) {
             $project_id = $project->getLastInsID();
             if (!empty($project_id)){
+                UserProject::create([
+                    'project_id' => $project_id,
+                    'user_id'    => 1, // 当前登陆的用户
+                    'rule_type'  => 99
+                ]);
+
                 $project_group = new ProjectGroup;
                 $list = [
-                    ['project_id'=>$project_id, 'group_name'=>'默认分组', 'group_type' => 1],
-                    ['project_id'=>$project_id, 'group_name'=>'默认分组', 'group_type' => 2],
-                    ['project_id'=>$project_id, 'group_name'=>'默认分组', 'group_type' => 3]
+                    ['project_id' => $project_id, 'group_name' => '默认分组', 'group_type' => 1],
+                    ['project_id' => $project_id, 'group_name' => '默认分组', 'group_type' => 2],
+                    ['project_id' => $project_id, 'group_name' => '默认分组', 'group_type' => 3]
                 ];
                 $project_group->saveAll($list);
             }

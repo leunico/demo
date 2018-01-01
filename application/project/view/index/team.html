@@ -13,16 +13,27 @@
                         <button class="layui-btn layui-btn-small" @click="addTeam()"><i class="fa fa-search" style="font-size:13px!important;">&nbsp;</i>搜索成员</button>
                         <blockquote style="margin: 14px 0px 0px -20px;" class="layui-elem-quote">在这里你可以查看本项目有哪些人可以操作，那些人有什么权限，以及添加某个成员。</blockquote>
 
-                        <div class="layui-form-item">
+                        <div class="layui-form-item" v-cloak>
                             <div class="item-li admin-li">
                                 <p class="title-p"><i class="fa fa-user">&nbsp;&nbsp;</i>管理成员</p>
                                 <ul class="list-ul">
-                                    <li class="item-child-li pull-left ng-scope">
+                                    <li class="item-child-li pull-left" v-for="item in items.admin">
                                         <ul class="people-ul">
-                                            <li class="pull-left name-summary-li">黎哈哈</li>
+                                            <template v-if="item.user.user_head">
+                                                <img :src="item.user.user_head" class="layui-circle pull-left" style="width:41px;">
+                                            </template>
+                                            <template v-else>
+                                                <li v-if="item.remark_name" class="pull-left name-summary-li">{{ item.remark_name }}</li>
+                                                <li v-else class="pull-left name-summary-li">{{ item.user.user_name }}</li>
+                                            </template>
                                             <li class="pull-left people-li">
-                                                <p><span>黎哈哈</span><span class="iconfont">&nbsp;<i class="fa fa-flag"></i></span></p>
-                                                <p>超级管理员</p></li>
+                                                <p>
+                                                    <span v-if="item.remark_name"><b>{{ item.remark_name }}</b></span>
+                                                    <span v-else><b>{{ item.user.user_name }}</b></span>
+                                                    <span class="iconfont">&nbsp;<i v-if="item.rule_type.id == 99" class="fa fa-flag"></i></span>
+                                                </p>
+                                                <p>{{ item.rule_type.str }}</p>
+                                            </li>
                                             <li class="pull-right list-li">
                                                 <span class="icon-caidan" @click="menuOpen($event)"><i class="fa fa-bars"></i></span>
                                                 <div class="list-function-wrap" style="display:none">
@@ -40,65 +51,26 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li class="item-child-li pull-left">
-                                        <ul class="people-ul">
-                                            <li class="pull-left name-summary-li">巨沼怪</li>
-                                            <li class="pull-left people-li">
-                                                <p><span>巨沼怪</span><span class="iconfont"></span></p>
-                                                <p>协作管理员</p>
-                                            </li>
-                                            <li class="pull-right list-li">
-                                                <span class="icon-caidan" @click="menuOpen($event)"><i class="fa fa-bars"></i></span>
-                                                <div class="list-function-wrap" style="display:none">
-                                                    <ul class="list-function-ul">
-                                                        <li class="list-function-detail">
-                                                            <ul><li>修改备注名</li>
-                                                                <li>设为普通成员[读写]</li>
-                                                                <li>设为普通成员[只读]</li>
-                                                                <li>转让项目</li>
-                                                                <li>踢出项目</li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </li>
                                 </ul>
                             </div>
-                            <div class="item-li admin-li" style="display: none;">
+                            <div class="item-li admin-li" v-show="items.users">
                                 <p class="title-p"><i class="fa fa-users">&nbsp;&nbsp;</i>协作成员</p>
                                 <ul class="list-ul">
-                                    <li class="item-child-li pull-left">
+                                    <li class="item-child-li pull-left" v-for="item in items.users">
                                         <ul class="people-ul">
-                                            <li class="pull-left name-summary-li">巨沼怪</li>
+                                            <template v-if="item.user.user_head">
+                                                <img :src="item.user.user_head" class="layui-circle pull-left" style="width:41px;">
+                                            </template>
+                                            <template v-else>
+                                                <li v-if="item.remark_name" class="pull-left name-summary-li">{{ item.remark_name }}</li>
+                                                <li v-else class="pull-left name-summary-li">{{ item.user.user_name }}</li>
+                                            </template>
                                             <li class="pull-left people-li">
-                                                <p><span>巨沼怪</span><span class="iconfont"></span></p>
-                                                <p>协作管理员</p>
-                                            </li>
-                                            <li class="pull-right list-li">
-                                                <span class="icon-caidan" @click="menuOpen($event)"><i class="fa fa-bars"></i></span>
-                                                <div class="list-function-wrap" style="display:none">
-                                                    <ul class="list-function-ul">
-                                                        <li class="list-function-detail">
-                                                            <ul><li>修改备注名</li>
-                                                                <li>设为普通成员[读写]</li>
-                                                                <li>设为普通成员[只读]</li>
-                                                                <li>转让项目</li>
-                                                                <li>踢出项目</li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="item-child-li pull-left">
-                                        <ul class="people-ul">
-                                            <li class="pull-left name-summary-li">巨沼怪</li>
-                                            <li class="pull-left people-li">
-                                                <p><span>巨沼怪</span><span class="iconfont"></span></p>
-                                                <p>只读成员</p>
+                                                <p>
+                                                    <span v-if="item.remark_name"><b>{{ item.remark_name }}</b></span>
+                                                    <span v-else><b>{{ item.user.user_name }}</b></span>
+                                                </p>
+                                                <p>{{ item.rule_type.str }}</p>
                                             </li>
                                             <li class="pull-right list-li">
                                                 <span class="icon-caidan" @click="menuOpen($event)"><i class="fa fa-bars"></i></span>
@@ -137,26 +109,23 @@
         var lists = new Vue({
             el: "#main",
             data: {
-                menu_items: [],
-                keyword: '',
-                pageAll: 0,
-                perPage: 10  // 数字分页
+                project_id: "{$id}",
+                items: {},
+                keyword: ''
             },
 
             methods: {
-                loadTeamList: function(page){
+                loadTeamList: function(){
                     layer.load();
                     $.ajax({
-                        url : "/project/team" + "?page=" + page,
+                        url : "/project/team/" + this.project_id + "?keyword=" + this.keyword,
                         type: "GET",
                         dataType: "json",
                         error:function(){layer.msg('请求列表失败!', {anim: 6})},
                         success:function(res){
                             layer.closeAll('loading');
                             if (res.status > 0) {
-                                lists.perPage = res.data.per_page;
-                                lists.pageAll = res.data.last_page; // 数字分页
-                                lists.menu_items = res.data.data;
+                                lists.items = res.data;
                             }else{
                                 layer.msg(res.msg, {anim: 6});
                             }
@@ -219,7 +188,7 @@
             },
 
             mounted: function(){
-//                this.loadTeamList(1);
+               this.loadTeamList(1);
             }
         });
     });

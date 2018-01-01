@@ -1,4 +1,4 @@
--- Adminer 4.2.2 MySQL dump
+-- Adminer 4.2.5 MySQL dump
 
 SET NAMES utf8;
 SET time_zone = '+00:00';
@@ -165,7 +165,6 @@ INSERT INTO `albert_interface` (`interface_id`, `group_id`, `project_id`, `inter
 DROP TABLE IF EXISTS `albert_project`;
 CREATE TABLE `albert_project` (
   `project_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) unsigned NOT NULL,
   `project_name` varchar(128) NOT NULL,
   `project_remark` varchar(255) NOT NULL DEFAULT '',
   `project_type` tinyint(1) unsigned NOT NULL DEFAULT '0',
@@ -176,22 +175,21 @@ CREATE TABLE `albert_project` (
   `update_time` timestamp NULL DEFAULT NULL,
   `create_time` timestamp NULL DEFAULT NULL,
   `delete_time` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`project_id`),
-  KEY `user_id` (`user_id`)
+  PRIMARY KEY (`project_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO `albert_project` (`project_id`, `user_id`, `project_name`, `project_remark`, `project_type`, `project_cover`, `project_status`, `project_version`, `project_progress`, `update_time`, `create_time`, `delete_time`) VALUES
-(1,	0,	'测试村上春树',	'23333',	1,	'/uploads/project/20171117\\f39e3b44a6bb1baf5437dcbeecfdcdec.jpg',	2,	'1.0',	80,	'2017-11-17 03:10:58',	'2017-11-15 09:00:56',	NULL),
-(2,	0,	'哈哈哈哈哈',	'哈哈哈哈哈哈哈',	0,	'/uploads/project/20171117\\da94106bee0007de234625135c9536ec.jpg',	1,	'2.0',	10,	'2017-12-05 10:53:14',	'2017-11-17 02:48:50',	'2017-12-05 10:53:14'),
-(3,	0,	'测试测试测试233',	'哈哈哈哈哈哈哈233',	1,	'/uploads/project/20171117\\b778292376b242389f165a1db02d5b0b.jpg',	0,	'1.8',	10,	'2017-12-05 10:54:58',	'2017-11-17 02:51:18',	NULL),
-(4,	0,	'sdfs',	'sfsdfs',	0,	'/uploads/project/20171117\\1d8adbecb6760f52e933f2550d7674c0.jpg',	1,	'1.33',	10,	'2017-11-17 03:34:21',	'2017-11-17 03:33:50',	'2017-11-17 03:34:21'),
-(5,	0,	'西出阳关无故人',	'西出阳关无故人',	1,	'/uploads/project/20171205\\6eca3271c6bfc9402533e6a6df931c02.jpg',	1,	'1.0',	10,	'2017-12-22 06:10:55',	'2017-12-05 10:53:50',	'2017-12-22 06:10:55'),
-(6,	0,	'我去妈的这种',	'我去妈的这种',	1,	'/uploads/project/20171205\\663d2d5803e972ad0c765604c60a719f.jpg',	1,	'1.0',	10,	'2017-12-05 10:55:31',	'2017-12-05 10:55:31',	NULL),
-(7,	0,	'测试测试测试',	'超市菜市场',	1,	'/uploads/project/20171205\\a9171cb2b80c672512a494e9aade8a50.jpg',	1,	'2.0',	10,	'2017-12-05 11:06:41',	'2017-12-05 11:05:53',	'2017-12-05 11:06:41'),
-(8,	0,	'解忧杂货店',	'解忧杂货店',	1,	'/uploads/project/20171205\\714cc668a16d05ddabb9e777ab898b04.jpg',	1,	'1.0',	10,	'2017-12-05 11:07:17',	'2017-12-05 11:07:17',	NULL),
-(9,	0,	'测试',	'测试',	1,	'/uploads/project/20171206\\3a5f4aa435e71b4001b423c3b39c52e3.jpg',	1,	'2.0',	10,	'2017-12-06 05:51:04',	'2017-12-06 01:17:58',	'2017-12-06 05:51:04'),
-(10,	0,	'代理商项目',	'代理商项目',	1,	'/uploads/project/20171222\\6d29518de025ac7f496d8ba070ac70bf.jpg',	1,	'1.0',	10,	'2017-12-22 06:12:06',	'2017-12-22 06:11:16',	'2017-12-22 06:12:06'),
-(11,	0,	'代理商项目',	'代理商项目',	1,	'/uploads/project/20171222\\6477d25df6a9c9ea977c09daaac87eb8.jpg',	1,	'1.0',	10,	'2017-12-22 06:12:21',	'2017-12-22 06:12:21',	NULL);
+INSERT INTO `albert_project` (`project_id`, `project_name`, `project_remark`, `project_type`, `project_cover`, `project_status`, `project_version`, `project_progress`, `update_time`, `create_time`, `delete_time`) VALUES
+(1,	'测试村上春树',	'23333',	1,	'/uploads/project/20171117\\f39e3b44a6bb1baf5437dcbeecfdcdec.jpg',	2,	'1.0',	80,	'2017-11-17 03:10:58',	'2017-11-15 09:00:56',	NULL),
+(2,	'哈哈哈哈哈',	'哈哈哈哈哈哈哈',	0,	'/uploads/project/20171117\\da94106bee0007de234625135c9536ec.jpg',	1,	'2.0',	10,	'2017-12-05 10:53:14',	'2017-11-17 02:48:50',	'2017-12-05 10:53:14'),
+(3,	'测试测试测试233',	'哈哈哈哈哈哈哈233',	1,	'/uploads/project/20171117\\b778292376b242389f165a1db02d5b0b.jpg',	0,	'1.8',	10,	'2017-12-05 10:54:58',	'2017-11-17 02:51:18',	NULL),
+(4,	'sdfs',	'sfsdfs',	0,	'/uploads/project/20171117\\1d8adbecb6760f52e933f2550d7674c0.jpg',	1,	'1.33',	10,	'2017-11-17 03:34:21',	'2017-11-17 03:33:50',	'2017-11-17 03:34:21'),
+(5,	'西出阳关无故人',	'西出阳关无故人',	1,	'/uploads/project/20171205\\6eca3271c6bfc9402533e6a6df931c02.jpg',	1,	'1.0',	10,	'2017-12-22 06:10:55',	'2017-12-05 10:53:50',	'2017-12-22 06:10:55'),
+(6,	'我去妈的这种',	'我去妈的这种',	1,	'/uploads/project/20171205\\663d2d5803e972ad0c765604c60a719f.jpg',	1,	'1.0',	10,	'2017-12-05 10:55:31',	'2017-12-05 10:55:31',	NULL),
+(7,	'测试测试测试',	'超市菜市场',	1,	'/uploads/project/20171205\\a9171cb2b80c672512a494e9aade8a50.jpg',	1,	'2.0',	10,	'2017-12-05 11:06:41',	'2017-12-05 11:05:53',	'2017-12-05 11:06:41'),
+(8,	'解忧杂货店',	'解忧杂货店',	1,	'/uploads/project/20171205\\714cc668a16d05ddabb9e777ab898b04.jpg',	1,	'1.0',	10,	'2017-12-05 11:07:17',	'2017-12-05 11:07:17',	NULL),
+(9,	'测试',	'测试',	1,	'/uploads/project/20171206\\3a5f4aa435e71b4001b423c3b39c52e3.jpg',	1,	'2.0',	10,	'2017-12-06 05:51:04',	'2017-12-06 01:17:58',	'2017-12-06 05:51:04'),
+(10,	'代理商项目',	'代理商项目',	1,	'/uploads/project/20171222\\6d29518de025ac7f496d8ba070ac70bf.jpg',	1,	'1.0',	10,	'2017-12-22 06:12:06',	'2017-12-22 06:11:16',	'2017-12-22 06:12:06'),
+(11,	'代理商项目',	'代理商项目',	1,	'/uploads/project/20171222\\6477d25df6a9c9ea977c09daaac87eb8.jpg',	1,	'1.0',	10,	'2017-12-22 06:12:21',	'2017-12-22 06:12:21',	NULL);
 
 DROP TABLE IF EXISTS `albert_project_group`;
 CREATE TABLE `albert_project_group` (
@@ -246,12 +244,32 @@ INSERT INTO `albert_project_group` (`group_id`, `project_id`, `group_parent_id`,
 (35,	8,	0,	'菜市场',	0,	3,	'2017-12-25 03:35:29',	'2017-12-25 03:35:29',	NULL),
 (36,	8,	35,	'发发发发',	0,	3,	'2017-12-25 03:35:35',	'2017-12-25 03:35:35',	NULL);
 
+DROP TABLE IF EXISTS `albert_project_user`;
+CREATE TABLE `albert_project_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
+  `project_id` int(11) unsigned NOT NULL,
+  `rule_type` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `remark_name` varchar(64) NOT NULL DEFAULT '',
+  `create_time` timestamp NULL DEFAULT NULL,
+  `update_time` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+INSERT INTO `albert_project_user` (`id`, `user_id`, `project_id`, `rule_type`, `remark_name`, `create_time`, `update_time`) VALUES
+(1,	2,	8,	3,	'',	NULL,	NULL),
+(2,	3,	8,	1,	'',	NULL,	NULL),
+(3,	4,	8,	2,	'',	NULL,	NULL),
+(4,	5,	8,	2,	'',	NULL,	NULL),
+(5,	1,	8,	99,	'',	NULL,	NULL);
+
 DROP TABLE IF EXISTS `albert_user`;
 CREATE TABLE `albert_user` (
   `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_name` varchar(64) NOT NULL,
   `user_email` varchar(64) NOT NULL,
   `user_password` varchar(64) NOT NULL,
+  `user_head` varchar(64) NOT NULL DEFAULT '',
   `user_status` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `user_type` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `update_time` timestamp NULL DEFAULT NULL,
@@ -260,17 +278,11 @@ CREATE TABLE `albert_user` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+INSERT INTO `albert_user` (`user_id`, `user_name`, `user_email`, `user_password`, `user_head`, `user_status`, `user_type`, `update_time`, `create_time`, `delete_time`) VALUES
+(1,	'之心',	'867426952@qq.com',	'888888',	'/static/images/default/top.jpg',	1,	1,	NULL,	NULL,	NULL),
+(2,	'写接口的',	'23333333@qq.com',	'888888',	'',	1,	1,	NULL,	NULL,	NULL),
+(3,	'admin',	'admin@qq.com',	'888888',	'',	1,	1,	NULL,	NULL,	NULL),
+(4,	'安卓',	'89898989@qq.com',	'888888',	'',	1,	1,	NULL,	NULL,	NULL),
+(5,	'苹果',	'456123456@qq.com',	'888888',	'',	1,	1,	NULL,	NULL,	NULL);
 
-DROP TABLE IF EXISTS `albert_user_project`;
-CREATE TABLE `albert_user_project` (
-  `up_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) unsigned NOT NULL,
-  `project_id` int(11) unsigned NOT NULL,
-  `create_time` timestamp NULL DEFAULT NULL,
-  `update_time` timestamp NULL DEFAULT NULL,
-  `delete_time` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`up_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
--- 2017-12-28 10:22:51
+-- 2018-01-01 13:08:19

@@ -79,9 +79,9 @@ function getConfigModel($name)
 }
 
 # 返回包装好的json数据
-function jsonOutPut($status, $msg='', $data='', $page=1, $count=0)
+function jsonOutPut($status, $msg='', $data='')
 {
-    return json(['status' => $status, 'msg' => $msg, 'data' => $data, 'page' => $page, 'count' => $count]);
+    return json(['status' => $status, 'msg' => $msg, 'data' => $data]);
 }
 
 # 返回图片放置路径

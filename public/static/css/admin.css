@@ -202,7 +202,7 @@
     overflow: hidden;
     margin-right: 10px;
     /*border: 1px solid #ededed;*/
-    background-color: #f3f3f3;
+    background-color: #f8f8f8;
     -webkit-border-radius: 3px;
     border-radius: 3px;
     margin-top: 10px;
@@ -229,7 +229,7 @@
     text-align: center;
     color: #ffffff;
     border: 1px solid #f3f3f3;
-    font-size: 15px;
+    font-size: 14px;
 }
 .item-li .people-ul .people-li {
     margin-left: 15px;
