@@ -11,7 +11,7 @@ class BaseController extends Controller
     // 初始化项目
     protected function _initialize()
     {
-
+        parent::_initialize();
     }
 
     # 获取分组

@@ -24,9 +24,10 @@ class ProjectUser extends Model
 
     public function getProjectUser($id)
     {
-        $data = $this->with('user')->field('id,rule_type,remark_name,user_id')->where('project_id', $id)->order("rule_type DESC")->select();
+        $data = $this->with(['user' => function($query){$query->field('user_id,user_head,user_name')->where('user_status', 1);}])->where('project_id', $id)->order("rule_type DESC")->select();
         $result = ['admin' => [], 'users' => []];
         foreach ($data as $item) {
+            $item->menu = $this->getTeamMenu($item);
             if(in_array($item->rule_type['id'], [99, 1]))
                 $result['admin'][] = $item;
             else
@@ -34,5 +35,11 @@ class ProjectUser extends Model
         }
         
         return $result;
+    }
+
+    private function getTeamMenu(ProjectUser $item)
+    {
+//        dump($item);die;
+        return [];
     }
 }

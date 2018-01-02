@@ -1,4 +1,4 @@
--- Adminer 4.2.5 MySQL dump
+-- Adminer 4.2.2 MySQL dump
 
 SET NAMES utf8;
 SET time_zone = '+00:00';
@@ -30,11 +30,11 @@ INSERT INTO `albert_cate` (`cate_Id`, `cate_ParentId`, `cate_Name`, `cate_Intro`
 (35,	4,	'项目列表',	'打开所有的接口列表例如：http://api.crap.cn',	'/admin/index/index',	2,	'reorder',	1,	3,	'2017-11-17 05:47:31',	'2017-11-11 05:33:15',	'2017-11-17 05:47:31'),
 (36,	0,	'数据库管理',	'管理接口数据库',	'admin/database/index',	1,	'cubes',	1,	3,	'2017-11-17 08:10:45',	'2017-11-17 05:49:36',	NULL),
 (37,	0,	'API接口',	'存放接口信息',	'project/index/api',	1,	'random',	1,	2,	'2017-12-21 01:12:09',	'2017-11-24 01:32:30',	NULL),
-(41,	4,	'测试233',	'测试',	'admin/index/index2',	0,	'address-card',	1,	3,	'2017-12-11 10:33:16',	'2017-12-04 01:29:24',	NULL),
+(41,	4,	'测试233',	'测试',	'admin/index/index2',	0,	'address-card',	1,	3,	'2018-01-02 07:05:54',	'2017-12-04 01:29:24',	'2018-01-02 07:05:54'),
 (38,	0,	'项目概况',	'记录项目的基本信息',	'project/index/index',	0,	'line-chart',	1,	2,	'2017-12-07 11:08:14',	'2017-11-24 01:45:06',	NULL),
 (39,	37,	'测试',	'呃呃呃',	'22222',	0,	'address-book',	1,	2,	'2017-11-24 01:45:42',	'2017-11-24 01:45:35',	'2017-11-24 01:45:42'),
 (40,	4,	'测试',	'测试',	'/admin/index/index',	0,	'address-card-o',	1,	3,	'2017-11-24 10:08:55',	'2017-11-24 10:05:55',	'2017-11-24 10:08:55'),
-(42,	4,	'测试测试',	'测试测试',	'admin/index/index',	0,	'address-card-o',	1,	3,	'2017-12-11 10:32:54',	'2017-12-04 05:40:37',	NULL),
+(42,	4,	'测试测试',	'测试测试',	'admin/index/index',	0,	'address-card-o',	1,	3,	'2018-01-02 07:05:51',	'2017-12-04 05:40:37',	'2018-01-02 07:05:51'),
 (43,	38,	'测试',	'2333',	'project/api/index2',	0,	'area-chart',	1,	2,	'2017-12-05 09:35:37',	'2017-12-04 11:17:45',	'2017-12-05 09:35:37'),
 (44,	0,	'状态码',	'接口状态码',	'project/index/code',	2,	'tags',	1,	2,	'2017-12-21 01:12:07',	'2017-12-21 01:11:56',	NULL),
 (45,	0,	'项目文档',	'项目文档',	'project/index/doc',	3,	'pencil-square',	1,	2,	'2017-12-21 01:15:58',	'2017-12-21 01:15:50',	NULL),
@@ -269,20 +269,23 @@ CREATE TABLE `albert_user` (
   `user_name` varchar(64) NOT NULL,
   `user_email` varchar(64) NOT NULL,
   `user_password` varchar(64) NOT NULL,
-  `user_head` varchar(64) NOT NULL DEFAULT '',
+  `password_salt` varchar(32) NOT NULL DEFAULT '',
+  `user_head` varchar(96) NOT NULL DEFAULT '',
   `user_status` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `user_type` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `user_token` varchar(64) NOT NULL DEFAULT '',
+  `login_time` timestamp NULL DEFAULT NULL,
   `update_time` timestamp NULL DEFAULT NULL,
   `create_time` timestamp NULL DEFAULT NULL,
   `delete_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO `albert_user` (`user_id`, `user_name`, `user_email`, `user_password`, `user_head`, `user_status`, `user_type`, `update_time`, `create_time`, `delete_time`) VALUES
-(1,	'之心',	'867426952@qq.com',	'888888',	'/static/images/default/top.jpg',	1,	1,	NULL,	NULL,	NULL),
-(2,	'写接口的',	'23333333@qq.com',	'888888',	'',	1,	1,	NULL,	NULL,	NULL),
-(3,	'admin',	'admin@qq.com',	'888888',	'',	1,	1,	NULL,	NULL,	NULL),
-(4,	'安卓',	'89898989@qq.com',	'888888',	'',	1,	1,	NULL,	NULL,	NULL),
-(5,	'苹果',	'456123456@qq.com',	'888888',	'',	1,	1,	NULL,	NULL,	NULL);
+INSERT INTO `albert_user` (`user_id`, `user_name`, `user_email`, `user_password`, `password_salt`, `user_head`, `user_status`, `user_type`, `user_token`, `login_time`, `update_time`, `create_time`, `delete_time`) VALUES
+(1,	'之心',	'867426952@qq.com',	'888888',	'',	'/static/images/default/top.jpg',	1,	1,	'0',	NULL,	NULL,	NULL,	NULL),
+(2,	'写接口的',	'23333333@qq.com',	'888888',	'',	'',	1,	1,	'0',	NULL,	NULL,	NULL,	NULL),
+(3,	'admin',	'admin@qq.com',	'888888',	'',	'',	1,	1,	'0',	NULL,	NULL,	NULL,	NULL),
+(4,	'安卓',	'89898989@qq.com',	'888888',	'',	'',	1,	1,	'0',	NULL,	NULL,	NULL,	NULL),
+(5,	'苹果',	'456123456@qq.com',	'888888',	'',	'',	1,	1,	'0',	NULL,	NULL,	NULL,	NULL);
 
--- 2018-01-01 13:08:19
+-- 2018-01-02 10:47:31

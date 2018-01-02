@@ -32,7 +32,7 @@
                                                     <span v-else><b>{{ item.user.user_name }}</b></span>
                                                     <span class="iconfont">&nbsp;<i v-if="item.rule_type.id == 99" class="fa fa-flag"></i></span>
                                                 </p>
-                                                <p>{{ item.rule_type.str }}</p>
+                                                <p style="color:#999;">{{ item.rule_type.str }}</p>
                                             </li>
                                             <li class="pull-right list-li">
                                                 <span class="icon-caidan" @click="menuOpen($event)"><i class="fa fa-bars"></i></span>
@@ -70,7 +70,7 @@
                                                     <span v-if="item.remark_name"><b>{{ item.remark_name }}</b></span>
                                                     <span v-else><b>{{ item.user.user_name }}</b></span>
                                                 </p>
-                                                <p>{{ item.rule_type.str }}</p>
+                                                <p style="color:#999;">{{ item.rule_type.str }}</p>
                                             </li>
                                             <li class="pull-right list-li">
                                                 <span class="icon-caidan" @click="menuOpen($event)"><i class="fa fa-bars"></i></span>
