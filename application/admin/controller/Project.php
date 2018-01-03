@@ -10,7 +10,7 @@ class Project extends BaseController
     {
         if ($this->request->isAjax()){
             $items = Loader::model('Project')->order('project_id')->paginate(10)->toArray();
-            return jsonOutPut(1, '', $items);
+            $this->success('请求成功', '', $items);
         }
 
 //        abort(404, '请求错误！');
@@ -46,30 +46,30 @@ class Project extends BaseController
         $data = $this->request->param();
         $validate = Loader::validate('Project');
         if(!$validate->check($data) && !isset($data['cate_Order']))
-            return jsonOutPut(0, $validate->getError(), '');
+            $this->error($validate->getError());
 
         $project = isset($data['id']) ? Loader::model('Project')->get($data['id']) : Loader::model('Project');
         $project->data($data);
-        return jsonOutPut(1, '操作成功', $project->allowField(true)->save());
+        $this->success('操作成功', '', $project->allowField(true)->save());
     }
 
     public function delete($id)
     {
         $delete = Loader::model('Project')->destroy($id);
-        return $delete ? jsonOutPut(1, '删除成功', $delete) : jsonOutPut(0, '删除失败', $delete);
+        $delete ? $this->success('删除成功', '', $delete) : $this->error('删除失败');
     }
 
     public function upload()
     {
         $file = $this->request->file('file');
         if(!$file)
-            return jsonOutPut(0, '图片不存在！', []);
+            $this->error('图片不存在');
 
         $path = getImgPath($this->request->controller());
         $info = $file->move($path['basePath']);
         if(!empty($info))
-            return jsonOutPut(1, '项目封面上传成功', ['SaveName' => $path['filePath']. $info->getSaveName(), 'Filename' => $info->getFilename()]);
+            $this->success('项目封面上传成功', '', ['SaveName' => $path['filePath']. $info->getSaveName(), 'Filename' => $info->getFilename()]);
         else
-            return jsonOutPut(0, $file->getError(), []);
+            $this->error($file->getError());
     }
 }

@@ -99,7 +99,7 @@
                         error:function(){layer.msg('请求栏目列表失败!', {anim: 6})},
                         success:function(res){
                             layer.closeAll('loading');
-                            if (res.status > 0) {
+                            if (res.code > 0) {
                                 lists.perPage = res.data.per_page;
                                 lists.pageAll = res.data.last_page; // 数字分页
                                 lists.menu_items = res.data.data;
@@ -148,7 +148,7 @@
                                 type: "DELETE",
                                 error:function(){layer.msg('删除失败！', {anim: 6})},
                                 success:function(res){
-                                    layer.msg("删除成功！", {time: 1000, icon: 1});
+                                    layer.msg(res.msg, {time: 1000, icon: 1});
                                     lists.loadProjectList(1);
                                 }
                             });

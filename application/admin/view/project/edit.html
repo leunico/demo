@@ -75,7 +75,7 @@
             }
             ,done: function(res){
                 layer.msg(res.msg);
-                if(res.status > 0)
+                if(res.code > 0)
                     $("input[name='project_cover']").val(res.data.SaveName);
             }
             ,error: function(){
@@ -87,7 +87,7 @@
         form.on('submit(project)', function(data){
             if(data.field.project_id < 1){
                 $.post("/admin/project", data.field, function(res){
-                    if(res.status > 0)
+                    if(res.code > 0)
                         parent.layer.closeAll();
                     else
                         parent.layer.msg(res.msg, {time: 2000, icon: 2});
@@ -98,7 +98,7 @@
                     type: "PUT",
                     data: data.field,
                     success: function(res){
-                        if(res.status > 0)
+                        if(res.code > 0)
                             parent.layer.closeAll();
                         else
                             parent.layer.msg(res.msg, {time: 2000, icon: 2});

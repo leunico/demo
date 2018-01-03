@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>之心管理 {block name="title"}{/block}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Beijing Qingyun Technology Co., Ltd">
+    <meta name="description" content="{block name='description'}一起写OFFICE是一款让你耳目一新的协作OFFICE,包含云端文字、云端表格、云端演示， PC端和移动端全覆盖,支持多人同时对office文档编辑和评论,让你与他人轻松完成协作撰稿、方案讨论...{/block}">
+    <meta name="keywords" content="{block name='keywords'}在线word,在线excel,在线ppt,office,word,excel,ppt,文档,表格,演示,表单,协作,协作文档,协作表格,协作演示,协作办公,SAAS,协同,协同办公,协同office,协作office,办公,office下载,office破解,office注册码,office2016下载{/block}">
+    <link href="https://yiqixie.com/static/yiqixie/images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="__CSS__/index/nv_bootstrap.css" rel="stylesheet">
+    <link href="__CSS__/index/homeagra.css" rel="stylesheet">
+    <link href="__CSS__/index/business.css" rel="stylesheet">
+    {block name="head"}{/block}
+</head>
+<body class="account-body">
+<div class="landing-body" id="landing-header-id">
+    <!-- 内容区 -->
+    {block name="main"}{/block}
+    <div class="copyright">
+        <div class="container">Copyright © 2017-2018 之心管理 · 上海王老菊未来科技有限公司 · By <a href="http://www.lzxya.com" target="_blank">Leuncio</a></div>
+    </div>
+</div>
+<!-- 自定义js区域 -->
+<script src="__JS__/jquery.min.js"></script>
+<script>
+    function bindEvent(n, m, v, f){
+        $("#" + n).focus(function(){
+            $(this).prev().addClass('d-kv-xd-h-go-b6 d-kv-xd-h-go-x0-kg');
+            $(this).prev().removeClass('d-kv-xd-h-go-mt');
+        }).blur(function(){
+            if(v($(this).val())){
+                $(this).addClass('d-kv-xd-h-le-mt');
+                $(this).prev().removeClass('d-kv-xd-h-go-b6').addClass('d-kv-xd-h-go-mt');
+                $(this).next().addClass('d-kv-xd-h-c6-mt').html(m);
+                f[n] = 0;
+                $('button').addClass('d-ri-wd-h-d6-e6-f6');
+            }else{
+                $(this).removeClass('d-kv-xd-h-le-mt');
+                $(this).prev().removeClass('d-kv-xd-h-go-b6');
+                $(this).next().html('');
+                f[n] = $(this).val();
+                if(checkData(f)){
+                    $('button').removeClass('d-ri-wd-h-d6-e6-f6');
+                }
+            }
+        });
+    }
+
+    function checkData(f){
+        if(typeof f === 'object'){
+            for(var i in f){
+                if(f[i] === 0){
+                    return false;
+                }
+            }
+            return true;
+        }else{
+            return false;
+        }
+    }
+</script>
+{block name="js"}{/block}
+</body>
+</html>

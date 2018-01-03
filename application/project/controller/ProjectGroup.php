@@ -11,9 +11,9 @@ class ProjectGroup extends BaseController
         if ($this->request->isAjax()){
             $gid = $this->request->get('gid', 0);
             if(!empty($gid))
-                return jsonOutPut(1, '请求成功！', Loader::model('ProjectGroup')->where('group_parent_id', $gid)->column('group_id,group_name'));
+                $this->success('请求成功！', '', Loader::model('ProjectGroup')->where('group_parent_id', $gid)->column('group_id,group_name'));
             else
-                return jsonOutPut(0, '请求失败！', []);
+                $this->error('请求失败！');
         }else{
             abort(404, '请求错误！');
         }
@@ -47,15 +47,15 @@ class ProjectGroup extends BaseController
         $data = $this->request->param();
         $validate = Loader::validate('ProjectGroup');
         if(!$validate->check($data))
-            return jsonOutPut(0, $validate->getError(), '');
+            $this->error($validate->getError());
 
         $cate = isset($data['id']) ? Loader::model('ProjectGroup')->get($data['id']) : Loader::model('ProjectGroup');
         $cate->data($data);
-        return jsonOutPut(1, '操作成功', $cate->allowField(true)->save());
+        $this->success('操作成功', '', $cate->allowField(true)->save());
     }
 
     public function delete($id)
     {
-        return jsonOutPut(1, '', Loader::model('ProjectGroup')->delGroup($id));
+        $this->success('操作成功', '', Loader::model('ProjectGroup')->delGroup($id));
     }
 }

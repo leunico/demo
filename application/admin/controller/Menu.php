@@ -27,7 +27,7 @@ class Menu extends BaseController
                 $items[$key]['data'] = toTreeMenu($menu);
             }
 
-            return jsonOutPut(1, '', $items);
+            $this->success('请求成功', '', $items);
         }
 
 //        abort(404, '请求错误！');
@@ -63,15 +63,15 @@ class Menu extends BaseController
         $data = $this->request->param();
         $validate = Loader::validate('Cate');
         if(!$validate->check($data) && !isset($data['cate_Order']))
-            return jsonOutPut(0, $validate->getError(), '');
+            $this->error($validate->getError());
 
         $cate = isset($data['id']) ? Loader::model('Cate')->get($data['id']) : Loader::model('Cate');
         $cate->data($data);
-        return jsonOutPut(1, '操作成功', $cate->allowField(true)->save());
+        $this->success('操作成功', '', $cate->allowField(true)->save());
     }
 
     public function delete($id)
     {
-        return jsonOutPut(1, '', Loader::model('Cate')->delMenu($id));
+        $this->success('操作成功', '', Loader::model('Cate')->delMenu($id));
     }
 }

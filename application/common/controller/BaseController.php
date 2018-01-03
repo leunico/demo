@@ -12,7 +12,7 @@ class BaseController extends Controller
      * 无需登录的方法
      * @var array
      */
-    protected $noNeedLogin = ['login'];
+    protected $noNeedLogin = ['login', 'register', 'resetpwd'];
 
     /**
      * 登陆处理类
@@ -59,7 +59,7 @@ class BaseController extends Controller
 //                Hook::listen('admin_nologin', $this);
                 $url = Session::get('referer');
                 $url = $url ? $url : $this->request->url();
-                $this->error('请先登陆', url('index/login', ['url' => $url]));
+                $this->error('请先登陆', url('/index/login'));
             }
             // 判断是否需要验证权限
 //            if (!$this->auth->match($this->noNeedRight))

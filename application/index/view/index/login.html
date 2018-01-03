@@ -1,0 +1,83 @@
+{extend name="_layout/admin" /}
+{block name="title"}登录{/block}
+{block name="main"}
+<div class="account-page-wrapper-buda">
+    <div class="account-page-logo-bar">
+        <a class="account-page-logo-bar-logo-image" href="/"></a>
+    </div>
+    <div class="account-container">
+        <div id="content">
+            <div data-reactroot="">
+                <div class="d-as-ri-es d-ri-sp as-ri-lz-nd-ve">
+                    <div class="d-ri-ee">
+                        <div class="d-ri-rq-es">
+                            <div class="d-ri-rq-df">登录</div>
+                            <div class="d-ri-rq-kj null">请输入你的邮箱/昵称和密码</div>
+                        </div>
+                        <div class="d-ri-qz-is-es">
+                            <div class="d-ri-xd-sp">
+                                <div class="d-kv-xd-h-ee">
+                                    <label class="d-kv-xd-h-go">请输入邮箱/昵称</label>
+                                    <input class="d-kv-xd-h-le d-kv-xd-h-kv" type="text" id="user" value="">
+                                    <label class="d-kv-xd-h-c6">可以输入邮箱或者昵称登陆，请输入完整且不能有空格</label>
+                                </div>
+                            </div>
+                            <div class="d-ri-xd-sp">
+                                <div class="d-kv-xd-h-ee">
+                                    <label class="d-kv-xd-h-go">请输入密码</label>
+                                    <input class="d-kv-xd-h-le d-kv-xd-h-kv" id="password" type="password" value="">
+                                    <label class="d-kv-xd-h-c6"></label>
+                                    <!--<img class="d-kv-xd-h-le-a6 null" src="https://yiqixie.com/static/yiqixie/images/account/Shape.png">-->
+                                </div>
+                            </div>
+                            <div class="d-ri-xd-sp">
+                                <div class="d-ri-qz-is-es-ih-wd-ne-sp">
+                                    <div class="d-ri-qz-is-es-ih-sp">
+                                        <a tabindex="4" class="d-ri-qz-is-es-ih" href="/index/resetpwd" target="_blank"><span>忘记密码</span></a>
+                                    </div>
+                                    <div class="d-ri-qz-is-es-bs-wd">
+                                        <button class="d-ri-wd-h d-ri-wd-h-d6-e6-f6" type="button">登录</button>
+                                    </div>
+                                </div>
+                                <div class="d-ri-qz-is-es-ih-sp">
+                                    <a tabindex="5" class="d-ri-qz-is-es-ih" href="/index/register" target="_blank"><span>还没有帐号?立即注册</span></a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="d-ri-qq-es">-->
+                            <!--<hr class="d-ri-qq-es-cx-db">-->
+                            <!--<div>-->
+                                <!--<div class="d-ri-qq-es-g0-rq">第三方帐号登录</div>-->
+                                <!--<div class="d-ri-qq-es-g0-l-ee">-->
+                                    <!--<img class="d-ri-qq-es-g0-l" src="https://yiqixie.com/static/yiqixie/images/account/wechat.png">-->
+                                    <!--<img class="d-ri-qq-es-g0-l" src="https://yiqixie.com/static/yiqixie/images/account/Dingding.png">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+    $("#user").focus(function(){
+        $(this).prev().addClass('d-kv-xd-h-go-b6 d-kv-xd-h-go-x0-kg');
+    }).blur(function(){
+        $(this).addClass('d-kv-xd-h-le-mt');
+        $(this).prev().removeClass('d-kv-xd-h-go-b6').addClass('d-kv-xd-h-go-mt');
+        $(this).next().addClass('d-kv-xd-h-c6-mt').html('请输入正确的邮箱/昵称');
+    });
+
+    $("#password").focus(function(){
+        $(this).prev().addClass('d-kv-xd-h-go-b6 d-kv-xd-h-go-x0-kg');
+    }).blur(function(){
+        $(this).addClass('d-kv-xd-h-le-mt');
+        $(this).prev().removeClass('d-kv-xd-h-go-b6').addClass('d-kv-xd-h-go-mt');
+        $(this).next().addClass('d-kv-xd-h-c6-mt').html('请输入6-16位的密码');
+    });
+</script>
+{/block}

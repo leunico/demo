@@ -9,7 +9,7 @@ class Team extends BaseController
     public function index($id)
     {
         if ($this->request->isAjax())
-            return jsonOutPut(1, '', Loader::model('ProjectUser')->getProjectUser($id));
+            $this->success('请求成功', '', Loader::model('ProjectUser')->getProjectUser($id));
         else
             abort(404, '请求错误！');
     }

@@ -1,0 +1,89 @@
+{extend name="_layout/admin" /}
+{block name="title"}注册{/block}
+{block name="main"}
+<div class="account-page-wrapper-buda">
+    <div class="account-page-logo-bar">
+        <a href="/" class="account-page-logo-bar-logo-image"></a>
+    </div>
+    <div class="account-container">
+        <div id="content">
+            <div data-reactroot="" class="d-as-ri-es d-ri-sp as-ri-lz-nd-ve">
+                <div class="d-ri-ee">
+                    <div class="d-ri-rq-es">
+                        <div class="d-ri-rq-df">注册之心管理账号</div>
+                        <div id="msg" class="d-ri-rq-kj">请使用你的邮箱注册</div>
+                    </div>
+                    <div class="d-ri-qz-is-es">
+                        <div class="d-ri-qz-is-f0">
+                            <div class="d-ri-xd-sp">
+                                <div class="d-kv-xd-h-ee">
+                                    <label class="d-kv-xd-h-go">请输入你的邮箱</label>
+                                    <input type="text" class="d-kv-xd-h-le d-kv-xd-h-kv" id="mail" value="">
+                                    <label class="d-kv-xd-h-c6"></label>
+                                </div>
+                            </div>
+                            <div class="d-ri-xd-sp">
+                                <div class="d-kv-xd-h-ee">
+                                    <label class="d-kv-xd-h-go">请输入你的名称</label>
+                                    <input type="text" class="d-kv-xd-h-le d-kv-xd-h-kv" id="user" value="">
+                                    <label class="d-kv-xd-h-c6">名称需满足为2-16位</label>
+                                </div>
+                            </div>
+                            <div class="d-ri-xd-sp">
+                                <div class="d-kv-xd-h-ee">
+                                    <label class="d-kv-xd-h-go">请输入密码</label>
+                                    <input type="password" class="d-kv-xd-h-le d-kv-xd-h-kv" id="password" value="">
+                                    <label class="d-kv-xd-h-c6">密码需满足为6-16位</label>
+                                    <!--<img class="d-kv-xd-h-le-a6 null" src="https://yiqixie.com/static/yiqixie/images/account/Shape.png">-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-ri-qz-is-f0">
+                            <div class="d-ri-xd-sp"></div>
+                            <div class="d-ri-xd-sp">
+                                <div class="d-ri-qz-is-es-ih-sp">
+                                    <span class="d-ri-qz-is-es-le">点击注册，即表示您同意</span>
+                                    <a target="_blank" href="javascript:alert('同意我是大帅哥就行！')" tabindex="4" class="d-ri-qz-is-es-ih"><span>《王老菊未来科技使用协议》</span></a>
+                                </div>
+                                <div class="d-ri-as-os-ih-wd-ne-sp">
+                                    <div class="d-ri-qz-is-es-bs-wd">
+                                        <button type="button" class="d-ri-wd-h d-ri-wd-h-d6-e6-f6">注册</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+    var field = {user: 0, mail: 0, password: 0};
+    bindEvent("user", '请输入2-16位的名称', function(val){
+        return (val.length <2 || val.length >16) ? true : false;
+    }, field);
+
+    bindEvent("mail", '请输入正确的邮箱', function(val){
+        return val.match(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/) ? false : true;
+    }, field);
+
+    bindEvent("password", '请输入6-16位的密码', function(val){
+        return (val.length <6 || val.length >16) ? true : false;
+    }, field);
+
+    $('button').click(function(){
+        $.post("/admin/register", field, function(res){
+            if(res.code > 0) {
+                window.location.href = res.url;
+            }else{
+                $("#msg").html(res.msg);
+                $("#msg").addClass('d-ri-rq-kj-mt');
+            }
+        });
+    });
+</script>
+{/block}

@@ -157,8 +157,8 @@
                     url : "/project/project_group/" + lists.gpid,
                     type: "DELETE",
                     error:function(){layer.msg('删除失败！', {anim: 6})},
-                    success:function(){
-                        layer.msg("删除成功！", {time: 2000, icon: 1});
+                    success:function(res){
+                        layer.msg(res.msg, {time: 2000, icon: 1});
                         window.location.reload();
                     }
                 });
@@ -185,7 +185,7 @@
                         error:function(){layer.msg('请求栏目列表失败!', {anim: 6})},
                         success:function(res){
                             layer.closeAll('loading');
-                            if (res.status > 0) {
+                            if (res.code > 0) {
                                 lists.perPage = res.data.per_page;
                                 lists.pageAll = res.data.last_page;
                                 lists.items = res.data.data;
@@ -220,7 +220,7 @@
                         type: "PUT",
                         data: {order: order},
                         success: function(res){
-                            if(res.status == 1)
+                            if(res.code > 0)
                                 lists.loadDocList(1);
                             else
                                 layer.msg(res.msg, {time: 2000, icon: 2});
@@ -252,8 +252,8 @@
                                     url : "/project/doc/" + id,
                                     type: "DELETE",
                                     error:function(){layer.msg('删除失败！', {anim: 6})},
-                                    success:function(){
-                                        layer.msg("删除成功！", {time: 1000, icon: 1});
+                                    success:function(res){
+                                        layer.msg(res.msg, {time: 1000, icon: 1});
                                         lists.loadDocList(1);
                                     }
                                 });

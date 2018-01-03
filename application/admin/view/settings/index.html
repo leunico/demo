@@ -135,7 +135,7 @@ layui.use(['element', 'layer', "jquery"], function(){
                     error:function(){layer.msg('请求栏目列表失败!', {anim: 6})},
                     success:function(res){
                         layer.closeAll('loading');
-                        if (res.status > 0) {
+                        if (res.code > 0) {
 //                            for (var i in res.data.data)
 //                                lists.menu_items.push(res.data.data[i]);
 //
@@ -195,7 +195,7 @@ layui.use(['element', 'layer', "jquery"], function(){
                             type: "DELETE",
                             error:function(){layer.msg('删除失败！', {anim: 6})},
                             success:function(res){
-                                layer.msg("删除成功！", {time: 1000, icon: 1});
+                                layer.msg(res.msg, {time: 1000, icon: 1});
                                 lists.loadMenuList(1);
                             }
                         });
@@ -211,7 +211,7 @@ layui.use(['element', 'layer', "jquery"], function(){
                     type: "PUT",
                     data: {cate_Order: order},
                     success: function(res){
-                        if(res.status == 1)
+                        if(res.code > 0)
                             lists.loadMenuList(1);
                         else
                             layer.msg(res.msg, {time: 2000, icon: 2});

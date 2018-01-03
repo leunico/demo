@@ -1,0 +1,76 @@
+{extend name="_layout/admin" /}
+{block name="title"}找回密码{/block}
+{block name="main"}
+<div class="account-page-wrapper-buda">
+    <div class="account-page-logo-bar">
+        <a href="/" class="account-page-logo-bar-logo-image"></a>
+    </div>
+    <div class="account-container">
+        <div id="content">
+            <div data-reactroot="">
+                <div class="d-as-ri-es d-ri-sp as-ri-lz-nd-ve">
+                    <div class="d-ri-ee">
+                        <div class="d-ri-rq-es">
+                            <div class="d-ri-rq-df">找回密码</div>
+                            <div class="d-ri-rq-kj null">请输入你的邮箱</div>
+                        </div>
+                        <div class="d-ri-qz-is-es">
+                            <div class="d-ri-xd-sp">
+                                <div class="d-kv-xd-h-ee">
+                                    <label class="d-kv-xd-h-go">请输入邮箱</label>
+                                    <input type="text" id="user" class="d-kv-xd-h-le d-kv-xd-h-kv" value="">
+                                    <label class="d-kv-xd-h-c6"></label>
+                                </div>
+                            </div>
+                            <div class="d-ri-xd-sp">
+                                <div class="d-kv-xd-h-ee">
+                                    <label class="d-kv-xd-h-go">请输入验证码</label>
+                                    <input type="text" id="code" class="d-kv-xd-h-le d-kv-xd-h-kv" value="">
+                                    <label class="d-kv-xd-h-c6"></label>
+                                </div>
+                                <div class="d-ri-n0-sz-ae" style="cursor: pointer;">获取验证码</div>
+                            </div>
+                            <div class="d-ri-xd-sp">
+                                <div class="d-kv-xd-h-ee">
+                                    <label class="d-kv-xd-h-go">请输入密码</label>
+                                    <input type="password" id="password" class="d-kv-xd-h-le d-kv-xd-h-kv" value="">
+                                    <label class="d-kv-xd-h-c6">密码需以字母/数字开头，6-18位</label>
+                                    <!--<img src="/static/yiqixie/images/account/Shape.png" class="d-kv-xd-h-le-a6 null">-->
+                                </div>
+                            </div>
+                            <div class="d-ri-xd-sp">
+                                <div class="d-ri-qz-is-es-bs-sp">
+                                    <div><a href="/index/login" tabindex="5" class="d-ri-qz-is-es-a0"><span>返回登录</span></a></div>
+                                    <div class="d-ri-qz-is-es-bs-wd">
+                                        <button type="button" class="d-ri-wd-h d-ri-wd-h-d6-e6-f6">重置密码</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+    $("#user").focus(function(){
+        $(this).prev().addClass('d-kv-xd-h-go-b6 d-kv-xd-h-go-x0-kg');
+    }).blur(function(){
+        $(this).addClass('d-kv-xd-h-le-mt');
+        $(this).prev().removeClass('d-kv-xd-h-go-b6').addClass('d-kv-xd-h-go-mt');
+        $(this).next().addClass('d-kv-xd-h-c6-mt').html('请输入正确的邮箱');
+    });
+
+    $("#password").focus(function(){
+        $(this).prev().addClass('d-kv-xd-h-go-b6 d-kv-xd-h-go-x0-kg');
+    }).blur(function(){
+        $(this).addClass('d-kv-xd-h-le-mt');
+        $(this).prev().removeClass('d-kv-xd-h-go-b6').addClass('d-kv-xd-h-go-mt');
+        $(this).next().addClass('d-kv-xd-h-c6-mt').html('请输入6-16位的密码');
+    });
+</script>
+{/block}

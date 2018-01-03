@@ -41,7 +41,7 @@
 
         form.on('select(group_Parent)', function(data){
             $.get("/project/project_group?gid=" + data.value, function(res){
-                if(res.status == 1){
+                if(res.code > 0){
                     $html = '<option value=0>-可不设置子分组-</option>';
                     for(var key in res.data)
                         $html += '<option value=' + key + '>' + res.data[key] + '</option>'
@@ -57,7 +57,7 @@
         form.on('submit(code)', function(data){
             if(data.field.code_id < 1){
                 $.post("/project/code", data.field, function(res){
-                    if(res.status > 0)
+                    if(res.code > 0)
                         parent.layer.closeAll();
                     else
                         parent.layer.msg(res.msg, {time: 2000, icon: 2});
@@ -68,7 +68,7 @@
                     type: "PUT",
                     data: data.field,
                     success: function(res){
-                        if(res.status > 0)
+                        if(res.code > 0)
                             parent.layer.closeAll();
                         else
                             parent.layer.msg(res.msg, {time: 2000, icon: 2});
