@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 
 use app\common\controller\BaseController;
+use think\Validate;
 
 class Admin extends BaseController
 {
@@ -15,42 +16,31 @@ class Admin extends BaseController
      */
     public function register()
     {
-        dump($this->request->post());die;
-        if ($this->auth->isLogin())
-            $this->error("You've logged in, do not login again", 'index/index');
-
-        if ($this->request->isPost() && $this->request->isAjax()){
-            $user_name = $this->request->post('user');
-            $user_mail = $this->request->post('mail');
-            $password = $this->request->post('password');
-            $token = $this->request->post('__token__');
-            $rule = [
-                'username'  => 'require|length:6,16',
-                'password'  => 'require|length:3,30',
+        if($this->request->isPost() && $this->request->isAjax()){
+            $data['user_name'] = $this->request->post('user');
+            $data['user_email'] = $this->request->post('mail');
+            $data['user_password'] = $this->request->post('password');
+            $data['__token__'] = $this->request->post('token');
+            $validate = new Validate([
+                'user_name' => 'require|length:2,16',
+                'user_email' => 'require|email',
+                'user_password' => 'require|length:6,16',
                 '__token__' => 'token',
-            ];
-            $data = [
-                'username'  => $username,
-                'password'  => $password,
-                '__token__' => $token,
-            ];
-            $validate = new Validate($rule);
+            ]);
+
             $result = $validate->check($data);
             if (!$result)
-            {
-                $this->error($validate->getError(), $url, ['token' => $this->request->token()]);
-            }
-            \app\admin\model\AdminLog::setTitle(__('Login'));
-            $result = $this->auth->login($username, $password, $keeplogin ? 86400 : 0);
+                $this->error($validate->getError(), '', ['token' => $this->request->token()]);
+
+            $result = $this->auth->register($data);
             if ($result === true)
-            {
-                $this->success(__('Login successful'), $url, ['url' => $url, 'id' => $this->auth->id, 'username' => $username, 'avatar' => $this->auth->avatar]);
-            }
+                $this->success('注册成功，等待跳转登陆...', '/index/login', '', 1);
             else
-            {
-                $this->error(__('Username or password is incorrect'), $url, ['token' => $this->request->token()]);
-            }
+                $this->error($result, '', ['token' => $this->request->token()]);
+
         }
+
+        abort(404, '错误入口！');
     }
 
     /**
@@ -58,54 +48,36 @@ class Admin extends BaseController
      */
     public function login()
     {
-        $url = $this->request->get('url', 'index/index');
+        $url = $this->request->get('url', '/admin/index');
         if ($this->auth->isLogin())
-        {
-            $this->error(__("You've logged in, do not login again"), $url);
-        }
-        if ($this->request->isPost())
-        {
-            $username = $this->request->post('username');
-            $password = $this->request->post('password');
-            $keeplogin = $this->request->post('keeplogin');
-            $token = $this->request->post('__token__');
-            $rule = [
-                'username'  => 'require|length:3,30',
-                'password'  => 'require|length:3,30',
-                '__token__' => 'token',
-            ];
-            $data = [
-                'username'  => $username,
-                'password'  => $password,
-                '__token__' => $token,
-            ];
-            $validate = new Validate($rule);
-            $result = $validate->check($data);
-            if (!$result)
-            {
-                $this->error($validate->getError(), $url, ['token' => $this->request->token()]);
-            }
-            \app\admin\model\AdminLog::setTitle(__('Login'));
-            $result = $this->auth->login($username, $password, $keeplogin ? 86400 : 0);
-            if ($result === true)
-            {
-                $this->success(__('Login successful'), $url, ['url' => $url, 'id' => $this->auth->id, 'username' => $username, 'avatar' => $this->auth->avatar]);
-            }
-            else
-            {
-                $this->error(__('Username or password is incorrect'), $url, ['token' => $this->request->token()]);
+            $this->error("已经登陆了", $url);
+
+        if ($this->request->isPost() && $this->request->isAjax()){
+            if($this->auth->autologin()){
+                $this->redirect($url);
+            }else{
+                $data['user'] = $this->request->post('user');
+                $data['user_password'] = $this->request->post('password');
+                $data['__token__'] = $this->request->post('token');
+                $validate = new Validate([
+                    'user' => 'require|length:2,32',
+                    'user_password' => 'require|length:6,16',
+                    '__token__' => 'token',
+                ]);
+
+                $result = $validate->check($data);
+                if (!$result)
+                    $this->error($validate->getError(), '', ['token' => $this->request->token()]);
+
+                $result = $this->auth->login($data['user'], $data['user_password']);
+                if ($result === true)
+                    $this->success('登陆成功，等待跳转...', $url, '', 1);
+                else
+                    $this->error($result, '', ['token' => $this->request->token()]);
             }
         }
 
-        // 根据客户端的cookie,判断是否可以自动登录
-        if ($this->auth->autologin())
-        {
-            $this->redirect($url);
-        }
-        $background = cdnurl("/assets/img/loginbg.jpg");
-        $this->view->assign('background', $background);
-        \think\Hook::listen("login_init", $this->request);
-        return $this->view->fetch();
+        abort(404, '错误入口！');
     }
 
     /**
@@ -114,6 +86,6 @@ class Admin extends BaseController
     public function logout()
     {
         $this->auth->logout();
-        $this->success('Logout successful', 'index/login');
+        $this->success('注销登录成功', '/index/login');
     }
 }

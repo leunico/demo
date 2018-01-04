@@ -5,10 +5,10 @@
         <ul class="layui-tab-title">
             <li class="layui-this"><i class="fa fa-exclamation-circle">&nbsp;&nbsp;</i>项目概况</li>
         </ul>
-        <div class="layui-tab-content">
+        <div class="layui-tab-content" v-cloak>
             <div class="layui-tab-item layui-show">
                 <div class="layui-anim layui-anim-upbit">
-                    <div class="layui-block-item layui-elem-quote">
+                    <div class="layui-block-item layui-elem-quote" style="padding:15px 15px 1px 15px">
                         <div class="layui-input-inline"><input name="keyword" placeholder="请输入成员的邮箱或名字" v-model='keyword' autocomplete="off" class="layui-input item-search-buttom"></div>
                         <button class="layui-btn layui-btn-small" @click="addTeam()"><i class="fa fa-search" style="font-size:13px!important;">&nbsp;</i>搜索成员</button>
                         <blockquote style="margin: 14px 0px 0px -20px;" class="layui-elem-quote">在这里你可以查看本项目有哪些人可以操作，那些人有什么权限，以及添加某个成员。</blockquote>
@@ -23,8 +23,8 @@
                                                 <img :src="item.user.user_head" class="layui-circle pull-left" style="width:41px;">
                                             </template>
                                             <template v-else>
-                                                <li v-if="item.remark_name" class="pull-left name-summary-li">{{ item.remark_name }}</li>
-                                                <li v-else class="pull-left name-summary-li">{{ item.user.user_name }}</li>
+                                                <li v-if="item.remark_name" class="pull-left name-summary-li">{{ item.remark_name.slice(0, 2) }}</li>
+                                                <li v-else class="pull-left name-summary-li">{{ item.user.user_name.slice(0, 2) }}</li>
                                             </template>
                                             <li class="pull-left people-li">
                                                 <p>
@@ -62,8 +62,8 @@
                                                 <img :src="item.user.user_head" class="layui-circle pull-left" style="width:41px;">
                                             </template>
                                             <template v-else>
-                                                <li v-if="item.remark_name" class="pull-left name-summary-li">{{ item.remark_name }}</li>
-                                                <li v-else class="pull-left name-summary-li">{{ item.user.user_name }}</li>
+                                                <li v-if="item.remark_name" class="pull-left name-summary-li">{{ item.remark_name.slice(0, 2) }}</li>
+                                                <li v-else class="pull-left name-summary-li">{{ item.user.user_name.slice(0, 2) }}</li>
                                             </template>
                                             <li class="pull-left people-li">
                                                 <p>

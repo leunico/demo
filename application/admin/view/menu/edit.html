@@ -66,8 +66,8 @@
                 $.post("/admin/menu", data.field, function(res){
                     if(res.code > 0)
                         parent.layer.closeAll();
-                    else
-                        parent.layer.msg(res.msg, {time: 2000, icon: 2});
+
+                    parent.layer.msg(res.msg, {time: 1000, icon: res.code});
                 });
             }else{
                 $.ajax({
@@ -77,8 +77,8 @@
                     success: function(res){
                         if(res.code > 0)
                             parent.layer.closeAll();
-                        else
-                            parent.layer.msg(res.msg, {time: 2000, icon: 2});
+
+                        parent.layer.msg(res.msg, {time: 1000, icon: res.code});
                     }
                 });
             }

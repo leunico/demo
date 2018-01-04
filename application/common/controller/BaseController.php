@@ -57,8 +57,8 @@ class BaseController extends Controller
             //检测是否登录
             if (!$this->auth->isLogin()){
 //                Hook::listen('admin_nologin', $this);
-                $url = Session::get('referer');
-                $url = $url ? $url : $this->request->url();
+//                $url = Session::get('referer');
+//                $url = $url ? $url : $this->request->url();
                 $this->error('请先登陆', url('/index/login'));
             }
             // 判断是否需要验证权限
@@ -74,14 +74,14 @@ class BaseController extends Controller
         }
 
         // 非选项卡时重定向
-        if (!$this->request->isPost() && !IS_AJAX && !IS_DIALOG)
-        {
-            $url = preg_replace_callback("/([\?|&]+)ref=addtabs(&?)/i", function($matches) {
-                return $matches[2] == '&' ? $matches[1] : '';
-            }, $this->request->url());
-            $this->redirect('index/index', [], 302, ['referer' => $url]);
-            exit;
-        }
+//        if (!$this->request->isPost() && !IS_AJAX && !IS_DIALOG)
+//        {
+//            $url = preg_replace_callback("/([\?|&]+)ref=addtabs(&?)/i", function($matches) {
+//                return $matches[2] == '&' ? $matches[1] : '';
+//            }, $this->request->url());
+//            $this->redirect('/index/index', [], 302, ['referer' => $url]);
+//            exit;
+//        }
 
 //        $site = Config::get("site");
 //

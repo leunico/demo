@@ -12,7 +12,7 @@
                     <div class="d-ri-ee">
                         <div class="d-ri-rq-es">
                             <div class="d-ri-rq-df">登录</div>
-                            <div class="d-ri-rq-kj null">请输入你的邮箱/昵称和密码</div>
+                            <div id="msg" class="d-ri-rq-kj">请输入你的邮箱/昵称和密码</div>
                         </div>
                         <div class="d-ri-qz-is-es">
                             <div class="d-ri-xd-sp">
@@ -64,20 +64,28 @@
 
 {block name="js"}
 <script type="text/javascript">
-    $("#user").focus(function(){
-        $(this).prev().addClass('d-kv-xd-h-go-b6 d-kv-xd-h-go-x0-kg');
-    }).blur(function(){
-        $(this).addClass('d-kv-xd-h-le-mt');
-        $(this).prev().removeClass('d-kv-xd-h-go-b6').addClass('d-kv-xd-h-go-mt');
-        $(this).next().addClass('d-kv-xd-h-c6-mt').html('请输入正确的邮箱/昵称');
-    });
+    var field = {user: 0, password: 0};
+    bindEvent("user", '请输入2-32位的名称或者邮箱', function(val){
+        return (val.length <2 || val.length >32) ? true : false;
+    }, field);
 
-    $("#password").focus(function(){
-        $(this).prev().addClass('d-kv-xd-h-go-b6 d-kv-xd-h-go-x0-kg');
-    }).blur(function(){
-        $(this).addClass('d-kv-xd-h-le-mt');
-        $(this).prev().removeClass('d-kv-xd-h-go-b6').addClass('d-kv-xd-h-go-mt');
-        $(this).next().addClass('d-kv-xd-h-c6-mt').html('请输入6-16位的密码');
+    bindEvent("password", '请输入6-16位的密码', function(val){
+        return (val.length <6 || val.length >16) ? true : false;
+    }, field);
+
+    $('button').click(function(){
+        field.token = $("input[name='__token__']").val();
+        $.post("/admin/login", field, function(res){
+            $("#msg").html(res.msg);
+            if(res.code > 0) {
+                setTimeout(function(){
+                    window.location.href = res.url;
+                }, res.wait * 1000)
+                $("#msg").addClass('d-kv-xd-h-go-b6');
+            }else{
+                $("#msg").addClass('d-ri-rq-kj-mt');
+            }
+        });
     });
 </script>
 {/block}

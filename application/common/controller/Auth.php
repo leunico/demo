@@ -38,21 +38,48 @@ class Auth
         return Session::get('user.' . $name);
     }
 
-    public function login($useremail, $password, $keeptime = 0)
+    /**
+     * 登录
+     */
+    public function login($user, $password, $keeptime = 0)
     {
-        $user = User::get(['user_email' => $useremail]);
-        if (!$user)
-            return false;
+        $user = User::get(['user_email|user_name' => $user]);
+        if(!$user)
+            return "账号不存在！";
 
-        if ($user->user_password != md5(md5($password) . $user->password_salt))
-            return false;
+        if($user->user_password != md5(md5($password) . $user->password_salt))
+            return "密码错误！";
 
         $user->login_time = time();
         $user->user_token = Random::uuid();
         $user->save();
+
         Session::set("user", $user);
         $this->keeplogin($keeptime);
         return true;
+    }
+
+    /**
+     * 注册
+     */
+    public function register($data)
+    {
+        $user = User::get(['user_email' => $data['user_email']]);
+        if($user)
+            return $data['user_email'].'已经注册，请直接登录';
+
+        if(isset($data['__token__']))
+            unset($data['__token__']);
+
+        $data['password_salt'] = Random::alnum(8);
+        $data['user_token'] = Random::uuid();
+        $data['user_password'] = md5(md5($data['user_password']) . $data['password_salt']);
+        $user = User::create($data);
+
+        if($user && isset($user->user_id))
+            return true;
+        else
+            return '不可控因素注册失败！';
     }
 
     /**
@@ -60,8 +87,8 @@ class Auth
      */
     public function logout()
     {
-        $user = User::get(intval($this->id));
-        if (!$user)
+        $user = User::get(intval($this->user_id));
+        if(!$user)
             return true;
 
         $user->user_token = '';
@@ -78,18 +105,18 @@ class Auth
     public function autologin()
     {
         $keeplogin = Cookie::get('keeplogin');
-        if (!$keeplogin)
+        if(!$keeplogin)
             return false;
 
-        list($id, $keeptime, $expiretime, $key) = explode('|', $keeplogin);
-        if ($id && $keeptime && $expiretime && $key && $expiretime > time())
+        list($user_id, $keeptime, $expiretime, $key) = explode('|', $keeplogin);
+        if($user_id && $keeptime && $expiretime && $key && $expiretime > time())
         {
-            $user = User::get($id);
-            if (!$user || !$user->user_token)
+            $user = User::get($user_id);
+            if(!$user || !$user->user_token)
                 return false;
 
             // token有变更
-            if ($key != md5(md5($id) . md5($keeptime) . md5($expiretime) . $user->user_token))
+            if($key != md5(md5($user_id) . md5($keeptime) . md5($expiretime) . $user->user_token))
                 return false;
 
             Session::set("user", $user);
@@ -109,11 +136,11 @@ class Auth
      */
     protected function keeplogin($keeptime = 0)
     {
-        if ($keeptime)
+        if($keeptime)
         {
             $expiretime = time() + $keeptime;
-            $key = md5(md5($this->id) . md5($keeptime) . md5($expiretime) . $this->user_token);
-            $data = [$this->id, $keeptime, $expiretime, $key];
+            $key = md5(md5($this->user_id) . md5($keeptime) . md5($expiretime) . $this->user_token);
+            $data = [$this->user_id, $keeptime, $expiretime, $key];
             Cookie::set('keeplogin', implode('|', $data));
             return true;
         }
@@ -129,11 +156,11 @@ class Auth
     {
         $request = Request::instance();
         $arr = is_array($arr) ? $arr : explode(',', $arr);
-        if (!$arr)
+        if(!$arr)
             return false;
 
         // 是否存在
-        if (in_array(strtolower($request->action()), $arr) || in_array('*', $arr))
+        if(in_array(strtolower($request->action()), $arr) || in_array('*', $arr))
             return true;
 
         // 没找到匹配
@@ -147,7 +174,7 @@ class Auth
      */
     public function isLogin()
     {
-        return Session::get('admin') ? true : false;
+        return Session::get('user') ? true : false;
     }
 
     /**
@@ -170,8 +197,8 @@ class Auth
 
     public function getUserInfo($uid = null)
     {
-        $uid = is_null($uid) ? $this->id : $uid;
+        $uid = is_null($uid) ? $this->user_id : $uid;
 
-        return $uid != $this->id ? User::get(intval($uid)) : Session::get('admin');
+        return $uid != $this->user_id ? User::get(intval($uid)) : Session::get('admin');
     }
 }

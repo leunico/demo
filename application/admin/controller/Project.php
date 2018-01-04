@@ -48,9 +48,17 @@ class Project extends BaseController
         if(!$validate->check($data) && !isset($data['cate_Order']))
             $this->error($validate->getError());
 
-        $project = isset($data['id']) ? Loader::model('Project')->get($data['id']) : Loader::model('Project');
-        $project->data($data);
-        $this->success('操作成功', '', $project->allowField(true)->save());
+//        $project = isset($data['id']) ? Loader::model('Project')->get($data['id']) : Loader::model('Project');
+//        $project->data($data);
+//        $this->success('操作成功', '', $project->allowField(true)->save());
+        if(isset($data['id']) && !empty($data['id'])){
+            $project = Loader::model('Project')->get($data['id']);
+            $project->data($data);
+            $this->success('操作成功', '', $project->allowField(true)->save());
+        }else{
+            $project = Loader::model('Project');
+            $project->saveNewProject($data, $this->auth->user_id) ? $this->success('添加成功') : $this->error('添加失败');
+        }
     }
 
     public function delete($id)

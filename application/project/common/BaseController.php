@@ -7,11 +7,12 @@ use think\Loader;
 class BaseController extends Controller
 {
     protected $failException = true;
+    protected $project_auth;
 
     // 初始化项目
     protected function _initialize()
     {
-        parent::_initialize();
+
     }
 
     # 获取分组

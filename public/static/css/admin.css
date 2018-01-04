@@ -201,12 +201,11 @@
     line-height: 45px;
     overflow: hidden;
     margin-right: 10px;
-    /*border: 1px solid #ededed;*/
     background-color: #f8f8f8;
     -webkit-border-radius: 3px;
     border-radius: 3px;
     margin-top: 10px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
 }
 .pull-left {
     float: left;

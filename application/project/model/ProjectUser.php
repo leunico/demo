@@ -33,6 +33,9 @@ class ProjectUser extends Model
             else
                 $result['users'][] = $item;
         }
+
+        if(empty($result['users']))
+            $result['users'] = false;
         
         return $result;
     }

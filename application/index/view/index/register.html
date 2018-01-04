@@ -13,6 +13,7 @@
                         <div class="d-ri-rq-df">注册之心管理账号</div>
                         <div id="msg" class="d-ri-rq-kj">请使用你的邮箱注册</div>
                     </div>
+                    {:token()}
                     <div class="d-ri-qz-is-es">
                         <div class="d-ri-qz-is-f0">
                             <div class="d-ri-xd-sp">
@@ -76,11 +77,15 @@
     }, field);
 
     $('button').click(function(){
+        field.token = $("input[name='__token__']").val();
         $.post("/admin/register", field, function(res){
+            $("#msg").html(res.msg);
             if(res.code > 0) {
-                window.location.href = res.url;
+                setTimeout(function(){
+                    window.location.href = res.url;
+                }, res.wait * 1000)
+                $("#msg").addClass('d-kv-xd-h-go-b6');
             }else{
-                $("#msg").html(res.msg);
                 $("#msg").addClass('d-ri-rq-kj-mt');
             }
         });
