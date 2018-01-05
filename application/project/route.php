@@ -31,3 +31,4 @@ Route::put('project/doc/order/:id', 'project/doc/order');
 
 # team控制器模块
 Route::get('project/team/:id', 'project/team/index');
+Route::post('project/team/search/:id', 'project/team/search');

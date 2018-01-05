@@ -10,9 +10,9 @@
                 <div class="layui-anim layui-anim-upbit">
                     <div class="layui-block-item layui-elem-quote" style="padding:15px 15px 1px 15px">
                         <div class="layui-input-inline">
-                            <div class="layui-unselect layui-form-select layui-form-selected">
-                                <input style="width:300px" name="keyword" placeholder="请输入成员的邮箱或名字" v-model='keyword' autocomplete="off" class="layui-input item-search-buttom">
-                                <dl class="layui-anim layui-anim-upbit">
+                            <div class="layui-form-select">
+                                <input style="width:300px;cursor:auto;" name="keyword" placeholder="请输入成员的邮箱或名字" v-model='keyword' autocomplete="off" class="layui-input item-search-buttom" v-on:input="searchTeamList">
+                                <dl class="layui-anim layui-anim-upbit" style="display:block;">
                                     <dd class="search-dd">
                                         <ul class="people-ul">
                                             <li class="pull-left name-summary-li">未知</li>
@@ -36,7 +36,7 @@
                                 </dl>
                             </div>
                         </div>
-                        <button class="layui-btn layui-btn-small" @click="addTeam()"><i class="fa fa-search" style="font-size:13px!important;">&nbsp;</i>搜索成员</button>
+                        <button class="layui-btn layui-btn-small" @click="searchTeamList"><i class="fa fa-search" style="font-size:13px!important;">&nbsp;</i>搜索成员</button>
                         <blockquote style="margin: 14px 0px 0px -20px;" class="layui-elem-quote">在这里你可以查看本项目有哪些人可以操作，那些人有什么权限，以及添加某个成员。</blockquote>
 
                         <div class="layui-form-item" v-cloak>
@@ -127,6 +127,7 @@
             data: {
                 project_id: "{$id}",
                 items: {},
+                items_search: {},
                 keyword: ''
             },
 
@@ -134,7 +135,7 @@
                 loadTeamList: function(){
                     layer.load();
                     $.ajax({
-                        url : "/project/team/" + this.project_id + "?keyword=" + this.keyword,
+                        url : "/project/team/" + this.project_id,
                         type: "GET",
                         dataType: "json",
                         error:function(){layer.msg('请求列表失败!', {anim: 6})},
@@ -142,6 +143,22 @@
                             layer.closeAll('loading');
                             if (res.code > 0) {
                                 lists.items = res.data;
+                            }else{
+                                layer.msg(res.msg, {anim: 6});
+                            }
+                        }
+                    });
+                },
+
+                searchTeamList: function(){
+                    $.ajax({
+                        url : "/project/team/search/" + this.project_id + "&keyword=" + this.keyword,
+                        type: "POST",
+                        dataType: "json",
+                        error:function(){layer.msg('请求失败!', {anim: 6})},
+                        success:function(res){
+                            if (res.code > 0) {
+                                console.log(res);
                             }else{
                                 layer.msg(res.msg, {anim: 6});
                             }
