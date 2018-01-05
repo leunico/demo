@@ -6,7 +6,7 @@ use think\Validate;
 class Doc extends Validate
 {
     protected $rule = [
-        'project_id'  => 'require|number',
+        'project_id'  => 'require|number|token',
         'doc_type'    => 'in:1,2',
         'doc_name'    => 'require|max:32',
         'doc_content' => 'require'

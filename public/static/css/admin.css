@@ -230,11 +230,11 @@
     border: 1px solid #f3f3f3;
     font-size: 14px;
 }
-.item-li .people-ul .people-li {
+.people-ul .people-li {
     margin-left: 15px;
     width: 142px;
 }
-.item-li .people-ul .people-li p {
+.people-ul .people-li p {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -278,6 +278,9 @@
 }
 .admin-li .item-child-li .people-ul .list-li .list-function-wrap .list-function-ul .list-function-detail li:hover {
     background-color: #f0f0f0;
+}
+.search-dd {
+    padding: 8px 10px!important;
 }
 .w-e-item h1, .w-e-text h1 {
     font-size: 36px;

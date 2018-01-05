@@ -10,6 +10,7 @@
     <form class="layui-form">
         <input type="hidden" name="project_id" value="{$project_id}"/>
         <input type="hidden" name="doc_id" value="{$doc_id}" />
+        {:token()}
         <div class="layui-form-item">
             <label class="layui-form-label">选择分组</label>
             {:projectGroupSelect($group_id, $project_id, 3)}

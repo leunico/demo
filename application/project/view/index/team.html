@@ -9,7 +9,33 @@
             <div class="layui-tab-item layui-show">
                 <div class="layui-anim layui-anim-upbit">
                     <div class="layui-block-item layui-elem-quote" style="padding:15px 15px 1px 15px">
-                        <div class="layui-input-inline"><input name="keyword" placeholder="请输入成员的邮箱或名字" v-model='keyword' autocomplete="off" class="layui-input item-search-buttom"></div>
+                        <div class="layui-input-inline">
+                            <div class="layui-unselect layui-form-select layui-form-selected">
+                                <input style="width:300px" name="keyword" placeholder="请输入成员的邮箱或名字" v-model='keyword' autocomplete="off" class="layui-input item-search-buttom">
+                                <dl class="layui-anim layui-anim-upbit">
+                                    <dd class="search-dd">
+                                        <ul class="people-ul">
+                                            <li class="pull-left name-summary-li">未知</li>
+                                            <li class="pull-left people-li">
+                                                <p><b>未知昵称</b></p>
+                                                <p style="color:#b2b2b2">867426952@qq.com</p>
+                                            </li>
+                                            <li class="pull-right" style="margin-top:5px"><b>添加</b></li>
+                                        </ul>
+                                    </dd>
+                                    <dd class="search-dd layui-disabled">
+                                        <ul class="people-ul">
+                                            <li class="pull-left name-summary-li">未知</li>
+                                            <li class="pull-left people-li">
+                                                <p><span>未知昵称</span></p>
+                                                <p class="userName-p">867426952@qq.com</p>
+                                            </li>
+                                            <li class="pull-right" style="margin-top:5px"><span>添加</span></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
                         <button class="layui-btn layui-btn-small" @click="addTeam()"><i class="fa fa-search" style="font-size:13px!important;">&nbsp;</i>搜索成员</button>
                         <blockquote style="margin: 14px 0px 0px -20px;" class="layui-elem-quote">在这里你可以查看本项目有哪些人可以操作，那些人有什么权限，以及添加某个成员。</blockquote>
 
@@ -34,17 +60,12 @@
                                                 </p>
                                                 <p style="color:#999;">{{ item.rule_type.str }}</p>
                                             </li>
-                                            <li class="pull-right list-li">
+                                            <li class="pull-right list-li" v-show="item.menu">
                                                 <span class="icon-caidan" @click="menuOpen($event)"><i class="fa fa-bars"></i></span>
                                                 <div class="list-function-wrap" style="display:none">
                                                     <ul class="list-function-ul">
                                                         <li class="list-function-detail">
-                                                            <ul>
-                                                                <li>修改备注名</li>
-                                                                <li>设为普通成员[读写]</li>
-                                                                <li>设为普通成员[只读]</li>
-                                                                <li>踢出项目</li>
-                                                            </ul>
+                                                            <ul><li v-for="menu,key in item.menu" @click="teamClick(key, item.id)">{{ menu }}</li></ul>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -72,17 +93,12 @@
                                                 </p>
                                                 <p style="color:#999;">{{ item.rule_type.str }}</p>
                                             </li>
-                                            <li class="pull-right list-li">
+                                            <li class="pull-right list-li" v-show="item.menu">
                                                 <span class="icon-caidan" @click="menuOpen($event)"><i class="fa fa-bars"></i></span>
                                                 <div class="list-function-wrap" style="display:none">
                                                     <ul class="list-function-ul">
                                                         <li class="list-function-detail">
-                                                            <ul><li>修改备注名</li>
-                                                                <li>设为普通成员[读写]</li>
-                                                                <li>设为普通成员[只读]</li>
-                                                                <li>转让项目</li>
-                                                                <li>踢出项目</li>
-                                                            </ul>
+                                                            <ul><li v-for="menu,key in item.menu" @click="teamClick(key, item.id)">{{ menu }}</li></ul>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -149,36 +165,8 @@
                 },
 
                 teamClick: function(type, id){
-                    if(type == 1){
-                        this.addMenu(id);
-                    }else if(type == 2){
-                        layer.open({
-                            type: 2
-                            ,title: '项目修改'
-                            ,content: ["/admin/project/" + id + "/edit", 'no']
-                            ,shade: 0
-                            ,area: ['532px', '623px']
-                            ,end: function(){
-                                lists.loadProjectList(1);
-                            }
-                        });
-                    }else if(type == 3){
-                        layer.confirm('你确定要删除吗？', {
-                            btn: ['继续','取消']
-                        }, function(){
-                            $.ajax({
-                                url : "/admin/project/" + id,
-                                type: "DELETE",
-                                error:function(){layer.msg('删除失败！', {anim: 6})},
-                                success:function(res){
-                                    layer.msg(res.msg, {time: 1000, icon: 1});
-                                    lists.loadProjectList(1);
-                                }
-                            });
-                        });
-                    }else{
-                        layer.msg("参数错误");
-                    }
+                    alert(type);
+                    console.log(id);
                 },
 
                 menuOpen: function(e){
