@@ -11,7 +11,7 @@
                     <div class="layui-block-item layui-elem-quote" style="padding:15px 15px 1px 15px">
                         <div class="layui-input-inline">
                             <div class="layui-form-select">
-                                <input style="width:300px;cursor:auto;" name="keyword" placeholder="请输入成员的邮箱或名字" v-model='keyword' autocomplete="off" class="layui-input item-search-buttom" v-on:input="searchTeamList">
+                                <input style="width:300px;cursor:auto;" name="keyword" placeholder="请输入成员的邮箱或名字" v-model='keyword' autocomplete="off" class="layui-input item-search-buttom">
                                 <dl class="layui-anim layui-anim-upbit" style="display:block;">
                                     <dd class="search-dd">
                                         <ul class="people-ul">
@@ -152,8 +152,9 @@
 
                 searchTeamList: function(){
                     $.ajax({
-                        url : "/project/team/search/" + this.project_id + "&keyword=" + this.keyword,
+                        url : "/project/team/search",
                         type: "POST",
+                        data: {keyword: this.keyword},
                         dataType: "json",
                         error:function(){layer.msg('请求失败!', {anim: 6})},
                         success:function(res){

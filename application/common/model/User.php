@@ -12,7 +12,7 @@ class User extends Model
 
     /**
      * 重置用户密码
-     * @author baiyouwen
+     * @author albert
      */
     public function resetPassword($uid, $NewPassword)
     {
@@ -23,6 +23,11 @@ class User extends Model
 
     // 密码加密
     protected function encryptPassword($password, $salt = '', $encrypt = 'md5')
+    {
+        return $encrypt($encrypt($password) . $salt);
+    }
+
+    protected function searchUser($password, $salt = '', $encrypt = 'md5')
     {
         return $encrypt($encrypt($password) . $salt);
     }

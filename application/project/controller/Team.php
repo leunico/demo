@@ -13,4 +13,12 @@ class Team extends BaseController
         else
             abort(404, '请求错误！');
     }
+
+    public function search()
+    {
+        if ($this->request->isAjax())
+            $this->success('请求成功', '', Loader::model('User')->searchUser($this->request->post('keyword', '')));
+        else
+            abort(404, '请求错误！');
+    }
 }
