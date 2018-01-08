@@ -12,18 +12,23 @@
                         <div class="layui-input-inline">
                             <div class="layui-form-select">
                                 <input style="width:300px;cursor:auto;" name="keyword" placeholder="请输入成员的邮箱或名字" v-model='keyword' autocomplete="off" class="layui-input item-search-buttom">
-                                <dl class="layui-anim layui-anim-upbit" style="display:block;">
-                                    <dd class="search-dd">
+                                <dl class="layui-anim layui-anim-upbit" v-if="items_search">
+                                    <dd class="search-dd" v-for="item in items_search">
                                         <ul class="people-ul">
-                                            <li class="pull-left name-summary-li">未知</li>
+                                            <template v-if="item.user_head">
+                                                <img :src="item.user_head" class="layui-circle pull-left" style="width:41px;">
+                                            </template>
+                                            <template v-else>
+                                                <li class="pull-left name-summary-li">{{ item.user_name.slice(0, 2) }}</li>
+                                            </template>
                                             <li class="pull-left people-li">
-                                                <p><b>未知昵称</b></p>
-                                                <p style="color:#b2b2b2">867426952@qq.com</p>
+                                                <p><b>{{ item.user_name }}</b></p>
+                                                <p style="color:#b2b2b2">{{ item.user_email }}</p>
                                             </li>
                                             <li class="pull-right" style="margin-top:5px"><b>添加</b></li>
                                         </ul>
                                     </dd>
-                                    <dd class="search-dd layui-disabled">
+                                    <!-- <dd class="search-dd layui-disabled">
                                         <ul class="people-ul">
                                             <li class="pull-left name-summary-li">未知</li>
                                             <li class="pull-left people-li">
@@ -32,7 +37,7 @@
                                             </li>
                                             <li class="pull-right" style="margin-top:5px"><span>添加</span></li>
                                         </ul>
-                                    </dd>
+                                    </dd> -->
                                 </dl>
                             </div>
                         </div>
@@ -160,6 +165,7 @@
                         success:function(res){
                             if (res.code > 0) {
                                 console.log(res);
+                                lists.items_search = res.data;
                             }else{
                                 layer.msg(res.msg, {anim: 6});
                             }

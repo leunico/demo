@@ -4,6 +4,7 @@ namespace app\common\model;
 use think\Model;
 use traits\model\SoftDelete;
 use app\common\library\Random;
+use app\project\model\ProjectUser;
 
 class User extends Model
 {
@@ -21,13 +22,24 @@ class User extends Model
         return $result;
     }
 
-    // 密码加密
-    protected function encryptPassword($password, $salt = '', $encrypt = 'md5')
+    public function searchUser($keyword)
     {
-        return $encrypt($encrypt($password) . $salt);
+        $data = $this->where('user_name|user_email', 'LIKE', '%'.$keyword.'%')->column('user_id,user_name,user_email,user_head');
+        // ProjectUser::
+        $data2 = $this->getByUserEmail('867426952@qq.com');
+    dump($data);
+    dump($data2);
+    dump($this->getLastSql());
+    die;    
+        if(empty($data)){
+            return [];
+        }else{
+            return $data;
+        }
     }
 
-    protected function searchUser($password, $salt = '', $encrypt = 'md5')
+    // 密码加密
+    protected function encryptPassword($password, $salt = '', $encrypt = 'md5')
     {
         return $encrypt($encrypt($password) . $salt);
     }
