@@ -4,7 +4,6 @@ namespace app\common\model;
 use think\Model;
 use traits\model\SoftDelete;
 use app\common\library\Random;
-use app\project\model\ProjectUser;
 
 class User extends Model
 {
@@ -22,23 +21,17 @@ class User extends Model
         return $result;
     }
 
-    public function searchUser($keyword)
+    public function projectUser()
     {
-        $data = $this->where('user_name|user_email', 'LIKE', '%'.$keyword.'%')->column('user_id,user_name,user_email,user_head');
-        // ProjectUser::
-        $data2 = $this->getByUserEmail('867426952@qq.com');
-    dump($data);
-    dump($data2);
-    dump($this->getLastSql());
-    die;    
-        if(empty($data)){
-            return [];
-        }else{
-            return $data;
-        }
+        return $this->hasMany('app\project\model\ProjectUser', 'user_id', 'user_id');
     }
 
-    // 密码加密
+    public function searchUser($keyword, $project_id)
+    {
+        $data = $this->with(['projectUser' => function($query) use ($project_id){$query->field('user_id,project_id')->where('project_id', $project_id);}])->field('user_id,user_name,user_email,user_head')->where('user_name|user_email', 'LIKE', '%'.$keyword.'%')->select();  
+        return empty($data) ? [] : $data;
+    }
+
     protected function encryptPassword($password, $salt = '', $encrypt = 'md5')
     {
         return $encrypt($encrypt($password) . $salt);

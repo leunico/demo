@@ -13,7 +13,7 @@
                             <div class="layui-form-select">
                                 <input style="width:300px;cursor:auto;" name="keyword" placeholder="请输入成员的邮箱或名字" v-model='keyword' autocomplete="off" class="layui-input item-search-buttom">
                                 <dl class="layui-anim layui-anim-upbit" v-if="items_search">
-                                    <dd class="search-dd" v-for="item in items_search">
+                                    <dd class="search-dd" :class="[item.project_user[0] ? 'layui-disabled' : '']" v-for="item in items_search">
                                         <ul class="people-ul">
                                             <template v-if="item.user_head">
                                                 <img :src="item.user_head" class="layui-circle pull-left" style="width:41px;">
@@ -23,25 +23,17 @@
                                             </template>
                                             <li class="pull-left people-li">
                                                 <p><b>{{ item.user_name }}</b></p>
-                                                <p style="color:#b2b2b2">{{ item.user_email }}</p>
+                                                <p style="color:#d2d2d2">{{ item.user_email }}</p>
                                             </li>
-                                            <li class="pull-right" style="margin-top:5px"><b>添加</b></li>
+                                            <li v-if="item.project_user[0]" class="pull-right" style="margin-top:5px"><b>已添加</b></li>
+                                            <li v-else class="pull-right" style="margin-top:5px"><b>添加</b></li>
                                         </ul>
                                     </dd>
-                                    <!-- <dd class="search-dd layui-disabled">
-                                        <ul class="people-ul">
-                                            <li class="pull-left name-summary-li">未知</li>
-                                            <li class="pull-left people-li">
-                                                <p><span>未知昵称</span></p>
-                                                <p class="userName-p">867426952@qq.com</p>
-                                            </li>
-                                            <li class="pull-right" style="margin-top:5px"><span>添加</span></li>
-                                        </ul>
-                                    </dd> -->
                                 </dl>
+                                <dl v-else>抱歉，没有找到该用户</dl>
                             </div>
                         </div>
-                        <button class="layui-btn layui-btn-small" @click="searchTeamList"><i class="fa fa-search" style="font-size:13px!important;">&nbsp;</i>搜索成员</button>
+                        <button class="layui-btn layui-btn-small" @click="searchTeamList($event)"><i class="fa fa-search" style="font-size:13px!important;">&nbsp;</i>搜索成员</button>
                         <blockquote style="margin: 14px 0px 0px -20px;" class="layui-elem-quote">在这里你可以查看本项目有哪些人可以操作，那些人有什么权限，以及添加某个成员。</blockquote>
 
                         <div class="layui-form-item" v-cloak>
@@ -127,6 +119,16 @@
         var $ = layui.jquery,
             layer = layui.layer;
 
+        $(document).click(function(){
+            // $(".layui-form-select dl").hide();
+        });
+
+        $(".search-dd").click(function(event){
+            console.log(this);
+            event.stopPropagation();
+            return false;
+        });
+
         var lists = new Vue({
             el: "#main",
             data: {
@@ -155,22 +157,23 @@
                     });
                 },
 
-                searchTeamList: function(){
+                searchTeamList: function(e){
+                    $(".layui-form-select dl").show();
                     $.ajax({
                         url : "/project/team/search",
                         type: "POST",
-                        data: {keyword: this.keyword},
+                        data: {keyword: this.keyword, id: this.project_id},
                         dataType: "json",
                         error:function(){layer.msg('请求失败!', {anim: 6})},
                         success:function(res){
                             if (res.code > 0) {
-                                console.log(res);
                                 lists.items_search = res.data;
                             }else{
                                 layer.msg(res.msg, {anim: 6});
                             }
                         }
                     });
+                    e.stopPropagation();
                 },
 
                 addTeam: function(id){
