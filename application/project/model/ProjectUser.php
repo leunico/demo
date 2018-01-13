@@ -15,17 +15,76 @@ class ProjectUser extends Model
         $status = [
             99 => ['id' => 99, 'str' => '超级管理员'],
             1  => ['id' => 1, 'str' => '管理成员'],
-            2  => ['id' => 2, 'str' => '只读成员'],
-            3  => ['id' => 3, 'str' => '读写成员']
+            2  => ['id' => 2, 'str' => '读写成员'],
+            3  => ['id' => 3, 'str' => '只读成员']
         ];
 
         return $status[$value];
     }
 
-    public function getProjectUser($id, $user_id)
+    public function addTeam($user_id, $project_id)
     {
-        $data = $this->with(['user' => function($query){$query->field('user_id,user_head,user_name')->where('user_status', 1);}])->where('project_id', $id)->order("rule_type DESC")->select();
-        $rule = $this->where(['project_id' => $id, 'user_id' => $user_id])->value('rule_type');
+        $this->data([
+            'user_id' => $user_id,
+            'project_id' => $project_id,
+            'rule_type' => 3
+        ]);
+        return $this->save();
+    }
+
+    public function existTeamUser($user_id, $project_id)
+    {
+        return empty($this->where(['project_id' => $project_id, 'user_id' => $user_id])->select()) ? true : false;
+    }
+
+    public function setTeam($type, $id, $user_id)
+    {
+        $this->startTrans();
+        try{
+            $relation = $this->get($id);
+            if(empty($relation) || $relation->user_id == $user_id || in_array($relation->rule_type, [99, 1]))
+                return false;
+
+            $auth = $this->get(['project_id' => $relation->project_id, 'user_id' => $user_id]);
+            if(empty($auth) || !in_array($auth->rule_type, [99, 1]))
+                return false;
+
+            switch($type){
+                case 2:
+                    $result = $relation->update(['rule_type' => 2]);
+                    break;
+                case 3:
+                    $result = $relation->update(['rule_type' => 3]);
+                    break;
+                case 4:
+                    if($auth->rule_type != 99)
+                        return false;
+                    $result = $relation->update(['rule_type' => 99]);
+                    $resulta = $auth->update(['rule_type' => 1]);
+                    break;
+                case 5:
+                    $result = $relation->delete();
+                    break;
+
+
+            }
+//            if($project && $project_user && $project_group){
+//                $this->commit();
+//                return true;
+//            }else{
+                $this->rollback();
+//            }
+        }catch(\Exception $e){
+            $this->rollback();
+        }
+
+        return false;
+    }
+
+    public function getProjectUser($project_id, $user_id)
+    {
+        $data = $this->with(['user' => function($query){$query->field('user_id,user_head,user_name')->where('user_status', 1);}])->where('project_id', $project_id)->order("rule_type DESC")->select();
+        $rule = $this->where(['project_id' => $project_id, 'user_id' => $user_id])->value('rule_type');
         $result = ['admin' => [], 'users' => []];
         foreach ($data as $item){
             $item->menu = $this->getTeamMenu($item, $rule, $user_id);

@@ -25,4 +25,24 @@ class Team extends BaseController
         else
             abort(404, '请求错误！');
     }
+
+    public function add()
+    {
+        $user_id = $this->request->post('user_id', 0);
+        $project_id = $this->request->post('project_id', 0);
+        if(empty($user_id) || empty($project_id))
+            $this->error('参数错误！');
+
+        $this->success('请求成功', '', Loader::model('ProjectUser')->addTeam($user_id, $project_id));
+    }
+
+    public function set()
+    {
+        $type = $this->request->put('type', 0);
+        $id = $this->request->put('id', 0);
+        if(empty($type) || empty($id))
+            $this->error('参数错误！');
+
+        $this->success('请求成功', '', Loader::model('ProjectUser')->setTeam($type, $id, $this->auth->user_id));
+    }
 }

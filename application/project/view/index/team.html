@@ -12,25 +12,29 @@
                         <div class="layui-input-inline">
                             <div class="layui-form-select">
                                 <input style="width:300px;cursor:auto;" name="keyword" placeholder="请输入成员的邮箱或名字" v-model='keyword' autocomplete="off" class="layui-input item-search-buttom">
-                                <dl class="layui-anim layui-anim-upbit" v-if="items_search">
-                                    <dd class="search-dd" :class="[item.project_user[0] ? 'layui-disabled' : '']" v-for="item in items_search">
-                                        <ul class="people-ul">
-                                            <template v-if="item.user_head">
-                                                <img :src="item.user_head" class="layui-circle pull-left" style="width:41px;">
-                                            </template>
-                                            <template v-else>
-                                                <li class="pull-left name-summary-li">{{ item.user_name.slice(0, 2) }}</li>
-                                            </template>
-                                            <li class="pull-left people-li">
-                                                <p><b>{{ item.user_name }}</b></p>
-                                                <p style="color:#d2d2d2">{{ item.user_email }}</p>
-                                            </li>
-                                            <li v-if="item.project_user[0]" class="pull-right" style="margin-top:5px"><b>已添加</b></li>
-                                            <li v-else class="pull-right" style="margin-top:5px"><b>添加</b></li>
-                                        </ul>
-                                    </dd>
+                                <dl class="layui-anim layui-anim-upbit" v-cloak>
+                                    <template v-if="items_search">
+                                        <dd class="search-dd" :class="[item.project_user[0] ? 'layui-disabled' : '']" v-for="item in items_search" @click="searchClick($event, item.user_id)">
+                                            <ul class="people-ul">
+                                                <template v-if="item.user_head">
+                                                    <img :src="item.user_head" class="layui-circle pull-left" style="width:41px;">
+                                                </template>
+                                                <template v-else>
+                                                    <li class="pull-left name-summary-li">{{ item.user_name.slice(0, 2) }}</li>
+                                                </template>
+                                                <li class="pull-left people-li">
+                                                    <p><b>{{ item.user_name }}</b></p>
+                                                    <p style="color:#d2d2d2">{{ item.user_email }}</p>
+                                                </li>
+                                                <li v-if="item.project_user[0]" class="pull-right" style="margin-top:5px"><b>已添加</b></li>
+                                                <li v-else class="pull-right" style="margin-top:5px"><b>添加</b></li>
+                                            </ul>
+                                        </dd>
+                                    </template>
+                                    <template v-else>
+                                        <dd class="layui-disabled">抱歉，没有找到该用户</dd>
+                                    </template>
                                 </dl>
-                                <dl v-else>抱歉，没有找到该用户</dl>
                             </div>
                         </div>
                         <button class="layui-btn layui-btn-small" @click="searchTeamList($event)"><i class="fa fa-search" style="font-size:13px!important;">&nbsp;</i>搜索成员</button>
@@ -120,13 +124,10 @@
             layer = layui.layer;
 
         $(document).click(function(){
-            // $(".layui-form-select dl").hide();
-        });
-
-        $(".search-dd").click(function(event){
-            console.log(this);
-            event.stopPropagation();
-            return false;
+//            setTimeout(function(){
+//                $(".layui-form-select dl").hide();
+//            }, 500);
+            $(".layui-form-select dl").hide();
         });
 
         var lists = new Vue({
@@ -148,7 +149,7 @@
                         error:function(){layer.msg('请求列表失败!', {anim: 6})},
                         success:function(res){
                             layer.closeAll('loading');
-                            if (res.code > 0) {
+                            if(res.code > 0){
                                 lists.items = res.data;
                             }else{
                                 layer.msg(res.msg, {anim: 6});
@@ -158,42 +159,64 @@
                 },
 
                 searchTeamList: function(e){
-                    $(".layui-form-select dl").show();
-                    $.ajax({
-                        url : "/project/team/search",
-                        type: "POST",
-                        data: {keyword: this.keyword, id: this.project_id},
-                        dataType: "json",
-                        error:function(){layer.msg('请求失败!', {anim: 6})},
-                        success:function(res){
-                            if (res.code > 0) {
-                                lists.items_search = res.data;
-                            }else{
-                                layer.msg(res.msg, {anim: 6});
+                    if(!this.keyword) {
+                        layer.msg('请先输入关键字', {anim: 3});
+                    }else{
+                        $(".layui-form-select dl").show();
+                        $.ajax({
+                            url : "/project/team/search",
+                            type: "POST",
+                            data: {keyword: this.keyword, id: this.project_id},
+                            dataType: "json",
+                            error:function(){layer.msg('请求失败!', {anim: 6})},
+                            success:function(res){
+                                if(res.code > 0){
+                                    lists.items_search = res.data.length ? res.data : false;
+                                }else{
+                                    layer.msg(res.msg, {anim: 6});
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                     e.stopPropagation();
                 },
 
-                addTeam: function(id){
-                    layer.open({
-                        type: 2
-                        ,title: '项目添加'
-                        ,id: 'menu'
-                        ,content: ["{:Url('project/create')}" + "?id=" + id, 'no']
-                        ,shade: 0
-                        ,area: ['532px', '623px']
-                        ,end: function(){
-                            lists.loadProjectList(1);
-                            // window.location.reload();
-                        }
-                    });
+                searchClick: function(e, user_id){
+                    if(!$(e.currentTarget).hasClass('layui-disabled')){
+                        $.ajax({
+                            url : "/project/team/add",
+                            type: "POST",
+                            data: {user_id: user_id, project_id: this.project_id},
+                            dataType: "json",
+                            error:function(){layer.msg('请求失败!', {anim: 6})},
+                            success:function(res){
+                                if(res.code > 0){
+                                    layer.msg('加入成功');
+                                    lists.loadTeamList();
+                                }else{
+                                    layer.msg(res.msg, {anim: 6});
+                                    e.stopPropagation();
+                                }
+                            }
+                        });
+                    }
                 },
 
                 teamClick: function(type, id){
-                    alert(type);
-                    console.log(id);
+                    console.log(id, type);
+                    $.ajax({
+                        url: "/project/team/set",
+                        type: "PUT",
+                        data: {type: type, id: id},
+                        error:function(){layer.msg('请求失败!', {anim: 6})},
+                        success:function(res){
+                            console.log(res);
+//                            if(res.code > 0)
+//                                parent.layer.closeAll();
+//                            else
+//                                parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                        }
+                    });
                 },
 
                 menuOpen: function(e){

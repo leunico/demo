@@ -25,8 +25,7 @@ class Auth
      */
     public static function instance()
     {
-        if (is_null(self::$instance))
-        {
+        if(is_null(self::$instance)){
             self::$instance = new static();
         }
 
