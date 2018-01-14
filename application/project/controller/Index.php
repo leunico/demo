@@ -13,7 +13,7 @@ class Index extends BaseController
         if(empty($rule))
             $this->error("您没有此项目权限，请返回！", '/admin/index');
 
-        if(isset($rule->rule_type) && $rule->rule_type == 3)
+        if(isset($rule->rule_type) && $rule->rule_type['id'] == 3)
             $this->error("您是只读成员，不可进入编辑后台！", '/admin/index');
 
         $this->assign((array)$rule);

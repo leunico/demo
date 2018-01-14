@@ -43,6 +43,10 @@ class Team extends BaseController
         if(empty($type) || empty($id))
             $this->error('参数错误！');
 
-        $this->success('请求成功', '', Loader::model('ProjectUser')->setTeam($type, $id, $this->auth->user_id));
+        $set = Loader::model('ProjectUser')->setTeam($type, $id, $this->auth->user_id);
+        if($set === true)
+        	$this->success('请求成功');
+        else
+        	$this->error($set);
     }
 }

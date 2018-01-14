@@ -210,11 +210,12 @@
                         data: {type: type, id: id},
                         error:function(){layer.msg('请求失败!', {anim: 6})},
                         success:function(res){
-                            console.log(res);
-//                            if(res.code > 0)
-//                                parent.layer.closeAll();
-//                            else
-//                                parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                           if(res.code > 0){
+                                layer.msg('操作成功');
+                                lists.loadTeamList();
+                            }else{
+                                layer.msg(res.msg, {anim: 6});
+                            }
                         }
                     });
                 },

@@ -39,46 +39,52 @@ class ProjectUser extends Model
 
     public function setTeam($type, $id, $user_id)
     {
-        $this->startTrans();
-        try{
-            $relation = $this->get($id);
-            if(empty($relation) || $relation->user_id == $user_id || in_array($relation->rule_type, [99, 1]))
-                return false;
 
-            $auth = $this->get(['project_id' => $relation->project_id, 'user_id' => $user_id]);
-            if(empty($auth) || !in_array($auth->rule_type, [99, 1]))
-                return false;
+        $relation = $this->get($id);
+        if(empty($relation))
+            return '协助成员不存在';
 
+        $auth = $this->get(['project_id' => $relation->project_id, 'user_id' => $user_id]);
+        if(empty($auth))
+            return '权限错误';
+
+        if(in_array($auth->rule_type['id'], [1, 2, 3]) && $relation->user_id == $user_id){
+            return $type == 7 ? $this->where('id', $id)->delete() : '权限错误，非法操作';
+        }else if(in_array($auth->rule_type['id'], [1, 99]) && $relation->user_id != $user_id){
             switch($type){
                 case 2:
-                    $result = $relation->update(['rule_type' => 2]);
+                    $result = $this->update(['id' => $id, 'rule_type' => 2]);
                     break;
                 case 3:
-                    $result = $relation->update(['rule_type' => 3]);
+                    $result = $this->update(['id' => $id, 'rule_type' => 3]);
                     break;
                 case 4:
-                    if($auth->rule_type != 99)
-                        return false;
-                    $result = $relation->update(['rule_type' => 99]);
-                    $resulta = $auth->update(['rule_type' => 1]);
+                    if($auth->rule_type == 1)
+                        return '你不是超级管理员';
+
+                    $result = $this->update(['id' => $id, 'rule_type' => 99]);
+                    if(empty($result))
+                        return '数据操作错误';
+
+                    $result = $this->update(['id' => $auth->id, 'rule_type' => 1]);
                     break;
                 case 5:
-                    $result = $relation->delete();
+                    $result = $this->where('id', $id)->delete();
                     break;
+                case 6:
+                    if($auth->rule_type == 1)
+                        return '你不是超级管理员';
 
-
+                    $result = $this->update(['id' => $id, 'rule_type' => 1]);
+                    break;
+                default:
+                    return '未知请求';
             }
-//            if($project && $project_user && $project_group){
-//                $this->commit();
-//                return true;
-//            }else{
-                $this->rollback();
-//            }
-        }catch(\Exception $e){
-            $this->rollback();
+
+            return $result ? true : '数据操作错误';
         }
 
-        return false;
+        return '参数错误';
     }
 
     public function getProjectUser($project_id, $user_id)
