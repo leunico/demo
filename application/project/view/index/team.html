@@ -66,7 +66,7 @@
                                                 <div class="list-function-wrap" style="display:none">
                                                     <ul class="list-function-ul">
                                                         <li class="list-function-detail">
-                                                            <ul><li v-for="menu,key in item.menu" @click="teamClick(key, item.id)">{{ menu }}</li></ul>
+                                                            <ul><li v-for="menu,key in item.menu" @click="teamClick(key, item.id, item.remark_name)">{{ menu }}</li></ul>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -99,7 +99,7 @@
                                                 <div class="list-function-wrap" style="display:none">
                                                     <ul class="list-function-ul">
                                                         <li class="list-function-detail">
-                                                            <ul><li v-for="menu,key in item.menu" @click="teamClick(key, item.id)">{{ menu }}</li></ul>
+                                                            <ul><li v-for="menu,key in item.menu" @click="teamClick(key, item.id, item.remark_name)">{{ menu }}</li></ul>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -191,10 +191,10 @@
                             error:function(){layer.msg('请求失败!', {anim: 6})},
                             success:function(res){
                                 if(res.code > 0){
-                                    layer.msg('加入成功');
+                                    layer.msg('加入成功', {icon: 1});
                                     lists.loadTeamList();
                                 }else{
-                                    layer.msg(res.msg, {anim: 6});
+                                    layer.msg(res.msg, {icon: 5});
                                     e.stopPropagation();
                                 }
                             }
@@ -202,22 +202,44 @@
                     }
                 },
 
-                teamClick: function(type, id){
-                    console.log(id, type);
-                    $.ajax({
-                        url: "/project/team/set",
-                        type: "PUT",
-                        data: {type: type, id: id},
-                        error:function(){layer.msg('请求失败!', {anim: 6})},
-                        success:function(res){
-                           if(res.code > 0){
-                                layer.msg('操作成功');
-                                lists.loadTeamList();
-                            }else{
-                                layer.msg(res.msg, {anim: 6});
+                teamClick: function(type, id, name){
+                    if(type == 1){
+                        layer.prompt({
+                            value: name,
+                            title: '请输入备注名'
+                        }, function(val, index){
+                            $.ajax({
+                                url: "/project/team/remark",
+                                type: "PUT",
+                                data: {name: val, id: id},
+                                error:function(){layer.msg('请求失败!', {anim: 6})},
+                                success:function(res){
+                                    if(res.code > 0){
+                                        layer.msg('修改成功', {icon: 1});
+                                        lists.loadTeamList();
+                                    }else{
+                                        layer.msg(res.msg, {icon: 5});
+                                    }
+                                }
+                            });
+                            layer.close(index);
+                        });
+                    }else{
+                        $.ajax({
+                            url: "/project/team/set",
+                            type: "PUT",
+                            data: {type: type, id: id},
+                            error:function(){layer.msg('请求失败!', {anim: 6})},
+                            success:function(res){
+                                if(res.code > 0){
+                                    layer.msg('操作成功', {icon: 1});
+                                    lists.loadTeamList();
+                                }else{
+                                    layer.msg(res.msg, {icon: 5});
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 },
 
                 menuOpen: function(e){

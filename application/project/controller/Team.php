@@ -49,4 +49,14 @@ class Team extends BaseController
         else
         	$this->error($set);
     }
+
+    public function remark()
+    {
+        $name = $this->request->put('name', '');
+        $id = $this->request->put('id', 0);
+        if(empty($name) || empty($id))
+            $this->error('参数错误！');
+
+        $this->success('请求成功', '', Loader::model('ProjectUser')->update(['id' => $id, 'remark_name' => $name]));
+    }
 }

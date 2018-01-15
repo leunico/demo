@@ -5,6 +5,7 @@ use think\Model;
 use traits\model\SoftDelete;
 use app\project\model\Api;
 use app\project\model\Code;
+use app\project\model\Doc;
 
 class ProjectGroup extends Model
 {
@@ -20,6 +21,9 @@ class ProjectGroup extends Model
                     break;
                 case 2:
                     Code::where('group_id', $project_group->group_id)->update(['group_id' => 0]);
+                    break;
+                case 3:
+                    Doc::where('group_id', $project_group->group_id)->update(['group_id' => 0]);
                     break;
                 default:
                     break;

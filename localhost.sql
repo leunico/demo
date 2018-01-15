@@ -64,14 +64,15 @@ INSERT INTO `albert_code` (`code_id`, `project_id`, `group_id`, `code_name`, `co
 (5,	8,	21,	'23123',	'地方大师傅',	0,	'2017-12-22 08:00:59',	'2017-12-22 08:00:40',	'2017-12-22 08:00:59'),
 (6,	8,	0,	'34555',	'士大夫十分',	0,	'2017-12-22 08:00:47',	'2017-12-22 08:00:47',	NULL),
 (7,	8,	22,	'1234141',	'大大苏打',	1,	'2017-12-26 10:53:22',	'2017-12-26 10:51:49',	NULL),
-(8,	8,	26,	'12312312',	'无人区',	1,	'2017-12-26 10:53:23',	'2017-12-26 10:52:01',	NULL),
+(8,	8,	26,	'123123',	'无人区233',	1,	'2018-01-15 10:18:23',	'2017-12-26 10:52:01',	NULL),
 (9,	8,	22,	'78787',	'冯绍峰',	1,	'2017-12-26 10:53:24',	'2017-12-26 10:52:08',	NULL),
 (10,	8,	26,	'978748',	'法随风倒十分',	1,	'2017-12-26 10:53:20',	'2017-12-26 10:52:17',	NULL),
 (11,	8,	22,	'5456465',	'dads的',	1,	'2017-12-26 10:53:25',	'2017-12-26 10:52:28',	NULL),
 (12,	8,	22,	'2312321',	'啊实打实',	1,	'2017-12-26 10:53:24',	'2017-12-26 10:52:39',	NULL),
 (13,	8,	22,	'23123',	'啊实打实的',	1,	'2017-12-26 10:53:22',	'2017-12-26 10:52:48',	NULL),
 (14,	8,	22,	'32444',	'vs的方式',	1,	'2017-12-26 10:53:21',	'2017-12-26 10:52:55',	NULL),
-(15,	8,	22,	'45546',	'方法士大夫',	1,	'2017-12-26 10:53:19',	'2017-12-26 10:53:05',	NULL);
+(15,	8,	22,	'45546',	'方法士大夫',	1,	'2017-12-26 10:53:19',	'2017-12-26 10:53:05',	NULL),
+(16,	8,	22,	'565656',	'哈哈哈哈哈',	1,	'2018-01-15 03:49:31',	'2018-01-15 03:49:28',	NULL);
 
 DROP TABLE IF EXISTS `albert_config`;
 CREATE TABLE `albert_config` (
@@ -130,7 +131,7 @@ CREATE TABLE `albert_doc` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `albert_doc` (`doc_id`, `project_id`, `group_id`, `doc_name`, `doc_type`, `doc_order`, `doc_content`, `update_time`, `create_time`, `delete_time`) VALUES
-(1,	8,	34,	'设置内容',	2,	1,	'[TOC]\n\n#### Disabled options\n\n- TeX (Based on KaTeX);\n- Emoji;\n- Task lists;\n- HTML tags decode;\n- Flowchart and Sequence Diagram;\n\n#### Editor.md directory\n\n    editor.md/\n            lib/\n            css/\n            scss/\n            tests/\n            fonts/\n            images/\n            plugins/\n            examples/\n            languages/     \n            editormd.js\n            ...\n\n```html\n<!-- English -->\n<script src=\"../dist/js/languages/en.js\"></script>\n\n<!-- 繁體中文 -->\n<script src=\"../dist/js/languages/zh-tw.js\"></script>\n```\n',	'2017-12-26 10:35:42',	'2017-12-26 10:06:32',	NULL),
+(1,	8,	34,	'设置内容233',	2,	1,	'[TOC]\n\n#### Disabled options\n\n- TeX (Based on KaTeX);\n- Emoji;\n- Task lists;\n- HTML tags decode;\n- Flowchart and Sequence Diagram;\n\n#### Editor.md directory\n\n    editor.md/\n            lib/\n            css/\n            scss/\n            tests/\n            fonts/\n            images/\n            plugins/\n            examples/\n            languages/     \n            editormd.js\n            ...\n\n```html\n<!-- English -->\n<script src=\"../dist/js/languages/en.js\"></script>\n\n<!-- 繁體中文 -->\n<script src=\"../dist/js/languages/zh-tw.js\"></script>\n```\n',	'2018-01-15 05:39:11',	'2017-12-26 10:06:32',	NULL),
 (2,	8,	36,	'完整示例',	1,	2,	'<h1 data-line=\"0\">设置内容</h1><p>以下方式中，如果条件允许，尽量使用第一种方式，效率最高。</p><h2 data-line=\"4\"><a id=\"html__4\"></a>html 初始化内容</h2><p>直接将内容写到要创建编辑器的<code>&lt;div&gt;</code>标签中</p><pre><code>&lt;div id=\"div1\"&gt;\n    &lt;p&gt;初始化的内容&lt;/p&gt;\n    &lt;p&gt;初始化的内容&lt;/p&gt;\n&lt;/div&gt;\n\n&lt;script type=\"text/javascript\" src=\"/wangEditor.min.js\"&gt;&lt;/script&gt;\n&lt;script type=\"text/javascript\"&gt;\n    var E = window.wangEditor\n    var editor = new E(\'#div1\')\n    editor.create()\n&lt;/script&gt;</code></pre>',	'2017-12-26 10:35:20',	'2017-12-26 10:07:24',	NULL);
 
 DROP TABLE IF EXISTS `albert_interface`;
@@ -186,7 +187,7 @@ INSERT INTO `albert_project` (`project_id`, `project_name`, `project_remark`, `p
 (5,	'西出阳关无故人',	'西出阳关无故人',	1,	'/uploads/project/20171205\\6eca3271c6bfc9402533e6a6df931c02.jpg',	1,	'1.0',	10,	'2017-12-22 06:10:55',	'2017-12-05 10:53:50',	'2017-12-22 06:10:55'),
 (6,	'我去妈的这种',	'我去妈的这种',	1,	'/uploads/project/20171205\\663d2d5803e972ad0c765604c60a719f.jpg',	1,	'1.0',	10,	'2017-12-05 10:55:31',	'2017-12-05 10:55:31',	NULL),
 (7,	'测试测试测试',	'超市菜市场',	1,	'/uploads/project/20171205\\a9171cb2b80c672512a494e9aade8a50.jpg',	1,	'2.0',	10,	'2017-12-05 11:06:41',	'2017-12-05 11:05:53',	'2017-12-05 11:06:41'),
-(8,	'解忧杂货店',	'解忧杂货店',	1,	'/uploads/project/20171205\\714cc668a16d05ddabb9e777ab898b04.jpg',	1,	'1.0',	10,	'2017-12-05 11:07:17',	'2017-12-05 11:07:17',	NULL),
+(8,	'解忧杂货店',	'惟沉默是最高的轻蔑。',	1,	'/uploads/project/20171205\\714cc668a16d05ddabb9e777ab898b04.jpg',	1,	'1.0',	10,	'2018-01-12 01:01:27',	'2017-12-05 11:07:17',	NULL),
 (9,	'测试',	'测试',	1,	'/uploads/project/20171206\\3a5f4aa435e71b4001b423c3b39c52e3.jpg',	1,	'2.0',	10,	'2017-12-06 05:51:04',	'2017-12-06 01:17:58',	'2017-12-06 05:51:04'),
 (10,	'代理商项目',	'代理商项目',	1,	'/uploads/project/20171222\\6d29518de025ac7f496d8ba070ac70bf.jpg',	1,	'1.0',	10,	'2017-12-22 06:12:06',	'2017-12-22 06:11:16',	'2017-12-22 06:12:06'),
 (11,	'代理商项目',	'代理商项目',	1,	'/uploads/project/20171222\\6477d25df6a9c9ea977c09daaac87eb8.jpg',	1,	'1.0',	10,	'2017-12-22 06:12:21',	'2017-12-22 06:12:21',	NULL),
@@ -256,6 +257,25 @@ INSERT INTO `albert_project_group` (`group_id`, `project_id`, `group_parent_id`,
 (44,	27,	0,	'默认分组',	0,	2,	'2018-01-04 09:17:23',	'2018-01-04 09:17:23',	NULL),
 (45,	27,	0,	'默认分组',	0,	3,	'2018-01-04 09:17:23',	'2018-01-04 09:17:23',	NULL);
 
+DROP TABLE IF EXISTS `albert_project_log`;
+CREATE TABLE `albert_project_log` (
+  `log_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `project_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `log_type` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `log_name` varchar(32) NOT NULL DEFAULT '',
+  `log_url` varchar(128) NOT NULL DEFAULT '',
+  `log_title` varchar(128) NOT NULL DEFAULT '',
+  `log_content` text NOT NULL,
+  `update_time` timestamp NULL DEFAULT NULL,
+  `create_time` timestamp NULL DEFAULT NULL,
+  `delete_time` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`log_id`),
+  KEY `user_id` (`user_id`),
+  KEY `project_id` (`project_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 DROP TABLE IF EXISTS `albert_project_user`;
 CREATE TABLE `albert_project_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -269,10 +289,13 @@ CREATE TABLE `albert_project_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `albert_project_user` (`id`, `user_id`, `project_id`, `rule_type`, `remark_name`, `create_time`, `update_time`) VALUES
-(5,	10,	8,	99,	'',	'2017-12-05 11:07:17',	'2017-12-05 11:07:17'),
+(5,	10,	8,	99,	'无敌帅',	'2017-12-05 11:07:17',	'2018-01-15 06:35:30'),
 (6,	10,	25,	99,	'',	'2018-01-04 08:56:44',	'2018-01-04 08:56:44'),
 (7,	10,	26,	99,	'',	'2018-01-04 09:16:13',	'2018-01-04 09:16:13'),
-(8,	10,	27,	99,	'',	'2018-01-04 09:17:23',	'2018-01-04 09:17:23');
+(8,	10,	27,	99,	'',	'2018-01-04 09:17:23',	'2018-01-04 09:17:23'),
+(9,	12,	8,	1,	'小可爱',	'2018-01-13 07:34:01',	'2018-01-15 10:22:04'),
+(11,	14,	8,	3,	'苹果程序员',	'2018-01-13 07:34:57',	'2018-01-15 08:37:32'),
+(12,	13,	8,	3,	'',	'2018-01-15 06:35:09',	'2018-01-15 06:35:09');
 
 DROP TABLE IF EXISTS `albert_user`;
 CREATE TABLE `albert_user` (
@@ -294,10 +317,10 @@ CREATE TABLE `albert_user` (
 
 INSERT INTO `albert_user` (`user_id`, `user_name`, `user_email`, `user_password`, `password_salt`, `user_head`, `user_status`, `user_type`, `user_token`, `login_time`, `update_time`, `create_time`, `delete_time`) VALUES
 (9,	'php程序员',	'99999999@qq.com',	'9cb0cc3d6f8d3809806185b7ab057ce1',	'Qm8C1ZSw',	'',	1,	1,	'd63ce9a7-0973-48cc-9cea-e5afd0ae502b',	NULL,	'2018-01-04 03:52:50',	'2018-01-04 03:52:50',	NULL),
-(10,	'Leunico',	'867426952@qq.com',	'0e4d6423e5a875e6cd9e496280ebd415',	'SKPI7B0w',	'',	1,	1,	'913d0d5a-0745-4e2d-9f72-a39a8487525e',	'0000-00-00 00:00:00',	'2018-01-04 06:46:25',	'2018-01-04 03:58:38',	NULL),
+(10,	'Leunico',	'867426952@qq.com',	'0e4d6423e5a875e6cd9e496280ebd415',	'SKPI7B0w',	'',	1,	1,	'163a60a7-5168-4f13-837d-7705d8554e79',	'0000-00-00 00:00:00',	'2018-01-09 10:54:50',	'2018-01-04 03:58:38',	NULL),
 (11,	'albert',	'2235004643@qq.com',	'c6da74b4690a7b635dce2080c4bef07a',	'OqV9a1Ev',	'',	1,	1,	'73b85ae0-0875-479f-8acf-6ac3969932a6',	NULL,	'2018-01-04 03:59:50',	'2018-01-04 03:59:50',	NULL),
 (12,	'yukibaba',	'88888888@qq.com',	'0252df8f76c64f8242dd150c104329c6',	'yvcIzkNs',	'',	1,	1,	'3a4e7c52-d869-40ad-8e27-336e80657d49',	NULL,	'2018-01-04 04:00:17',	'2018-01-04 04:00:17',	NULL),
 (13,	'安卓程序员',	'123456789@163.com',	'27616215e6c1cb69b57af397716827e9',	'ln5B7fR4',	'',	1,	1,	'e01e75f5-5c9c-478b-8edc-10db639281e4',	NULL,	'2018-01-04 04:01:01',	'2018-01-04 04:01:01',	NULL),
 (14,	'苹果程序员',	'987654321@123.com',	'5e46037a78f9a5a79508ba2b6d972480',	'G0KMR7xg',	'',	1,	1,	'915eed24-38af-4f3d-8445-1a175a731f50',	NULL,	'2018-01-04 04:01:24',	'2018-01-04 04:01:24',	NULL);
 
--- 2018-01-04 10:58:15
+-- 2018-01-15 10:42:26

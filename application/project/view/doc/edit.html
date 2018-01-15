@@ -106,7 +106,7 @@
                 data.field.doc_content = docEditor.getMarkdown();
             else
                 data.field.doc_content = editor.txt.html();
-            data.field.doc_type = doc_type+1;
+            data.field.doc_type = parseInt(doc_type) + 1;
 
             if(data.field.doc_id < 1){
                 $.post("/project/doc", data.field, function(res){

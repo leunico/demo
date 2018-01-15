@@ -7,7 +7,7 @@ class ProjectUser extends Model
 {
     public function user()
     {
-        return $this->belongsTo('app\common\model\User', 'user_id', 'user_id');
+        return $this->belongsTo('app\common\model\User', 'user_id', 'user_id')->setEagerlyType(0);
     }
 
     public function getRuleTypeAttr($value)
@@ -89,7 +89,7 @@ class ProjectUser extends Model
 
     public function getProjectUser($project_id, $user_id)
     {
-        $data = $this->with(['user' => function($query){$query->field('user_id,user_head,user_name')->where('user_status', 1);}])->where('project_id', $project_id)->order("rule_type DESC")->select();
+        $data = $this->with(['user' => function($query){$query->field('user.user_id,user_head,user_name')->where('user_status', 1);}])->where('project_id', $project_id)->order("rule_type DESC")->select();
         $rule = $this->where(['project_id' => $project_id, 'user_id' => $user_id])->value('rule_type');
         $result = ['admin' => [], 'users' => []];
         foreach ($data as $item){

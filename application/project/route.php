@@ -34,3 +34,4 @@ Route::get('project/team/:id', 'project/team/index');
 Route::post('project/team/search', 'project/team/search');
 Route::post('project/team/add', 'project/team/add');
 Route::put('project/team/set', 'project/team/set');
+Route::put('project/team/remark', 'project/team/remark');

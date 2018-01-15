@@ -28,7 +28,7 @@ class User extends Model
 
     public function searchUser($keyword, $project_id)
     {
-        $data = $this->with(['projectUser' => function($query) use ($project_id){$query->field('user_id,project_id')->where('project_id', $project_id);}])->field('user_id,user_name,user_email,user_head')->where('user_name|user_email', 'LIKE', '%'.$keyword.'%')->select();  
+        $data = $this->with(['projectUser' => function($query) use ($project_id){$query->field('user_id,project_id')->where('project_id', $project_id);}])->field('user_id,user_name,user_email,user_head')->where('user_name|user_email', $keyword)->select();
         return empty($data) ? [] : $data;
     }
 
