@@ -24,5 +24,7 @@ return [
     // 日志写入
     'log_write'    => [],
     // 应用结束
-    'app_end'      => ['app\project\behavior\ProjectLog',],
+    'app_end'      => [],
+    // 项目日志
+    'project_log'  => ['app\project\behavior\ProjectLog']
 ];
