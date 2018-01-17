@@ -1,7 +1,7 @@
 <?php
 namespace app\project\model;
 
-use think\Model;
+use app\project\common\BaseModel as Model;
 use traits\model\SoftDelete;
 
 class Api extends Model

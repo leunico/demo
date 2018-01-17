@@ -1,7 +1,7 @@
 <?php
 namespace app\project\model;
 
-use think\Model;
+use app\project\common\BaseModel as Model;
 use traits\model\SoftDelete;
 use app\project\model\Api;
 use app\project\model\Code;
