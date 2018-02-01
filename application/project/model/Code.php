@@ -8,6 +8,10 @@ class Code extends Model
 {
     use SoftDelete;
     protected $deleteTime = 'delete_time';
+    protected static function init()
+    {
+        self::_initLog('状态码');
+    }
 
     public function projectGroup()
     {
