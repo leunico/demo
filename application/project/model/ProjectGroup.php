@@ -29,6 +29,8 @@ class ProjectGroup extends Model
                     break;
             }
         });
+
+        self::_initLog('分组', 'group_name');
     }
 
     public function codes()

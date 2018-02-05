@@ -2,42 +2,84 @@
 namespace app\project\common;
 
 use think\Model;
+use think\Hook;
+use app\project\model\ProjectLog;
 
 class BaseModel extends Model
 {
-    protected static function _initLog($name)
+    protected static function _initLog($name, $title, $content = '')
     {
-        self::beforeInsert(function($bInsert){
-//            dump($bInsert);die;
+        if(empty($name) || empty($title))
+            return false;
+
+//        self::beforeInsert(function($bInsert){
+//
+//        });
+
+        self::afterInsert(function($aInsert) use ($name, $title, $content){
+            $params = [
+                'log_type' => 2,
+                'title' => '增加' . $name . '：'. $aInsert->{$title},
+                'content' => $content,
+                'project_id' => $aInsert->project_id
+            ];
+            Hook::listen('project_log', $params);
         });
 
-        self::afterInsert(function($aInsert) use ($name){
-            dump($name);
-            dump($aInsert);die; // 新增后
+//        self::beforeUpdate(function($bUpdate){
+//
+//        });
+
+        self::afterUpdate(function($aUpdate) use ($name, $title, $content){
+            if(isset($aUpdate->delete_time) && !empty($aUpdate->delete_time))
+                return false;
+
+            if(isset($aUpdate->{$title})){
+                $params = [
+                    'log_type' => 3,
+                    'title' => '修改' . $name .'：'. $aUpdate->{$title},
+                    'content' => $content,
+                    'project_id' => $aUpdate->project_id
+                ];
+            }else{
+                $model = self::get($aUpdate->updateWhere);
+                $params = [
+                    'log_type' => 6,
+                    'title' => '更新' . $name . '排序：'. $model->{$title},
+                    'content' => '',
+                    'project_id' => $model->project_id
+                ];
+            }
+
+            Hook::listen('project_log', $params);
         });
 
-        self::beforeUpdate(function($bUpdate){
-//            dump($bUpdate);die;
+//        self::beforeWrite(function($bWrite){
+//
+//        });
+
+        self::afterWrite(function($aWrite) use ($name, $title, $content){ // 所有操作都经过
+//            $params = [
+//                'log_type' => 5,
+//                'title' => '写入一条' . $name . '：'. $aWrite->{$title},
+//                'content' => $content,
+//                'project_id' => $aWrite->project_id
+//            ];
+//            Hook::listen('project_log', $params);
         });
 
-        self::afterUpdate(function($aUpdate){
-            dump($aUpdate);die; // 更新后
-        });
+//        self::beforeDelete(function($bDelete){
+//
+//        });
 
-        self::beforeWrite(function($bWrite){
-//            dump($bWrite);die;
-        });
-
-        self::afterWrite(function($aWrite){
-            dump($aWrite);die; // 写入后
-        });
-
-        self::beforeDelete(function($bDelete){
-//            dump($bDelete);die;
-        });
-
-        self::afterDelete(function($aDelete){
-            dump($aDelete);die; // 删除后
+        self::afterDelete(function($aDelete) use ($name, $title, $content){
+            $params = [
+                'log_type' => 4,
+                'title' => '删除' . $name . '：'. $aDelete->{$title},
+                'content' => $content,
+                'project_id' => $aDelete->project_id
+            ];
+            Hook::listen('project_log', $params);
         });
     }
 }

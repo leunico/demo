@@ -52,4 +52,10 @@ class Index extends BaseController
         $this->assign('id', $id);
         return $this->fetch('team');
     }
+
+    public function log($id)
+    {
+        $this->assign('id', $id);
+        return $this->fetch('log');
+    }
 }

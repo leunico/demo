@@ -5,6 +5,11 @@ use app\project\common\BaseModel as Model;
 
 class ProjectUser extends Model
 {
+    protected static function init()
+    {
+        self::_initLog('协作成员', 'remark_name');
+    }
+
     public function user()
     {
         return $this->belongsTo('app\common\model\User', 'user_id', 'user_id')->setEagerlyType(0);

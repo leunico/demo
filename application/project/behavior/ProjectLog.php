@@ -7,9 +7,8 @@ class ProjectLog
 {
     public function run(&$params)
     {
-        if(request()->isPost() || request()->isPut()){
-            dump($params);die;
-            \app\project\model\ProjectLog::record();
+        if(request()->isPost() || request()->isPut() || request()->isDelete()){
+            \app\project\model\ProjectLog::record($params);
         }
     }
 }

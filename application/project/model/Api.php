@@ -9,6 +9,10 @@ class Api extends Model
     use SoftDelete;
     protected $table = 'albert_interface';
     protected $deleteTime = 'delete_time';
+    protected static function init()
+    {
+        self::_initLog('接口', 'interface_name');
+    }
 
     protected $type = [
         'interface_response' => 'json',

@@ -9,58 +9,28 @@ class ProjectLog extends Model
     use SoftDelete;
     protected $deleteTime = 'delete_time';
 
-    //自定义日志标题
-    protected static $title = '';
-
-    //自定义日志内容
-    protected static $content = '';
-
-    public static function setTitle($title)
-    {
-        self::$title = $title;
-    }
-
-    public static function setContent($content)
-    {
-        self::$content = $content;
-    }
-
-    public static function record($title = '')
+    public static function record(array $params)
     {
         $user = \think\Session::get('user');
         $user_id = $user ? $user->user_id : 0;
-        $user_name = $user ? $user->user_name : 'Unknown';dump($user_name);die;
-        $content = self::$content;
-        if (!$content)
-        {
-            $content = request()->param();
-            foreach ($content as $k => $v)
-            {
-                if (is_string($v) && strlen($v) > 200 || stripos($k, 'password') !== false)
-                {
-                    unset($content[$k]);
-                }
-            }
-        }
-        $title = self::$title;
-        if (!$title)
-        {
-            $title = [];
-            $breadcrumb = \app\admin\library\Auth::instance()->getBreadcrumb();
-            foreach ($breadcrumb as $k => $v)
-            {
-                $title[] = $v['title'];
-            }
-            $title = implode(' ', $title);
-        }
+        $user_name = $user ? $user->user_name : 'Unknown';
+
+        $content = isset($params['content']) && !empty($params['content']) ? $params['content'] : '';
+        $type = isset($params['log_type']) && !empty($params['log_type']) ? $params['log_type'] : 1;
+        $title = isset($params['title']) && !empty($params['title']) ? $params['title'] : '';
+        $project_id = isset($params['project_id']) && !empty($params['project_id']) ? $params['project_id'] : 0;
+
+        if(empty($title) || empty($project_id))
+            return false;
+
         self::create([
-            'title'     => $title,
-            'content'   => !is_scalar($content) ? json_encode($content) : $content,
-            'url'       => request()->url(),
-            'admin_id'  => $admin_id,
-            'username'  => $username,
-            'useragent' => request()->server('HTTP_USER_AGENT'),
-            'ip'        => request()->ip()
+            'user_id' => $user_id,
+            'project_id' => $project_id,
+            'log_title' => $title,
+            'log_content' => !is_scalar($content) ? json_encode($content) : $content,
+            'log_url' => request()->url(),
+            'log_type' => $type,
+            'log_name'  => $user_name
         ]);
     }
 

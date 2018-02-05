@@ -10,7 +10,7 @@ class Code extends Model
     protected $deleteTime = 'delete_time';
     protected static function init()
     {
-        self::_initLog('状态码');
+        self::_initLog('状态码', 'code_remark');
     }
 
     public function projectGroup()

@@ -57,7 +57,7 @@ class BaseController extends Controller
             }
         }
 
-        //渲染管理员对象
+        // 渲染管理员对象
         $this->assign('user', Session::get('user'));
         $this->assign('module', $this->request->module());
         $this->assign('controller', $this->request->controller());

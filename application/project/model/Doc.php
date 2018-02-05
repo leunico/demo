@@ -8,6 +8,10 @@ class Doc extends Model
 {
     use SoftDelete;
     protected $deleteTime = 'delete_time';
+    protected static function init()
+    {
+        self::_initLog('文档', 'doc_name');
+    }
 
     public function projectGroup()
     {
