@@ -9,7 +9,37 @@
             <div class="layui-tab-item layui-show">
                 <div class="layui-anim layui-anim-upbit">
                     <div class="layui-block-item layui-elem-quote">
-
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-anim layui-anim-upbit">
+                                <div class="layui-block-item layui-elem-quote">
+                                    <table class="layui-table" lay-even="" lay-skin="nob" style="margin-top: 0px;">
+                                        <thead>
+                                        <tr>
+                                            <th>操作时间</th>
+                                            <th>操作人</th>
+                                            <th>操作类型</th>
+                                            <th>操作对象</th>
+                                            <th>操作动作</th>
+                                            <th>备注</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody v-cloak>
+                                        <tr v-for="item in items">
+                                            <td>{{ item.create_time }}</td>
+                                            <td>{{ item.log_name }}</td>
+                                            <td><span class="layui-badge layui-badge-list" :class="item.log_type.style">{{ item.log_type.str }}</span></td>
+                                            <td><b>{{ item.log_model }}</b></td>
+                                            <td>{{ item.log_type.str + item.log_model + '：' + item.log_title }}</td>
+                                            <td>{{ item.log_content }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div id="page" style="text-align: center">
+                                        <pagination :cur="1" :all="pageAll" :page-num="perPage" @page-to="loadLogList"></pagination>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -29,121 +59,34 @@
             data: {
                 project_id: "{$id}",
                 items: {},
-                items_search: {},
-                keyword: ''
+                pageAll: 0,
+                perPage: 10
             },
 
             methods: {
-                loadTeamList: function(){
+                loadLogList: function(page){
                     layer.load();
                     $.ajax({
-                        url : "/project/team/" + this.project_id,
+                        url : "/project/log/" + this.project_id + "?page=" + page,
                         type: "GET",
                         dataType: "json",
                         error:function(){layer.msg('请求列表失败!', {anim: 6})},
                         success:function(res){
                             layer.closeAll('loading');
                             if(res.code > 0){
-                                lists.items = res.data;
+                                lists.items = res.data.data;
+                                lists.perPage = res.data.total;
+                                lists.pageAll = res.data.last_page;
                             }else{
                                 layer.msg(res.msg, {anim: 6});
                             }
                         }
                     });
-                },
-
-                searchTeamList: function(e){
-                    if(!this.keyword) {
-                        layer.msg('请先输入关键字', {anim: 3});
-                    }else{
-                        $(".layui-form-select dl").show();
-                        $.ajax({
-                            url : "/project/team/search",
-                            type: "POST",
-                            data: {keyword: this.keyword, id: this.project_id},
-                            dataType: "json",
-                            error:function(){layer.msg('请求失败!', {anim: 6})},
-                            success:function(res){
-                                if(res.code > 0){
-                                    lists.items_search = res.data.length ? res.data : false;
-                                }else{
-                                    layer.msg(res.msg, {anim: 6});
-                                }
-                            }
-                        });
-                    }
-                    e.stopPropagation();
-                },
-
-                searchClick: function(e, user_id){
-                    if(!$(e.currentTarget).hasClass('layui-disabled')){
-                        $.ajax({
-                            url : "/project/team/add",
-                            type: "POST",
-                            data: {user_id: user_id, project_id: this.project_id},
-                            dataType: "json",
-                            error:function(){layer.msg('请求失败!', {anim: 6})},
-                            success:function(res){
-                                if(res.code > 0){
-                                    layer.msg('加入成功', {icon: 1});
-                                    lists.loadTeamList();
-                                }else{
-                                    layer.msg(res.msg, {icon: 5});
-                                    e.stopPropagation();
-                                }
-                            }
-                        });
-                    }
-                },
-
-                teamClick: function(type, id, name){
-                    if(type == 1){
-                        layer.prompt({
-                            value: name,
-                            title: '请输入备注名'
-                        }, function(val, index){
-                            $.ajax({
-                                url: "/project/team/remark",
-                                type: "PUT",
-                                data: {name: val, id: id},
-                                error:function(){layer.msg('请求失败!', {anim: 6})},
-                                success:function(res){
-                                    if(res.code > 0){
-                                        layer.msg('修改成功', {icon: 1});
-                                        lists.loadTeamList();
-                                    }else{
-                                        layer.msg(res.msg, {icon: 5});
-                                    }
-                                }
-                            });
-                            layer.close(index);
-                        });
-                    }else{
-                        $.ajax({
-                            url: "/project/team/set",
-                            type: "PUT",
-                            data: {type: type, id: id},
-                            error:function(){layer.msg('请求失败!', {anim: 6})},
-                            success:function(res){
-                                if(res.code > 0){
-                                    layer.msg('操作成功', {icon: 1});
-                                    lists.loadTeamList();
-                                }else{
-                                    layer.msg(res.msg, {icon: 5});
-                                }
-                            }
-                        });
-                    }
-                },
-
-                menuOpen: function(e){
-                    $(e.target).parent().next().show();
-                    $(e.target).parent().next().mouseleave(function(){$(this).hide();});
                 }
             },
 
             mounted: function(){
-//                this.loadTeamList(1);
+                this.loadLogList(1);
             }
         });
     });

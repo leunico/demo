@@ -132,7 +132,7 @@
                         success:function(res){
                             layer.closeAll('loading');
                             if (res.code > 0) {
-                                lists.perPage = res.data.per_page;
+                                lists.perPage = res.data.total;
                                 lists.pageAll = res.data.last_page; // 数字分页
                                 lists.menu_items = res.data.data;
                             }else{

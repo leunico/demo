@@ -9,6 +9,20 @@ class ProjectLog extends Model
     use SoftDelete;
     protected $deleteTime = 'delete_time';
 
+    public function getLogTypeAttr($value)
+    {
+        $status = [
+            1 => ['str' => '无效操作', 'style' => ''],
+            2 => ['str' => '增加', 'style' => 'layui-bg-orange'],
+            3 => ['str' => '修改', 'style' => 'layui-bg-green'],
+            4 => ['str' => '删除', 'style' => 'layui-bg-cyan'],
+            5 => ['str' => '写入', 'style' => 'layui-bg-black'],
+            6 => ['str' => '更新排序', 'style' => 'layui-bg-blue']
+        ];
+
+        return $status[$value];
+    }
+
     public static function record(array $params)
     {
         $user = \think\Session::get('user');
@@ -18,9 +32,10 @@ class ProjectLog extends Model
         $content = isset($params['content']) && !empty($params['content']) ? $params['content'] : '';
         $type = isset($params['log_type']) && !empty($params['log_type']) ? $params['log_type'] : 1;
         $title = isset($params['title']) && !empty($params['title']) ? $params['title'] : '';
+        $model = isset($params['log_model']) && !empty($params['log_model']) ? $params['log_model'] : '';
         $project_id = isset($params['project_id']) && !empty($params['project_id']) ? $params['project_id'] : 0;
 
-        if(empty($title) || empty($project_id))
+        if(empty($title) || empty($project_id) || empty($model))
             return false;
 
         self::create([
@@ -28,7 +43,7 @@ class ProjectLog extends Model
             'project_id' => $project_id,
             'log_title' => $title,
             'log_content' => !is_scalar($content) ? json_encode($content) : $content,
-            'log_url' => request()->url(),
+            'log_model' => $model,
             'log_type' => $type,
             'log_name'  => $user_name
         ]);

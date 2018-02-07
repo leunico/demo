@@ -19,7 +19,8 @@ class BaseModel extends Model
         self::afterInsert(function($aInsert) use ($name, $title, $content){
             $params = [
                 'log_type' => 2,
-                'title' => '增加' . $name . '：'. $aInsert->{$title},
+                'log_model' => $name,
+                'title' => $aInsert->{$title},
                 'content' => $content,
                 'project_id' => $aInsert->project_id
             ];
@@ -37,7 +38,8 @@ class BaseModel extends Model
             if(isset($aUpdate->{$title})){
                 $params = [
                     'log_type' => 3,
-                    'title' => '修改' . $name .'：'. $aUpdate->{$title},
+                    'log_model' => $name,
+                    'title' => $aUpdate->{$title},
                     'content' => $content,
                     'project_id' => $aUpdate->project_id
                 ];
@@ -45,7 +47,8 @@ class BaseModel extends Model
                 $model = self::get($aUpdate->updateWhere);
                 $params = [
                     'log_type' => 6,
-                    'title' => '更新' . $name . '排序：'. $model->{$title},
+                    'log_model' => $name,
+                    'title' => $model->{$title},
                     'content' => '',
                     'project_id' => $model->project_id
                 ];
@@ -75,7 +78,8 @@ class BaseModel extends Model
         self::afterDelete(function($aDelete) use ($name, $title, $content){
             $params = [
                 'log_type' => 4,
-                'title' => '删除' . $name . '：'. $aDelete->{$title},
+                'log_model' => $name,
+                'title' => $aDelete->{$title},
                 'content' => $content,
                 'project_id' => $aDelete->project_id
             ];
