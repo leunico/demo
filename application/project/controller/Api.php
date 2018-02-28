@@ -59,6 +59,7 @@ class Api extends BaseController
         if(!$validate->check($data))
             $this->error($validate->getError());
 
+        $field['log_remark'] = $data['log_remark'];
         $field['interface_body_model'] = $data['body_mode'];
         $field['project_id'] = $data['project_id'];
         $field['group_id'] = isset($data['group_Child']) && !empty($data['group_Child']) ? $data['group_Child'] : $data['group_Parent'];
@@ -137,7 +138,7 @@ class Api extends BaseController
 
     public function order($id)
     {
-        $order = Loader::model('Api')->save(['interface_order' => $this->request->put('order', 0)], ['interface_id' => $id]);
+        $order = Loader::model('Api')->update(['interface_id' => $id, 'interface_order' => $this->request->put('order', 0), 'log_type' => 6]);
         $order ? $this->success('操作成功', '', $order) : $this->error('操作失败');
     }
 

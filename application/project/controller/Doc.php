@@ -67,7 +67,7 @@ class Doc extends BaseController
 
     public function order($id)
     {
-        $order = Loader::model('Doc')->save(['doc_order' => $this->request->put('order', 0)], ['doc_id' => $id]);
+        $order = Loader::model('Doc')->update(['doc_id' => $id, 'doc_order' => $this->request->put('order', 0), 'log_type' => 6]);
         $order ? $this->success('操作成功', '', $order) : $this->error('操作失败');
     }
 }

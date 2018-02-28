@@ -57,7 +57,7 @@ class Code extends BaseController
 
     public function order($id)
     {
-        $order = Loader::model('Code')->save(['code_order' => $this->request->put('order', 0)], ['code_id' => $id]);
+        $order = Loader::model('Code')->update(['code_id' => $id, 'code_order' => $this->request->put('order', 0), 'log_type' => 6]);
         $order ? $this->success('操作成功', '', $order) : $this->error('操作失败');
     }
 }

@@ -57,6 +57,6 @@ class Team extends BaseController
         if(empty($name) || empty($id))
             $this->error('参数错误！');
 
-        $this->success('请求成功', '', Loader::model('ProjectUser')->update(['id' => $id, 'remark_name' => $name]));
+        $this->success('请求成功', '', Loader::model('ProjectUser')->update(['id' => $id, 'remark_name' => $name, 'log_remark' => '修改成员备注名称']));
     }
 }

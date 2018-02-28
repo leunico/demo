@@ -2,6 +2,7 @@
 namespace app\project\model;
 
 use app\project\common\BaseModel as Model;
+use app\common\model\User;
 
 class ProjectUser extends Model
 {
@@ -31,6 +32,7 @@ class ProjectUser extends Model
     {
         $this->data([
             'user_id' => $user_id,
+            'remark_name' => User::where('user_id', $user_id)->value('user_name'),
             'project_id' => $project_id,
             'rule_type' => 3
         ]);
@@ -58,29 +60,29 @@ class ProjectUser extends Model
         }else if(in_array($auth->rule_type['id'], [1, 99]) && $relation->user_id != $user_id){
             switch($type){
                 case 2:
-                    $result = $this->update(['id' => $id, 'rule_type' => 2]);
+                    $result = $this->update(['id' => $id, 'rule_type' => 2, 'log_type' => 7, 'log_remark' => '修改[' . $relation->remark_name . ']权限为读写成员']);
                     break;
                 case 3:
-                    $result = $this->update(['id' => $id, 'rule_type' => 3]);
+                    $result = $this->update(['id' => $id, 'rule_type' => 3, 'log_type' => 7, 'log_remark' => '修改[' . $relation->remark_name . ']权限为只读成员']);
                     break;
                 case 4:
                     if($auth->rule_type == 1)
                         return '你不是超级管理员';
 
-                    $result = $this->update(['id' => $id, 'rule_type' => 99]);
+                    $result = $this->update(['id' => $id, 'rule_type' => 99, 'log_type' => 7, 'log_remark' => '转让项目给：' . $relation->remark_name]);
                     if(empty($result))
                         return '数据操作错误';
 
-                    $result = $this->update(['id' => $auth->id, 'rule_type' => 1]);
+                    $result = $this->update(['id' => $auth->id, 'rule_type' => 1, 'log_type' => 7, 'log_remark' => '修改[' . $auth->remark_name . ']权限为管理成员']);
                     break;
                 case 5:
-                    $result = $this->where('id', $id)->delete();
+                    $result = $this->destroy($id);
                     break;
                 case 6:
                     if($auth->rule_type == 1)
                         return '你不是超级管理员';
 
-                    $result = $this->update(['id' => $id, 'rule_type' => 1]);
+                    $result = $this->update(['id' => $id, 'rule_type' => 1, 'log_type' => 7, 'log_remark' => '修改[' . $relation->remark_name . ']权限为管理成员']);
                     break;
                 default:
                     return '未知请求';

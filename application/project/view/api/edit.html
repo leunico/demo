@@ -265,6 +265,7 @@
 
         <div class="layui-form-item">
             <div class="layui-input-block layui-input-submit">
+                {notempty name="interface_id"}<button class="layui-btn layui-btn-small layui-btn-blue" lay-submit="remark" lay-filter="remark">备注保存</button>{/notempty}
                 <button class="layui-btn layui-btn-small" lay-submit lay-filter="group">立即保存</button>
                 <button type="reset" class="layui-btn layui-btn-small layui-btn-primary">取消</button>
             </div>
@@ -540,7 +541,7 @@
         form.on('submit(group)', function(data){
             data.field['sucess_consult'] = editors.getValue();
             data.field['error_consult'] = editore.getValue();
-            if(data.field.interface_id == 0){
+            if(data.field.interface_id < 1){
                 $.post("/project/api", data.field, function(res){
                     if(res.code > 0)
                         parent.layer.closeAll();
@@ -560,6 +561,35 @@
                     }
                 });
             }
+            return false;
+        });
+
+        form.on('submit(remark)', function(data){
+            data.field['sucess_consult'] = editors.getValue();
+            data.field['error_consult'] = editore.getValue();
+            layer.prompt({
+                formType: 2,
+                value: '',
+                title: '请输入修改备注',
+                area: ['400px', '150px'] // 自定义文本域宽高
+            }, function(value){
+                data.field['log_remark'] = value;
+                if(data.field.interface_id < 1){
+                    return false;
+                }else{
+                    $.ajax({
+                        url: "/project/api/" + data.field.interface_id,
+                        type: "PUT",
+                        data: data.field,
+                        success: function(res){
+                            if(res.code > 0)
+                                parent.layer.closeAll();
+                            else
+                                parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                        }
+                    });
+                }
+            });
             return false;
         });
     });

@@ -47,6 +47,7 @@
 
         <div class="layui-form-item">
             <div class="layui-input-block layui-input-submit">
+                {notempty name="doc_id"}<button class="layui-btn layui-btn-small layui-btn-blue" lay-submit="remark" lay-filter="remark">备注提交</button>{/notempty}
                 <button class="layui-btn layui-btn-small" lay-submit="code" lay-filter="code">立即提交</button>
                 <button type="reset" class="layui-btn layui-btn-small layui-btn-primary">取消</button>
             </div>
@@ -102,10 +103,7 @@
         });
 
         form.on('submit(code)', function(data){
-            if(doc_type > 0)
-                data.field.doc_content = docEditor.getMarkdown();
-            else
-                data.field.doc_content = editor.txt.html();
+            data.field.doc_content = doc_type > 0 ? docEditor.getMarkdown() : editor.txt.html();
             data.field.doc_type = parseInt(doc_type) + 1;
 
             if(data.field.doc_id < 1){
@@ -128,6 +126,35 @@
                     }
                 });
             }
+        });
+
+        form.on('submit(remark)', function(data){
+            data.field.doc_content = doc_type > 0 ? docEditor.getMarkdown() : editor.txt.html();
+            data.field.doc_type = parseInt(doc_type) + 1;
+            layer.prompt({
+                formType: 2,
+                value: '',
+                title: '请输入修改备注',
+                area: ['400px', '150px'] // 自定义文本域宽高
+            }, function(value){
+                data.field.log_remark = value;
+                if(data.field.doc_id < 1){
+                    return false;
+                }else{
+                    $.ajax({
+                        url: "/project/doc/" + data.field.doc_id,
+                        type: "PUT",
+                        data: data.field,
+                        success: function(res){
+                            if(res.code > 0)
+                                parent.layer.closeAll();
+                            else
+                                parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                        }
+                    });
+                }
+            });
+            return false;
         });
     });
 </script>

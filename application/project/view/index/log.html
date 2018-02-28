@@ -29,7 +29,7 @@
                                             <td>{{ item.log_name }}</td>
                                             <td><span class="layui-badge layui-badge-list" :class="item.log_type.style">{{ item.log_type.str }}</span></td>
                                             <td><b>{{ item.log_model }}</b></td>
-                                            <td>{{ item.log_type.str + item.log_model + '：' + item.log_title }}</td>
+                                            <td>{{ item.log_model + item.log_type.str + '：' + item.log_title }}</td>
                                             <td>{{ item.log_content }}</td>
                                         </tr>
                                         </tbody>

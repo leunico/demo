@@ -17,7 +17,8 @@ class ProjectLog extends Model
             3 => ['str' => '修改', 'style' => 'layui-bg-green'],
             4 => ['str' => '删除', 'style' => 'layui-bg-cyan'],
             5 => ['str' => '写入', 'style' => 'layui-bg-black'],
-            6 => ['str' => '更新排序', 'style' => 'layui-bg-blue']
+            6 => ['str' => '更新排序', 'style' => 'layui-bg-blue'],
+            7 => ['str' => '更新权限', 'style' => 'layui-bg-gray']
         ];
 
         return $status[$value];
@@ -47,10 +48,5 @@ class ProjectLog extends Model
             'log_type' => $type,
             'log_name'  => $user_name
         ]);
-    }
-
-    public function admin()
-    {
-        return $this->belongsTo('Admin', 'admin_id')->setEagerlyType(0);
     }
 }
