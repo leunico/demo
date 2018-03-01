@@ -48,7 +48,7 @@ class BaseModel extends Model
                 'project_id' => $model->project_id
             ];
 
-            if(in_array($aUpdate->name, self::$historyJson) && isset($aUpdate->{$aUpdate->pk})){
+            if(in_array($aUpdate->name, self::$historyJson) && isset($aUpdate->{$aUpdate->pk}) && $params['log_type'] == 3){
                 $params['log_model_id'] = $aUpdate->{$aUpdate->pk};
                 $params['log_history'] = $aUpdate->getData();
             }
