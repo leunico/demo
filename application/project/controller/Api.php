@@ -55,11 +55,11 @@ class Api extends BaseController
     public function save()
     {
         $data = $this->request->param();
+        $field['log_remark'] = isset($data['log_remark']) ? $data['log_remark'] : '';
         $validate = Loader::validate('Api');
         if(!$validate->check($data))
             $this->error($validate->getError());
 
-        $field['log_remark'] = $data['log_remark'];
         $field['interface_body_model'] = $data['body_mode'];
         $field['project_id'] = $data['project_id'];
         $field['group_id'] = isset($data['group_Child']) && !empty($data['group_Child']) ? $data['group_Child'] : $data['group_Parent'];
@@ -120,6 +120,12 @@ class Api extends BaseController
         return $this->fetch('reset');
     }
 
+    public function history($id)
+    {
+        $this->assign('interface_id', $id);
+        return $this->fetch('history');
+    }
+
     public function group()
     {
         if(empty($this->request->post('interface_id', 0)) || empty($this->request->post('group_Parent', 0)))
@@ -132,7 +138,7 @@ class Api extends BaseController
 
     public function delete($id)
     {
-        $delete = Loader::model('Api')->save(['group_id' => 0], ['interface_id' => $id]);
+        $delete = Loader::model('Api')->update(['interface_id' => $id, 'group_id' => 0, 'log_remark' => '将接口转入回收站']);
         $delete ? $this->success('删除成功', '', $delete) : $this->error('删除失败');
     }
 

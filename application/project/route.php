@@ -18,6 +18,7 @@ Route::put('project/api/order/:id', 'project/api/order');
 Route::delete('project/api/destroy/:id', 'project/api/destroy');
 Route::delete('project/api/all_destroy/:id', 'project/api/all_destroy');
 Route::get('project/api/reset/:id', 'project/api/reset');
+Route::get('project/api/:id/history', 'project/api/history');
 Route::post('project/api/reset', 'project/api/group');
 Route::resource('project/api', 'project/api');
 
@@ -37,4 +38,4 @@ Route::put('project/team/set', 'project/team/set');
 Route::put('project/team/remark', 'project/team/remark');
 
 # log控制器模块
-Route::get('project/log/:id', 'project/log/index');
+Route::post('project/log/:id', 'project/log/index');

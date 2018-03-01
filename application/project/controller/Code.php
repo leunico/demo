@@ -40,6 +40,7 @@ class Code extends BaseController
     public function save()
     {
         $data = $this->request->param();
+        $field['log_remark'] = isset($data['log_remark']) ? $data['log_remark'] : '';
         $validate = Loader::validate('Code');
         if(!$validate->check($data))
             $this->error($validate->getError());

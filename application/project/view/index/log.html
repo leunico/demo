@@ -3,42 +3,47 @@
 <div class="layui-body" id="main">
     <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
         <ul class="layui-tab-title">
-            <li class="layui-this"><i class="fa fa-exclamation-circle">&nbsp;&nbsp;</i>项目概况</li>
+            <li class="layui-this"><i class="fa fa-exclamation-circle">&nbsp;&nbsp;</i>项目动态</li>
         </ul>
-        <div class="layui-tab-content" v-cloak>
+        <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
                 <div class="layui-anim layui-anim-upbit">
-                    <div class="layui-block-item layui-elem-quote">
-                        <div class="layui-tab-item layui-show">
-                            <div class="layui-anim layui-anim-upbit">
-                                <!--<div class="layui-block-item layui-elem-quote">-->
-                                    <table class="layui-table" lay-even="" lay-skin="nob" style="margin-top: 0px;">
-                                        <thead>
-                                        <tr>
-                                            <th>操作时间</th>
-                                            <th>操作人</th>
-                                            <th>操作类型</th>
-                                            <th>操作对象</th>
-                                            <th>操作动作</th>
-                                            <th>备注</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody v-cloak>
-                                        <tr v-for="item in items">
-                                            <td>{{ item.create_time }}</td>
-                                            <td>{{ item.log_name }}</td>
-                                            <td><span class="layui-badge layui-badge-list" :class="item.log_type.style">{{ item.log_type.str }}</span></td>
-                                            <td><b>{{ item.log_model }}</b></td>
-                                            <td>{{ item.log_model + item.log_type.str + '：' + item.log_title }}</td>
-                                            <td>{{ item.log_content }}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    <div id="page" style="text-align: center">
-                                        <pagination :cur="1" :all="pageAll" :page-num="perPage" @page-to="loadLogList"></pagination>
-                                    </div>
-                                <!--</div>-->
+                    <div class="layui-block-item layui-elem-quote" v-cloak>
+                        <!--<div class="layui-input-inline" style="margin-left:2px;">-->
+                            <!--<input type="text" name="keyword" placeholder="请输入关键字" v-model='keyword' @change="loadLogList(1)" autocomplete="off" class="layui-input item-search">-->
+                            <!--<div class="item-search-fa"><i class="fa fa-search fa-search-input">&nbsp;&nbsp;</i></div>-->
+                        <!--</div>-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label"></label>-->
+                            <div class="layui-input-inline" style="margin-left:2px;">
+                                <input type="text" class="layui-input item-search" id="date" placeholder="请选择搜索时间范围" style="width:275px;">
+                                <div class="item-search-fa"><i class="fa fa-search fa-search-input">&nbsp;&nbsp;</i></div>
                             </div>
+                        <!--</div>-->
+                        <table class="layui-table" lay-even="" lay-skin="nob">
+                            <thead>
+                            <tr>
+                                <th>操作时间</th>
+                                <th>操作人</th>
+                                <th>操作类型</th>
+                                <th>操作对象</th>
+                                <th>操作动作</th>
+                                <th>备注</th>
+                            </tr>
+                            </thead>
+                            <tbody v-cloak>
+                            <tr v-for="item in items">
+                                <td>{{ item.create_time }}</td>
+                                <td>{{ item.log_name }}</td>
+                                <td><span class="layui-badge layui-badge-list" :class="item.log_type.style">{{ item.log_type.str }}</span></td>
+                                <td><b>{{ item.log_model }}</b></td>
+                                <td>{{ item.log_model + item.log_type.str + '：' + item.log_title }}</td>
+                                <td>{{ item.log_content }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div id="page" style="text-align: center">
+                            <pagination :cur="1" :all="pageAll" :page-num="perPage" @page-to="loadLogList"></pagination>
                         </div>
                     </div>
                 </div>
@@ -50,13 +55,26 @@
 
 {block name="js"}
 <script>
-    layui.use(['layer', "jquery"], function(){
+    layui.use(['layer', "jquery", 'laydate'], function(){
         var $ = layui.jquery,
-            layer = layui.layer;
+            layer = layui.layer,
+            laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#date'
+            ,type: 'datetime'
+            ,range: true
+            ,theme: '#393D49'
+            ,done: function(value){
+                lists.date = value;
+                lists.loadLogList(1);
+            }
+        });
 
         var lists = new Vue({
             el: "#main",
             data: {
+                date: '',
                 project_id: "{$id}",
                 items: {},
                 pageAll: 0,
@@ -67,8 +85,9 @@
                 loadLogList: function(page){
                     layer.load();
                     $.ajax({
-                        url : "/project/log/" + this.project_id + "?page=" + page,
-                        type: "GET",
+                        url : "/project/log/" + this.project_id,
+                        type: "POST",
+                        data: {page: page, date: this.date},
                         dataType: "json",
                         error:function(){layer.msg('请求列表失败!', {anim: 6})},
                         success:function(res){

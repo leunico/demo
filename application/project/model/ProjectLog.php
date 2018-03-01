@@ -9,6 +9,10 @@ class ProjectLog extends Model
     use SoftDelete;
     protected $deleteTime = 'delete_time';
 
+    protected $type = [
+        'log_history' => 'json'
+    ];
+
     public function getLogTypeAttr($value)
     {
         $status = [
@@ -24,6 +28,18 @@ class ProjectLog extends Model
         return $status[$value];
     }
 
+    public function getLogModelAttr($value)
+    {
+        $status = [
+            'Api' => '接口',
+            'Code' => '状态码',
+            'Doc' => '文档',
+            'ProjectUser' => '协作成员'
+        ];
+
+        return $status[$value];
+    }
+
     public static function record(array $params)
     {
         $user = \think\Session::get('user');
@@ -31,10 +47,12 @@ class ProjectLog extends Model
         $user_name = $user ? $user->user_name : 'Unknown';
 
         $content = isset($params['content']) && !empty($params['content']) ? $params['content'] : '';
+        $log_history = isset($params['log_history']) && !empty($params['log_history']) ? $params['log_history'] : '';
         $type = isset($params['log_type']) && !empty($params['log_type']) ? $params['log_type'] : 1;
         $title = isset($params['title']) && !empty($params['title']) ? $params['title'] : '';
         $model = isset($params['log_model']) && !empty($params['log_model']) ? $params['log_model'] : '';
         $project_id = isset($params['project_id']) && !empty($params['project_id']) ? $params['project_id'] : 0;
+        $model_id = isset($params['log_model_id']) && !empty($params['log_model_id']) ? $params['log_model_id'] : 0;
 
         if(empty($title) || empty($project_id) || empty($model))
             return false;
@@ -43,6 +61,8 @@ class ProjectLog extends Model
             'user_id' => $user_id,
             'project_id' => $project_id,
             'log_title' => $title,
+            'log_history' => $log_history,
+            'log_model_id' => $model_id,
             'log_content' => !is_scalar($content) ? json_encode($content) : $content,
             'log_model' => $model,
             'log_type' => $type,

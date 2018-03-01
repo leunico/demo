@@ -1,0 +1,87 @@
+{extend name="common@public/open" /}
+{block name="main"}
+<blockquote class="layui-elem-quote layui-text layui-text-title">
+    记录这个接口的版本记录,可回溯前十个
+</blockquote>
+<div class="layui-tab-content">
+    <ul class="layui-timeline">
+        <li class="layui-timeline-item">
+            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+            <div class="layui-timeline-content layui-text">
+                <div class="layui-timeline-title">2018年，layui 5.0 发布。并发展成为中国最受欢迎的前端UI框架（期望）</div>
+            </div>
+        </li>
+        <li class="layui-timeline-item">
+            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+            <div class="layui-timeline-content layui-text">
+                <div class="layui-timeline-title">2017年，layui 里程碑版本 2.0 发布</div>
+            </div>
+        </li>
+        <li class="layui-timeline-item">
+            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+            <div class="layui-timeline-content layui-text">
+                <div class="layui-timeline-title">2016年，layui 首个版本发布</div>
+            </div>
+        </li>
+        <li class="layui-timeline-item">
+            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+            <div class="layui-timeline-content layui-text">
+                <div class="layui-timeline-title">2015年，layui 孵化</div>
+            </div>
+        </li>
+        <li class="layui-timeline-item">
+            <i class="layui-icon layui-anim layui-anim-rotate layui-anim-loop layui-timeline-axis"></i>
+            <div class="layui-timeline-content layui-text">
+                <div class="layui-timeline-title">更久前，轮子时代。维护几个独立组件：layer等</div>
+            </div>
+        </li>
+    </ul>
+</div>
+{/block}
+
+{block name="js"}
+<script src="__STATIC__/vue.js"></script>
+<script>
+    layui.use(['layer', "jquery"], function(){
+        var $ = layui.jquery,
+            layer = layui.layer;
+
+        var lists = new Vue({
+            el: "#main",
+            data: {
+                id: "{$interface_id}",
+                items: {},
+                pageAll: 0,
+                perPage: 10
+            },
+
+            methods: {
+                loadLogList: function(page){
+                    layer.load();
+                    $.ajax({
+                        url : "/project/log/" + this.project_id,
+                        type: "POST",
+                        data: {page: page, date: this.date},
+                        dataType: "json",
+                        error:function(){layer.msg('请求列表失败!', {anim: 6})},
+                        success:function(res){
+                            layer.closeAll('loading');
+                            if(res.code > 0){
+                                lists.items = res.data.data;
+                                lists.perPage = res.data.total;
+                                lists.pageAll = res.data.last_page;
+                            }else{
+                                layer.msg(res.msg, {anim: 6});
+                            }
+                        }
+                    });
+                }
+            },
+
+            mounted: function(){
+                this.loadLogList(1);
+            }
+        });
+    });
+</script>
+{/block}

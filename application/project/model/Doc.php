@@ -10,7 +10,7 @@ class Doc extends Model
     protected $deleteTime = 'delete_time';
     protected static function init()
     {
-        self::_initLog('文档', 'doc_name');
+        self::_initLog('doc_name');
     }
 
     public function projectGroup()

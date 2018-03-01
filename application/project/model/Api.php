@@ -11,7 +11,7 @@ class Api extends Model
     protected $deleteTime = 'delete_time';
     protected static function init()
     {
-        self::_initLog('接口', 'interface_name');
+        self::_initLog('interface_name');
     }
 
     protected $type = [

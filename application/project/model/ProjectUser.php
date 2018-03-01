@@ -8,7 +8,7 @@ class ProjectUser extends Model
 {
     protected static function init()
     {
-        self::_initLog('协作成员', 'remark_name');
+        self::_initLog('remark_name');
     }
 
     public function user()
