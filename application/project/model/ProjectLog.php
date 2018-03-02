@@ -22,7 +22,8 @@ class ProjectLog extends Model
             4 => ['str' => '删除', 'style' => 'layui-bg-cyan'],
             5 => ['str' => '写入', 'style' => 'layui-bg-black'],
             6 => ['str' => '更新排序', 'style' => 'layui-bg-blue'],
-            7 => ['str' => '更新权限', 'style' => 'layui-bg-gray']
+            7 => ['str' => '更新权限', 'style' => 'layui-bg-gray'],
+            8 => ['str' => '回收', 'style' => 'layui-btn-red']
         ];
 
         return $status[$value];
@@ -48,7 +49,6 @@ class ProjectLog extends Model
 
         $content = isset($params['content']) && !empty($params['content']) ? $params['content'] : '';
         $log_history = isset($params['log_history']) && !empty($params['log_history']) ? $params['log_history'] : '';
-        $type = isset($params['log_type']) && !empty($params['log_type']) ? $params['log_type'] : 1;
         $title = isset($params['title']) && !empty($params['title']) ? $params['title'] : '';
         $model = isset($params['log_model']) && !empty($params['log_model']) ? $params['log_model'] : '';
         $project_id = isset($params['project_id']) && !empty($params['project_id']) ? $params['project_id'] : 0;
@@ -57,16 +57,20 @@ class ProjectLog extends Model
         if(empty($title) || empty($project_id) || empty($model))
             return false;
 
+        if(!empty($model_id))
+            self::where(['log_model_id' => $model_id, 'log_model' => $model, 'log_type' => 3])->update(['log_isnow' => 0]);
+
         self::create([
             'user_id' => $user_id,
+            'log_name'  => $user_name,
             'project_id' => $project_id,
             'log_title' => $title,
             'log_history' => $log_history,
             'log_model_id' => $model_id,
             'log_content' => !is_scalar($content) ? json_encode($content) : $content,
             'log_model' => $model,
-            'log_type' => $type,
-            'log_name'  => $user_name
+            'log_type' => isset($params['log_type']) && !empty($params['log_type']) ? $params['log_type'] : 1,
+            'log_isnow' => isset($params['log_isnow']) && !empty($params['log_isnow']) ? $params['log_isnow'] : 0
         ]);
     }
 }

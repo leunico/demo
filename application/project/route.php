@@ -39,3 +39,6 @@ Route::put('project/team/remark', 'project/team/remark');
 
 # log控制器模块
 Route::post('project/log/:id', 'project/log/index');
+Route::get('project/log/:id/api', 'project/log/api');
+Route::delete('project/log/destroy/:id', 'project/log/destroy');
+Route::post('project/log_refresh/:id', 'project/log/refresh');

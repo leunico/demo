@@ -157,6 +157,9 @@
 .layui-btn-green {
     background-color: #5fb878!important;
 }
+.layui-btn-red {
+    background-color: #ff5722!important;
+}
 .layui-btn-gray {
     background-color: #666!important;
 }
@@ -174,6 +177,13 @@
     border-radius: 2px;
     background-color: #e6e6e6;
     color: #b2b2b2;
+    border: 0px solid #ffffff;
+}
+.layui-badge-timeline {
+    height: 18px;
+    border-radius: 1px;
+    background-color: #5fb878;
+    color: #fbfbfb;
     border: 0px solid #ffffff;
 }
 .layui-wang-editor {
@@ -299,4 +309,19 @@
 }
 .w-e-item h5, .w-e-text h5 {
     font-size: 14px;
+}
+.layui-timeline-item .layui-timeline-ul {
+    padding: 0px;
+}
+.layui-timeline-item .layui-timeline-ul li {
+    list-style-type: none;
+    margin-bottom: 10px
+}
+.layui-timeline-item .layui-timeline-a {
+    cursor: pointer;
+    color: #666666;
+}
+.layui-timeline-item .layui-timeline-a:hover {
+    text-decoration: none;
+    color: #5fb878;
 }

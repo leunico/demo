@@ -49,8 +49,9 @@ class BaseModel extends Model
             ];
 
             if(in_array($aUpdate->name, self::$historyJson) && isset($aUpdate->{$aUpdate->pk}) && $params['log_type'] == 3){
+                $params['log_isnow'] = 1;
                 $params['log_model_id'] = $aUpdate->{$aUpdate->pk};
-                $params['log_history'] = $aUpdate->getData();
+                $params['log_history'] = (array)$aUpdate->getData();
             }
 
             Hook::listen('project_log', $params);

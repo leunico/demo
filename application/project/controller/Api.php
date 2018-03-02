@@ -110,7 +110,7 @@ class Api extends BaseController
             }
         }
         $interface = isset($data['id']) ? Loader::model('Api')->get($data['id']) : Loader::model('Api');
-        $this->success('操作成功', '', $interface->save($field)); // 不做状态判断！
+        $this->success('操作成功', '', $interface->allowField(true)->save($field)); // 不做状态判断！
     }
 
     public function reset($id)
@@ -138,7 +138,7 @@ class Api extends BaseController
 
     public function delete($id)
     {
-        $delete = Loader::model('Api')->update(['interface_id' => $id, 'group_id' => 0, 'log_remark' => '将接口转入回收站']);
+        $delete = Loader::model('Api')->update(['interface_id' => $id, 'group_id' => 0, 'log_remark' => '将接口转入回收站', 'log_type' => 8]);
         $delete ? $this->success('删除成功', '', $delete) : $this->error('删除失败');
     }
 

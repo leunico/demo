@@ -153,7 +153,7 @@
             <div class="layui-form-item" data-id="{$interface_countB+1}" {if condition="$interface_body_model eq 3"}style="display:none"{/if}>
                 <div class="layui-inline-block">
                     <div class="layui-input-inline" style="width:1%">
-                        <input type="checkbox" name="body_check[]" lay-skin="primary" title="" checked value="1">
+                        <input type="checkbox" name="body_check[]" lay-skin="primary" title="" checked value="on">
                     </div>
                     <div class="layui-input-inline">
                         <input type="text" name="body_name[]" placeholder="请输入参数名" autocomplete="off" class="layui-input" value="" onchange="eventBody(this)">
@@ -221,7 +221,7 @@
             <div class="layui-form-item" data-id={$interface_countR+1}>
                 <div class="layui-inline-block">
                     <div class="layui-input-inline" style="width:1%">
-                        <input type="checkbox" name="response_check[]" lay-skin="primary" title="" checked value="1">
+                        <input type="checkbox" name="response_check[]" lay-skin="primary" title="" checked value="on">
                     </div>
                     <div class="layui-input-inline">
                         <input type="text" name="response_name[]" placeholder="请输入参数名" autocomplete="off" class="layui-input" value="" onchange="eventResponse(this)">
@@ -488,11 +488,11 @@
                         pagefun.jsonUp(note, val, function(t, k, jdata){
                             b.count = k+1;
                             t.find("input[name='body_name[]']").attr('lay-verify', 'required').val(jdata[k]["key"]);
-                            t.find("input[name='body_remark[]']").attr('lay-verify', 'required').val(jdata[k]["value"]);
+                            t.find("input[name='body_value[]']").attr('lay-verify', 'required').val(jdata[k]["value"]);
                             if(jdata[k].hasOwnProperty("type"))
                                 t.find("select").attr('lay-verify', 'required').append("<option value="+ jdata[k]["type"] +" selected>"+ jdata[k]["type"] +"</option>")
                             if(jdata[k].hasOwnProperty("consult"))
-                                t.find("input[name='body_value[]']").val(jdata[k]["consult"]);
+                                t.find("input[name='body_remark[]']").val(jdata[k]["consult"]);
                         });
                     else
                         pagefun.jsonResponseUp(val);

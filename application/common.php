@@ -92,3 +92,23 @@ function getImgPath($model)
     $filePath = '/uploads/'. $model . '/';
     return ['basePath' => $basePath, 'filePath' => $filePath];
 }
+
+# 返回时间描述
+function format_date($time)
+{
+    $t = time()- strtotime($time);
+    $f = [
+        '31536000'=>'年',
+        '2592000'=>'个月',
+        '604800'=>'星期',
+        '86400'=>'天',
+        '3600'=>'小时',
+        '60'=>'分钟',
+        '1'=>'秒'
+    ];
+
+    foreach($f as $k=>$v){
+        if(0 != $c = floor($t/(int)$k))
+            return $c . $v . '前';
+    }
+}

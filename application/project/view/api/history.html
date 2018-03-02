@@ -1,50 +1,28 @@
 {extend name="common@public/open" /}
 {block name="main"}
 <blockquote class="layui-elem-quote layui-text layui-text-title">
-    记录这个接口的版本记录,可回溯前十个
+    记录这个接口的版本记录，可回溯到指定的记录
 </blockquote>
-<div class="layui-tab-content">
-    <ul class="layui-timeline">
-        <li class="layui-timeline-item">
+<div class="layui-tab-content" id="main">
+    <ul class="layui-timeline" v-cloak>
+        <li class="layui-timeline-item" style="padding-bottom:10px;" v-for="item in items">
             <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
             <div class="layui-timeline-content layui-text">
-                <div class="layui-timeline-title">2018年，layui 5.0 发布。并发展成为中国最受欢迎的前端UI框架（期望）</div>
+                <h4 class="layui-timeline-title"><span class="layui-badge-timeline layui-badge-rim" @class="item.log_isnow ? layui-btn-red : ''">{{ getDateDiff(item.create_time) }}</span><span class="layui-badge-timeline layui-badge-rim layui-btn-red" v-if="item.log_isnow">当前版本</span></h4>
+                <ul class="layui-timeline-ul">
+                    <li><i class="fa fa-user">&nbsp;&nbsp;</i>{{ item.log_name }}</li>
+                    <li>【{{ item.create_time }}】 {{ item.log_content }}</li>
+                    <li v-if="item.log_isnow"><a class="layui-timeline-a" @click="deleteLog(item.log_id)"><i class="fa fa-trash">&nbsp;&nbsp;</i>删除</a></li>
+                    <li v-else><a class="layui-timeline-a" @click="refreshLog(item.log_id)"><i class="fa fa-refresh">&nbsp;&nbsp;</i>恢复</a>&nbsp;&nbsp;<a class="layui-timeline-a" @click="deleteLog(item.log_id)"><i class="fa fa-trash">&nbsp;&nbsp;</i>删除</a></li>
+                </ul>
             </div>
         </li>
+
         <li class="layui-timeline-item">
-            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+            <i class="layui-icon layui-timeline-axis"><i class="fa fa-spin fa-circle-o-notch"></i></i>
             <div class="layui-timeline-content layui-text">
-                <div class="layui-timeline-title">2017年，layui 里程碑版本 2.0 发布</div>
-            </div>
-        </li>
-        <li class="layui-timeline-item">
-            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
-            <div class="layui-timeline-content layui-text">
-                <div class="layui-timeline-title">2016年，layui 首个版本发布</div>
-            </div>
-        </li>
-        <li class="layui-timeline-item">
-            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
-            <div class="layui-timeline-content layui-text">
-                <div class="layui-timeline-title">2015年，layui 孵化</div>
-            </div>
-        </li>
-        <li class="layui-timeline-item">
-            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
-            <div class="layui-timeline-content layui-text">
-                <div class="layui-timeline-title">2016年，layui 首个版本发布</div>
-            </div>
-        </li>
-        <li class="layui-timeline-item">
-            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
-            <div class="layui-timeline-content layui-text">
-                <div class="layui-timeline-title">2015年，layui 孵化</div>
-            </div>
-        </li>
-        <li class="layui-timeline-item">
-            <i class="layui-icon layui-anim layui-anim-rotate layui-anim-loop layui-timeline-axis"></i>
-            <div class="layui-timeline-content layui-text">
-                <div class="layui-timeline-title">更久前，轮子时代。维护几个独立组件：layer等</div>
+                <!--<div class="layui-timeline-title"></div>-->
+                <button @click="nextList($event)" id="next" class="layui-btn layui-btn-small" style="background-color:#eee;color:black">加载更多</button>
             </div>
         </li>
     </ul>
@@ -62,31 +40,100 @@
             el: "#main",
             data: {
                 id: "{$interface_id}",
-                items: {},
-                pageAll: 0,
-                perPage: 10
+                items: [],
+                menu_page: 0
             },
 
             methods: {
                 loadLogList: function(page){
                     layer.load();
                     $.ajax({
-                        url : "/project/log/" + this.project_id,
-                        type: "POST",
-                        data: {page: page, date: this.date},
+                        url : "/project/log/" + this.id + '/api?page=' + page,
+                        type: "GET",
                         dataType: "json",
                         error:function(){layer.msg('请求列表失败!', {anim: 6})},
                         success:function(res){
                             layer.closeAll('loading');
                             if(res.code > 0){
-                                lists.items = res.data.data;
-                                lists.perPage = res.data.total;
-                                lists.pageAll = res.data.last_page;
+                                for (var i in res.data.data)
+                                    lists.items.push(res.data.data[i]);
+
+                                lists.menu_page = res.data.current_page;
+                                if(lists.menu_page < res.data.last_page)
+                                    $("#next").html('加载更多');
+                                else
+                                    $("#next").remove();
                             }else{
                                 layer.msg(res.msg, {anim: 6});
                             }
                         }
                     });
+                },
+
+                nextList: function(e){
+                    e.target.innerHTML = '<i class="layui-anim layui-anim-rotate layui-anim-loop layui-icon ">&#xe63e;</i>';
+                    this.loadLogList(this.menu_page + 1);
+                },
+
+                refreshLog: function(id){
+                    layer.confirm('你真的要恢复到这条版本吗？', {
+                        btn: ['继续','取消']
+                    }, function(index){
+                        $.ajax({
+                            url : "/project/log_refresh/" + id,
+                            type: "POST",
+                            error:function(){layer.msg('操作失败！', {anim: 6})},
+                            success:function(res){
+                                parent.layer.msg(res.msg, {time: 1000, icon: 1});
+                            }
+                        });
+                        layer.close(index);
+                        parent.layer.closeAll();
+                    });
+                },
+
+                deleteLog: function(id){
+                    layer.confirm('你真的要删除吗？', {
+                        btn: ['继续','取消']
+                    }, function(index){
+                        $.ajax({
+                            url : "/project/log/destroy/" + id,
+                            type: "DELETE",
+                            error:function(){layer.msg('删除失败！', {anim: 6})},
+                            success:function(res){
+                                parent.layer.msg(res.msg, {time: 1000, icon: 1});
+                            }
+                        });
+                        layer.close(index);
+                    });
+                    this.loadLogList(1);
+                },
+
+                getDateDiff: function(dateTimeStamp){
+                    var minute = 1000 * 60,
+                        hour = minute * 60,
+                        day = hour * 24,
+                        month = day * 30;
+
+                    var diffValue = new Date().getTime() - new Date(dateTimeStamp).getTime();
+                    if(diffValue < 0)
+                        return;
+
+                    var monthC =diffValue/month, weekC =diffValue/(7*day), dayC =diffValue/day, hourC =diffValue/hour, minC =diffValue/minute;
+                    if(monthC >= 1){
+                        result = "" + parseInt(monthC) + "月前";
+                    }else if(weekC >= 1){
+                        result = "" + parseInt(weekC) + "周前";
+                    }else if(dayC >= 1){
+                        result = "" + parseInt(dayC) + "天前";
+                    }else if(hourC >= 1){
+                        result = "" + parseInt(hourC) + "小时前";
+                    }else if(minC >= 1){
+                        result = "" + parseInt(minC) + "分钟前";
+                    }else{
+                        result = "刚刚";
+                    }
+                    return result;
                 }
             },
 
