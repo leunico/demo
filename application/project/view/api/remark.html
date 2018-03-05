@@ -1,0 +1,92 @@
+{extend name="common@public/open" /}
+{block name="head"}
+<link rel="stylesheet" href="__CSS__/editormd.min.css" />
+{/block}
+{block name="main"}
+<blockquote class="layui-elem-quote layui-text layui-text-title">
+    添加或编辑一个接口说明
+</blockquote>
+<div class="layui-tab-content" style="padding:2px 17px 0px 0px;">
+    <form class="layui-form">
+        <input type="hidden" name="interface_id" value="{$data['interface_id']}" />
+        {:token()}
+        <div class="layui-form-item">
+            <div class="item-consult">
+                <div class="layui-tab-content" style="width:100%;padding:0px">
+                    <div id="editormd">
+                        <textarea style="display:none;">{$data['interface_remark']}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-bottom:3px">
+            <div class="layui-input-block layui-input-submit">
+                <button class="layui-btn layui-btn-small layui-btn-blue" lay-submit="remark" lay-filter="remark">备注提交</button>
+                <button class="layui-btn layui-btn-small" lay-submit="code" lay-filter="code">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-small layui-btn-primary">取消</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+
+{block name="js"}
+<script type="text/javascript" src="__JS__/jquery.min.js"></script>
+<script type="text/javascript" src="__JS__/editormd.min.js"></script>
+<script>
+    layui.use(['form'], function(){
+        var form = layui.form,
+            docEditor = editormd("editormd", {
+            width: "100%",
+            height: 425,
+            syncScrolling: "single",
+            path : '__JS__/editor.md/',
+            toolbarIcons : function() {
+                return ["undo", "redo", "|", "bold", "hr", "del", "italic", "quote", "|", "h1", "h2", "h3", "h4", "h5", "h6", "|", "list-ul", "list-ol", "|", "link", "code", "table", "image", "|", "watch", "fullscreen"]
+            }
+        });
+
+        form.on('submit(code)', function(data){
+            $.ajax({
+                url: "/project/api/remark",
+                type: "POST",
+                data: data.field,
+                success: function(res){
+                    if(res.code > 0)
+                        parent.layer.closeAll();
+                    else
+                        parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                }
+            });
+        });
+
+        form.on('submit(remark)', function(data){
+            layer.prompt({
+                formType: 2,
+                value: '',
+                title: '请输入修改备注',
+                area: ['400px', '150px']
+            }, function(value){
+                data.field.log_remark = '修改接口说明备注：' + value;
+                if(data.field.doc_id < 1){
+                    return false;
+                }else{
+                    $.ajax({
+                        url: "/project/api/remark",
+                        type: "POST",
+                        data: data.field,
+                        success: function(res){
+                            if(res.code > 0)
+                                parent.layer.closeAll();
+                            else
+                                parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                        }
+                    });
+                }
+            });
+            return false;
+        });
+    });
+</script>
+{/block}

@@ -9,14 +9,15 @@ class Index extends BaseController
     protected function _initialize()
     {
         parent::_initialize();
-        $rule = Loader::model('ProjectUser')->get(['user_id' => $this->auth->user_id, 'project_id' => $this->request->param('id', 0)]);
+        $rule = Loader::model('ProjectUser')->field('user_id,project_id,rule_type,remark_name')->where(['user_id' => $this->auth->user_id, 'project_id' => $this->request->param('id', 0)])->find();
         if(empty($rule))
             $this->error("您没有此项目权限，请返回！", '/admin/index');
 
         if(isset($rule->rule_type) && $rule->rule_type['id'] == 3)
             $this->error("您是只读成员，不可进入编辑后台！", '/admin/index');
 
-        $this->assign((array)$rule);
+        \think\Session::set('rule', (object)$rule->getData());
+        $this->assign($rule->getData());
     }
 
     public function index($id)

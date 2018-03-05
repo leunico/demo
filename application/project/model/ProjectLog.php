@@ -44,8 +44,12 @@ class ProjectLog extends Model
     public static function record(array $params)
     {
         $user = \think\Session::get('user');
-        $user_id = $user ? $user->user_id : 0;
-        $user_name = $user ? $user->user_name : 'Unknown';
+        $rule = \think\Session::get('rule');
+        if(empty($user) || empty($rule))
+            return false;
+
+        $user_id = $rule->user_id;
+        $user_name = $rule->remark_name . "【{$user->user_name}】";
 
         $content = isset($params['content']) && !empty($params['content']) ? $params['content'] : '';
         $log_history = isset($params['log_history']) && !empty($params['log_history']) ? $params['log_history'] : '';
@@ -54,10 +58,10 @@ class ProjectLog extends Model
         $project_id = isset($params['project_id']) && !empty($params['project_id']) ? $params['project_id'] : 0;
         $model_id = isset($params['log_model_id']) && !empty($params['log_model_id']) ? $params['log_model_id'] : 0;
 
-        if(empty($title) || empty($project_id) || empty($model))
+        if(empty($title) || empty($project_id) || empty($model) || empty($user_id))
             return false;
 
-        if(!empty($model_id))
+        if(!empty($model_id) && !empty($log_history))
             self::where(['log_model_id' => $model_id, 'log_model' => $model, 'log_type' => 3])->update(['log_isnow' => 0]);
 
         self::create([

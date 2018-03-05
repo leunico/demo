@@ -290,11 +290,24 @@
                                 });
                             });
                             break;
+                        case 4:
+                            layer.open({
+                                type: 2
+                                ,title: '接口说明'
+                                ,id: 'interfaceremark'
+                                ,content: ["/project/api/" + id + "/remark"]
+                                ,resize: false
+                                ,area: ['970px', '610px']
+                                ,end: function(){
+                                    lists.loadInterfaceList(1);
+                                }
+                            });
+                            break;
                         case 5:
                             layer.open({
                                 type: 2
                                 ,title: '接口历史'
-                                ,id: 'interfaceistory'
+                                ,id: 'interfacehistory'
                                 ,content: ["/project/api/" + id + "/history"]
                                 ,resize: false
                                 ,area: ['620px', '520px']

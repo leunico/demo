@@ -126,6 +126,21 @@ class Api extends BaseController
         return $this->fetch('history');
     }
 
+    public function remark($id)
+    {
+        $this->assign('data', Loader::model('Api')->where('interface_id', $id)->field('interface_id,interface_remark,project_id')->find());
+        return $this->fetch('remark');
+    }
+
+    public function remark_save()
+    {
+        $field['log_remark'] = $this->request->post('log_remark', '');
+        $field['interface_id'] = $this->request->post('interface_id', 0);
+        $field['interface_remark'] = $this->request->post('editormd-markdown-doc', '');
+        $save = Loader::model('Api')->update($field);
+        $save ? $this->success('操作成功', '', $save) : $this->error('操作失败');
+    }
+
     public function group()
     {
         if(empty($this->request->post('interface_id', 0)) || empty($this->request->post('group_Parent', 0)))

@@ -47,6 +47,7 @@
             methods: {
                 loadLogList: function(page){
                     layer.load();
+                    if(page === 1) this.items = [];
                     $.ajax({
                         url : "/project/log/" + this.id + '/api?page=' + page,
                         type: "GET",
@@ -105,8 +106,10 @@
                             }
                         });
                         layer.close(index);
+                        lists.loadLogList(1);
+//                        parent.layer.closeAll();
                     });
-                    this.loadLogList(1);
+
                 },
 
                 getDateDiff: function(dateTimeStamp){
