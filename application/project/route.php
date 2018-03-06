@@ -20,6 +20,7 @@ Route::delete('project/api/all_destroy/:id', 'project/api/all_destroy');
 Route::get('project/api/reset/:id', 'project/api/reset');
 Route::get('project/api/:id/history', 'project/api/history');
 Route::get('project/api/:id/remark', 'project/api/remark');
+Route::get('project/api/:id/mock', 'project/api/mock');
 Route::post('project/api/remark', 'project/api/remark_save');
 Route::post('project/api/reset', 'project/api/group');
 Route::resource('project/api', 'project/api');

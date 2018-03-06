@@ -126,9 +126,17 @@ class Api extends BaseController
         return $this->fetch('history');
     }
 
+    public function mock($id)
+    {
+        $data = Loader::model('Api')->where('interface_id', $id)->field('interface_id,interface_response')->find();
+        $this->assign('data', $data);
+        $this->assign('dataJson', json_encode($data->interface_response));
+        return $this->fetch('mock');
+    }
+
     public function remark($id)
     {
-        $this->assign('data', Loader::model('Api')->where('interface_id', $id)->field('interface_id,interface_remark,project_id')->find());
+        $this->assign('data', Loader::model('Api')->where('interface_id', $id)->field('interface_id,interface_remark')->find());
         return $this->fetch('remark');
     }
 

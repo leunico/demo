@@ -316,6 +316,20 @@
                                 }
                             });
                             break;
+                        case 6:
+                            layer.open({
+                                type: 2
+                                ,title: '接口Mock'
+                                ,id: 'interfaceEdit'
+                                ,content: ["/project/api/" + id + "/mock"]
+                                ,maxmin: true
+                                ,resize: false
+                                ,area: ['1060px', '775px']
+                                ,end: function(){
+                                    lists.loadInterfaceList(1);
+                                }
+                            });
+                            break;
                         case 7:
                             layer.open({
                                 type: 2

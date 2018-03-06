@@ -325,3 +325,11 @@
     text-decoration: none;
     color: #5fb878;
 }
+.layui-inline-block .layui-input-title {
+    background-color: #f2f2f2;
+    height: 38px;
+    line-height: 38px;
+}
+.layui-inline-block .layui-input-title span {
+    margin-left: 7px;
+}

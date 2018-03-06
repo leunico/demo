@@ -1,0 +1,146 @@
+{extend name="common@public/open" /}
+{block name="main"}
+<blockquote class="layui-elem-quote layui-text layui-text-title">
+    温馨提示：这里支持MockJS的所有语法，查阅相关的MockJS规则请 <a style="text-decoration:none;" href="http://mockjs.com/examples.html" target="_blank">点击这里</a>！
+</blockquote>
+<div class="layui-tab-content">
+    <form class="layui-form" action="">
+        <input type="hidden" name="interface_id" value="{$data['interface_id']}"/>
+        {:token()}
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top:0px;">
+            <legend style="margin-left:27px;">Mock设置</legend>
+        </fieldset>
+        <div class="item-response">
+            <div class="layui-form-item">
+                <div class="layui-inline-block">
+                    <div class="layui-input-inline layui-input-title" style="text-align:center;"><span>字段名</span></div>
+                    <div class="layui-input-inline layui-input-title" style="width:10%;"><span>类型</span></div>
+                    <div class="layui-input-inline layui-input-title" style="line-height:38px;width:30%;"><span>生成规则</span></div>
+                    <div class="layui-input-inline layui-input-title" style="width:30%;"><span>属性值</span></div>
+                </div>
+            </div>
+
+            {volist name="data.interface_response" id="vo"}
+            <div class="layui-form-item">
+                <div class="layui-inline-block">
+                    <div class="layui-input-inline layui-input-title" style="text-align:center;background-color:#f8f8f8">
+                       <p>{$vo.response_name}</p>
+                    </div>
+                    <div class="layui-input-inline" style="width:10%">
+                        <select name="mock_type[]">
+                            {volist name=":getConfigModel('field_type')" id="val"}
+                            <option value="{$key}" {eq name="key" value="$vo.response_type"}selected{/eq}>{$val}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                    <div class="layui-input-inline" style="width:30%">
+                        <input type="text" name="mock_remark[]" placeholder="请输入mock生成规则" autocomplete="off" class="layui-input" value="{$vo.response_remark}">
+                    </div>
+                    <div class="layui-input-inline" style="width:30%">
+                        <input type="text" name="mock_value[]" placeholder="请输入mock属性值，如@mock=true" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            {/volist}
+        </div>
+        <fieldset class="layui-elem-field layui-field-title">
+            <legend style="margin-left:27px;">Mock数据预览</legend>
+        </fieldset>
+        <div class="layui-tab layui-tab-brief">
+            <div style="margin:15px 0px 0px 27px;">
+                <a href="javascript:;" class="layui-btn layui-btn-small layui-btn-green" onclick="loadJson()">刷新数据</a>
+            </div>
+            <div class="item-consult">
+                <div class="layui-tab-content" style="height:400px">
+                    <div class="layui-tab-item layui-tab-code layui-show"><pre id="codes" class="ace_editor" style="min-height:400px;font-size:14px"><textarea class="ace_text-input" name="sucess_consult"></textarea></pre></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block layui-input-submit">
+                {notempty name="interface_id"}<button class="layui-btn layui-btn-small layui-btn-blue" lay-submit="remark" lay-filter="remark">备注保存</button>{/notempty}
+                <button class="layui-btn layui-btn-small" lay-submit lay-filter="group">立即保存</button>
+                <button type="reset" class="layui-btn layui-btn-small layui-btn-primary">取消</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="layui-item-jsonup">
+    <textarea class="site-demo-text" id="jsonmain" placeholder="请输入要导入的Json数据，请满足基本的key-value格式，若有其他参数Header需满足key-value-description格式，其它满足key-value-type-consult"></textarea>
+    <a href="javascript:;" class="layui-btn layui-btn-small layui-btn-normal" onclick="jsonSubmit(jsonmain.value, this)" class="btns">全部替换</a>
+</div>
+{/block}
+
+{block name="js"}
+<script src="__JS__/ace.js"></script>
+<script>
+    editors = ace.edit("codes");
+    editors.setShowPrintMargin(false);
+    editors.session.setMode("ace/mode/json");
+//    editors.session.setMode("ace/mode/xml");
+    editors.setReadOnly(true);
+
+    layui.use(['form', 'jquery', 'layer'], function(){
+        var $ = layui.jquery,
+            jsonD = "{$dataJson}";
+            form = layui.form,
+            layer = layui.layer;
+console.log(jsonD);
+        form.on('submit(group)', function(data){
+            data.field['sucess_consult'] = editors.getValue();
+            data.field['error_consult'] = editore.getValue();
+            if(data.field.interface_id < 1){
+                $.post("/project/api", data.field, function(res){
+                    if(res.code > 0)
+                        parent.layer.closeAll();
+                    else
+                        parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                });
+            }else{
+                $.ajax({
+                    url: "/project/api/" + data.field.interface_id,
+                    type: "PUT",
+                    data: data.field,
+                    success: function(res){
+                        if(res.code > 0)
+                            parent.layer.closeAll();
+                        else
+                            parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                    }
+                });
+            }
+            return false;
+        });
+
+        form.on('submit(remark)', function(data){
+            data.field['sucess_consult'] = editors.getValue();
+            data.field['error_consult'] = editore.getValue();
+            layer.prompt({
+                formType: 2,
+                value: '',
+                title: '请输入修改备注',
+                area: ['400px', '150px'] // 自定义文本域宽高
+            }, function(value){
+                data.field['log_remark'] = value;
+                if(data.field.interface_id < 1){
+                    return false;
+                }else{
+                    $.ajax({
+                        url: "/project/api/" + data.field.interface_id,
+                        type: "PUT",
+                        data: data.field,
+                        success: function(res){
+                            if(res.code > 0)
+                                parent.layer.closeAll();
+                            else
+                                parent.layer.msg(res.msg, {time: 2000, icon: 2});
+                        }
+                    });
+                }
+            });
+            return false;
+        });
+    });
+</script>
+{/block}

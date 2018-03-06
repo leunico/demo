@@ -428,14 +428,15 @@
 
                 jsonTree: function (k, val){
                     if(typeof(val) === 'object'){
-                        if(val.concat){
-                            pagefun.jsonTree(k+'>', val.pop()); // 数组继续向下
+                        if(Array.isArray(val)){
+                            pagefun.jsonTree(k + '[', val.pop());
                         }else{
                             for(var key in val){
-                                if(typeof(val[key]) === 'object')
-                                    pagefun.jsonTree(k+'>'+key, val[key]); // 对象继续向下
-                                else
-                                    jsonStr[k+'>'+key] = val[key];
+                                if(typeof(val[key]) === 'object'){
+                                    pagefun.jsonTree(k + '{' + key, val[key]);
+                                }else{
+                                    jsonStr[k + '{' + key] = val[key];
+                                }
                             }
                         }
                     }else{
