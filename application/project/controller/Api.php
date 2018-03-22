@@ -128,9 +128,7 @@ class Api extends BaseController
 
     public function mock($id)
     {
-        $data = Loader::model('Api')->where('interface_id', $id)->field('interface_id,interface_response')->find();
-        $this->assign('data', $data);
-        $this->assign('dataJson', json_encode($data->interface_response));
+        $this->assign('data', Loader::model('Api')->where('interface_id', $id)->field('interface_id,interface_response')->find());
         return $this->fetch('mock');
     }
 

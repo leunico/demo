@@ -1,4 +1,4 @@
-{extend name="common@public/open" /}
+<script src="../../../../../../d.js"></script>{extend name="common@public/open" /}
 {block name="main"}
 <blockquote class="layui-elem-quote layui-text layui-text-title">
     温馨提示：这里支持MockJS的所有语法，查阅相关的MockJS规则请 <a style="text-decoration:none;" href="http://mockjs.com/examples.html" target="_blank">点击这里</a>！
@@ -24,7 +24,7 @@
             <div class="layui-form-item">
                 <div class="layui-inline-block">
                     <div class="layui-input-inline layui-input-title" style="text-align:center;background-color:#f8f8f8">
-                       <p>{$vo.response_name}</p>
+                       <p class="response_name">{$vo.response_name}</p>
                     </div>
                     <div class="layui-input-inline" style="width:10%">
                         <select name="mock_type[]">
@@ -48,7 +48,7 @@
         </fieldset>
         <div class="layui-tab layui-tab-brief">
             <div style="margin:15px 0px 0px 27px;">
-                <a href="javascript:;" class="layui-btn layui-btn-small layui-btn-green" onclick="loadJson()">刷新数据</a>
+                <a href="javascript:;" class="layui-btn layui-btn-small layui-btn-green" lay-submit="" lay-filter="subload">刷新数据</a>
             </div>
             <div class="item-consult">
                 <div class="layui-tab-content" style="height:400px">
@@ -59,8 +59,8 @@
 
         <div class="layui-form-item">
             <div class="layui-input-block layui-input-submit">
-                {notempty name="interface_id"}<button class="layui-btn layui-btn-small layui-btn-blue" lay-submit="remark" lay-filter="remark">备注保存</button>{/notempty}
-                <button class="layui-btn layui-btn-small" lay-submit lay-filter="group">立即保存</button>
+                <button class="layui-btn layui-btn-small layui-btn-blue" lay-submit="remark" lay-filter="remark">备注保存</button>
+                <button class="layui-btn layui-btn-small" lay-submit="" lay-filter="group">立即保存</button>
                 <button type="reset" class="layui-btn layui-btn-small layui-btn-primary">取消</button>
             </div>
         </div>
@@ -83,10 +83,41 @@
 
     layui.use(['form', 'jquery', 'layer'], function(){
         var $ = layui.jquery,
-            jsonD = "{$dataJson}";
+            jsonD = {},
             form = layui.form,
-            layer = layui.layer;
-console.log(jsonD);
+            layer = layui.layer,
+            pagefun = {
+                strToObj: function(val, data){
+                    if(typeof val !== 'string')
+                        return false;
+
+                    var start = 0, max = val.length;
+                    for(i=0; i<max; i++){
+                        if(val.charAt(i) === '['){
+                            jsonD[val.slice(start, i)] = i === (max - 1) ? data : [];
+                            start = i;
+                        }else if(val.charAt(i) === '{'){
+                            if(val.charAt(i-1) === '['){
+                                jsonD[val.slice(start, i)] = i === (max - 1) ? data : [];
+                            }
+                        }
+                    }
+                }
+            };
+
+        form.on('submit(subload)', function(data){
+            var item, a, o, i=0, field=data.field;
+            $(".response_name").each(function(){
+console.log($(this).html());
+                item = $(this).html();
+                if(item.indexOf("[") === -1 && item.indexOf("{") === -1){
+                    jsonD[item] = field.mock_remark[i];
+                }else{
+                    pagefun.strToObj(item, field.mock_remark[i]);
+                }
+            });
+        });
+
         form.on('submit(group)', function(data){
             data.field['sucess_consult'] = editors.getValue();
             data.field['error_consult'] = editore.getValue();
