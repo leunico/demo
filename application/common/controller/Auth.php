@@ -49,7 +49,7 @@ class Auth
         if($user->user_password != md5(md5($password) . $user->password_salt))
             return "密码错误！";
 
-        $user->login_time = time();
+        $user->login_time = date('Y-m-d H:i:s', time());
         $user->user_token = Random::uuid();
         $user->save();
 
